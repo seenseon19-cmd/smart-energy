@@ -40,7 +40,7 @@ class SafetyBanner extends StatelessWidget {
               SizedBox(
                 width: 28,
                 height: 28,
-                child: Lottie.asset(
+                child: Lottie.network(
                   AppAnimations.overloadWarning,
                   fit: BoxFit.contain,
                   repeat: true,

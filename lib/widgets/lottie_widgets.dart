@@ -105,7 +105,7 @@ class _LottieThemeToggleState extends State<LottieThemeToggle>
             SizedBox(
               width: widget.size * 0.7,
               height: widget.size * 0.7,
-              child: Lottie.asset(
+              child: Lottie.network(
                 AppAnimations.themeToggle,
                 controller: _controller,
                 fit: BoxFit.contain,
@@ -218,7 +218,7 @@ class _LottiePowerToggleState extends State<LottiePowerToggle>
               : [],
         ),
         child: Center(
-          child: Lottie.asset(
+          child: Lottie.network(
             AppAnimations.powerToggle,
             controller: _controller,
             width: widget.size * 0.75,
@@ -281,7 +281,7 @@ class EnergySavingPromoCard extends StatelessWidget {
           SizedBox(
             width: 72,
             height: 72,
-            child: Lottie.asset(
+            child: Lottie.network(
               AppAnimations.energySavingPromo,
               fit: BoxFit.contain,
               repeat: true,
@@ -393,7 +393,7 @@ class EnergyAdvisoryDialog extends StatelessWidget {
               SizedBox(
                 width: 140,
                 height: 140,
-                child: Lottie.asset(
+                child: Lottie.network(
                   AppAnimations.energyAdvisoryDialog,
                   fit: BoxFit.contain,
                   repeat: true,
@@ -497,7 +497,7 @@ class OverloadWarningCard extends StatelessWidget {
           SizedBox(
             width: 60,
             height: 60,
-            child: Lottie.asset(
+            child: Lottie.network(
               AppAnimations.overloadWarning,
               fit: BoxFit.contain,
               repeat: true,

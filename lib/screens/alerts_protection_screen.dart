@@ -113,7 +113,7 @@ class _AlertsProtectionScreenState extends State<AlertsProtectionScreen> {
                           SizedBox(
                             width: 44,
                             height: 44,
-                            child: Lottie.asset(
+                            child: Lottie.network(
                               AppAnimations.overloadWarning,
                               fit: BoxFit.contain,
                               repeat: true,

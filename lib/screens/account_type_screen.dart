@@ -172,7 +172,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
                           ],
                         ),
                         child: ClipOval(
-                          child: Lottie.asset(
+                          child: Lottie.network(
                             _isCommercial == true
                                 ? AppAnimations.resToCom
                                 : (_isCommercial == false

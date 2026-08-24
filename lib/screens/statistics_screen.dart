@@ -96,7 +96,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                             SizedBox(
                               width: 110,
                               height: 110,
-                              child: Lottie.asset(
+                              child: Lottie.network(
                                 AppAnimations.analyticsHero,
                                 fit: BoxFit.contain,
                                 repeat: true,

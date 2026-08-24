@@ -183,7 +183,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                     child: SizedBox(
                       width: 150,
                       height: 150,
-                      child: Lottie.asset(
+                      child: Lottie.network(
                         AppAnimations.welcomeOnboarding,
                         fit: BoxFit.contain,
                         repeat: true,
