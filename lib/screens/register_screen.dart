@@ -275,7 +275,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                               elevation: 2,
                             ),
-                            onPressed: auth.isLoading || !_acceptedPolicies ? null : () => _handleRegister(auth),
+                            onPressed: auth.isLoading || !_acceptedPolicies || _emailController.text.trim().isEmpty || _passwordController.text.length < 6 || _passwordController.text != _confirmPasswordController.text ? null : () => _handleRegister(auth),
                             child: auth.isLoading
                                 ? const SizedBox(
                                     width: 22,
@@ -380,6 +380,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   focusNode: focusNode,
                   obscureText: isPassword && !showPassword,
                   keyboardType: keyboardType,
+                  onChanged: (_) => setState(() {}),
                   style: AppTheme.getTextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,

@@ -74,8 +74,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
       await energyProvider.reloadUserData();
     }
 
-    widget.onComplete();
-
+    // انتقال وحيد وقسري إلى الشاشة الرئيسية بعد اكتمال الحفظ.
     if (mounted) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const MainShell()),

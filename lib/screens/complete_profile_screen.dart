@@ -15,6 +15,7 @@ import '../theme/app_theme.dart';
 import '../services/screen_security_service.dart';
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
+import '../widgets/app_logo.dart';
 import '../core/app_animations.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
@@ -181,6 +182,25 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                   ),
                   const SizedBox(height: 12),
 
+                  // شعار Smart المتحرك وهوية Engineers
+                  Center(
+                    child: AppLogo(iconSize: 42, fontSize: 28, isDark: isDark, isHorizontal: false),
+                  ),
+                  const SizedBox(height: 8),
+                  Center(
+                    child: TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0.55, end: 1.0),
+                      duration: const Duration(milliseconds: 1100),
+                      curve: Curves.easeInOut,
+                      builder: (_, glow, child) => AnimatedDefaultTextStyle(
+                        duration: const Duration(milliseconds: 350),
+                        style: TextStyle(color: Color.lerp(AppTheme.neonGreen.withOpacity(0.55), AppTheme.neonGreen, glow), fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 2.2, shadows: [Shadow(color: AppTheme.neonGreen.withOpacity(glow * 0.85), blurRadius: 16)]),
+                        child: child!,
+                      ),
+                      child: const Text('Engineers'),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   // أنيميشن الترحيب وإكمال البيانات
                   Center(
                     child: SizedBox(
