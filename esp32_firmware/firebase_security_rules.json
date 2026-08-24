@@ -1,0 +1,56 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "energy_node": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      ".validate": "newData.hasChildren(['voltage', 'current', 'power'])",
+      "voltage": {
+        ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 400"
+      },
+      "current": {
+        ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
+      },
+      "power": {
+        ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 40000"
+      },
+      "total_kwh": {
+        ".validate": "newData.isNumber() && newData.val() >= 0"
+      },
+      "power_factor": {
+        ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"
+      },
+      "frequency": {
+        ".validate": "newData.isNumber()"
+      },
+      "timestamp": {
+        ".validate": "newData.val() <= now"
+      }
+    },
+    "relays": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$relayId": {
+        ".validate": "newData.hasChild('state')",
+        "state": {
+          ".validate": "newData.isBoolean()"
+        },
+        "updated_at": {
+          ".validate": "newData.val() <= now"
+        }
+      }
+    },
+    "device_status": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "activity_logs": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$logId": {
+        ".validate": "newData.hasChildren(['type', 'timestamp'])"
+      }
+    }
+  }
+}

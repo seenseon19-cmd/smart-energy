@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>حماية الحمل الزائد - SmartEnergy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container": "#ecedf4",
+                      "secondary": "#0051d5",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed": "#00174b",
+                      "on-tertiary-container": "#5be6ff",
+                      "surface-container-low": "#f2f3fa",
+                      "error-container": "#ffdad6",
+                      "secondary-container": "#316bf3",
+                      "on-secondary-fixed-variant": "#003ea8",
+                      "on-primary-fixed": "#001c39",
+                      "inverse-on-surface": "#eff0f7",
+                      "inverse-primary": "#a3c9ff",
+                      "surface-variant": "#e1e2e9",
+                      "inverse-surface": "#2e3036",
+                      "on-primary": "#ffffff",
+                      "on-background": "#191c21",
+                      "primary": "#00457f",
+                      "tertiary": "#004b56",
+                      "tertiary-fixed-dim": "#2fd9f4",
+                      "surface": "#f8f9ff",
+                      "on-primary-container": "#bcd6ff",
+                      "surface-bright": "#f8f9ff",
+                      "on-tertiary-fixed-variant": "#004e5a",
+                      "on-primary-fixed-variant": "#004883",
+                      "on-secondary-container": "#fefcff",
+                      "outline-variant": "#c1c7d3",
+                      "on-error": "#ffffff",
+                      "primary-container": "#005da7",
+                      "secondary-fixed-dim": "#b4c5ff",
+                      "on-tertiary-fixed": "#001f25",
+                      "surface-container-highest": "#e1e2e9",
+                      "on-surface": "#191c21",
+                      "surface-tint": "#0860aa",
+                      "on-surface-variant": "#414751",
+                      "outline": "#727782",
+                      "on-tertiary": "#ffffff",
+                      "secondary-fixed": "#dbe1ff",
+                      "surface-dim": "#d8dae0",
+                      "primary-fixed": "#d3e3ff",
+                      "surface-container-high": "#e7e8ef",
+                      "error": "#ba1a1a",
+                      "primary-fixed-dim": "#a3c9ff",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#006573",
+                      "background": "#f8f9ff",
+                      "tertiary-fixed": "#a2eeff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-gap-sm": "8px",
+                      "card-padding": "20px",
+                      "unit": "4px",
+                      "gutter-grid": "16px",
+                      "stack-gap-lg": "32px",
+                      "margin-page": "24px",
+                      "stack-gap-md": "16px"
+              },
+              "fontFamily": {
+                      "body-lg": [
+                              "Cairo"
+                      ],
+                      "display-lg": [
+                              "Cairo"
+                      ],
+                      "headline-md": [
+                              "Cairo"
+                      ],
+                      "headline-lg": [
+                              "Cairo"
+                      ],
+                      "description-sm": [
+                              "Cairo"
+                      ],
+                      "headline-lg-mobile": [
+                              "Cairo"
+                      ],
+                      "body-md": [
+                              "Cairo"
+                      ],
+                      "label-md": [
+                              "Cairo"
+                      ]
+              },
+              "fontSize": {
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "42px",
+                              {
+                                      "lineHeight": "52px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "description-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "fontWeight": "300"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "26px",
+                              {
+                                      "lineHeight": "34px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e1e2e9 100%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(37, 99, 235, 0.05);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #0051d5;
+            cursor: pointer;
+            margin-top: -10px;
+            box-shadow: 0 2px 6px rgba(0, 81, 213, 0.4);
+            border: 2px solid white;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #e1e2e9;
+            border-radius: 2px;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        
+        /* Custom Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #0051d5;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #0051d5;
+        }
+        .toggle-checkbox:checked + .toggle-label:after {
+            transform: translateX(-100%);
+            border-color: white;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface bg-background pb-24 md:pb-0 pt-20">
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl bg-surface-container/40 dark:bg-surface-container-high/40 border-b border-white/10 shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="bolt">bolt</span>
+<h1 class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim">SmartEnergy</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="font-label-md text-label-md text-primary dark:text-primary-fixed-dim">Live Stream - Connected</span>
+</div>
+</header>
+<main class="container mx-auto px-margin-page max-w-2xl mt-8">
+<div class="mb-8 text-center">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">حماية الحمل الزائد</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">مراقبة وإدارة استهلاك الطاقة لتجنب انقطاع التيار.</p>
+</div>
+<!-- Global Power Limit Card -->
+<section class="glass-panel rounded-2xl p-card-padding mb-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-10 -mt-10 blur-2xl pointer-events-none"></div>
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined icon-fill" data-icon="speed">speed</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">الحد الأقصى للطاقة</h3>
+<p class="font-description-sm text-description-sm text-on-surface-variant">الحد العام المسموح به للمنزل</p>
+</div>
+</div>
+<div class="text-left">
+<span class="font-headline-md text-headline-md text-primary font-bold">5,000</span>
+<span class="font-body-md text-body-md text-on-surface-variant">W</span>
+</div>
+</div>
+<!-- Slider Container -->
+<div class="mb-8 px-2">
+<input class="w-full h-2 rounded-lg appearance-none cursor-pointer" max="10000" min="1000" type="range" value="5000"/>
+<div class="flex justify-between text-xs text-on-surface-variant mt-3 font-label-md">
+<span>1k W</span>
+<span>5k W</span>
+<span>10k W</span>
+</div>
+</div>
+<!-- Current Load Progress -->
+<div class="bg-surface-container-low rounded-xl p-4">
+<div class="flex justify-between mb-2">
+<span class="font-label-md text-label-md text-on-surface">الحمل الحالي</span>
+<span class="font-label-md text-label-md text-primary font-bold">34%</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-2.5 overflow-hidden">
+<div class="bg-primary h-2.5 rounded-full" style="width: 34%"></div>
+</div>
+<p class="font-description-sm text-description-sm text-on-surface-variant mt-2 text-left" dir="ltr">1,700 W / 5,000 W</p>
+</div>
+</section>
+<!-- Automation & Safety Toggles -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-gutter-grid mb-6">
+<!-- Auto Cut-off -->
+<div class="glass-panel rounded-2xl p-card-padding flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-error-container/50 flex items-center justify-center text-error">
+<span class="material-symbols-outlined" data-icon="power_off">power_off</span>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">الفصل التلقائي</h4>
+<p class="font-description-sm text-description-sm text-on-surface-variant">عند تجاوز الحد 100%</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out left-0 z-10" id="autoCutoff" name="toggle" style="right: auto; left: 0;" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 ease-in-out" for="autoCutoff"></label>
+</div>
+<style>
+                    /* RTL Specific Toggle Fix */
+                    #autoCutoff:checked { transform: translateX(-100%); left: 100%; border-color: #0051d5; }
+                    #autoCutoff:checked + label { background-color: #0051d5; }
+                </style>
+</div>
+<!-- Priority Shedding -->
+<div class="glass-panel rounded-2xl p-card-padding flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="low_priority">low_priority</span>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">إدارة الأولويات</h4>
+<p class="font-description-sm text-description-sm text-on-surface-variant">فصل الأجهزة غير الهامة أولاً</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out left-0 z-10" id="priorityShedding" name="toggle2" style="right: auto; left: 0;" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 ease-in-out" for="priorityShedding"></label>
+</div>
+<style>
+                    #priorityShedding:checked { transform: translateX(-100%); left: 100%; border-color: #0051d5; }
+                    #priorityShedding:checked + label { background-color: #0051d5; }
+                </style>
+</div>
+</section>
+<!-- Emergency Simulation Action -->
+<section class="glass-panel rounded-2xl p-card-padding border border-error/20 bg-error/5 relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-5">
+<span class="material-symbols-outlined text-[100px]" data-icon="warning">warning</span>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-error/10 flex items-center justify-center text-error mb-4">
+<span class="material-symbols-outlined text-3xl icon-fill" data-icon="warning">warning</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">محاكاة الطوارئ</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 max-w-md">
+                    اختبر استجابة النظام لحمل زائد وهمي للتأكد من عمل أجهزة الحماية وفصل الأحمال بشكل صحيح.
+                </p>
+<button class="bg-error text-on-error hover:bg-error/90 font-label-md text-label-md py-3 px-8 rounded-full transition-transform duration-200 active:scale-95 flex items-center gap-2 shadow-lg shadow-error/20">
+<span class="material-symbols-outlined text-sm" data-icon="science">science</span>
+                    بدء المحاكاة الآن
+                </button>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-surface/90 dark:bg-inverse-surface/90 backdrop-blur-2xl border-t border-white/20 shadow-[0_-4px_20px_rgba(37,99,235,0.05)] rounded-t-[32px]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-2xl" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="font-label-md text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-2xl" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="settings_remote">settings_remote</span>
+<span class="font-label-md text-[10px]">Devices</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-2xl" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="add_circle">add_circle</span>
+<span class="font-label-md text-[10px]">Add</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container dark:bg-secondary dark:text-on-secondary rounded-2xl p-2 shadow-[0_0_15px_rgba(49,107,243,0.4)] transition-transform duration-150 scale-90" href="#">
+<span class="material-symbols-outlined mb-1 icon-fill" data-icon="insights">insights</span>
+<span class="font-label-md text-[10px] font-bold">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-2xl" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-label-md text-[10px]">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple script to handle slider value update visually
+        const rangeInput = document.querySelector('input[type="range"]');
+        const limitText = document.querySelector('.text-primary.font-bold');
+        
+        if(rangeInput && limitText) {
+            rangeInput.addEventListener('input', function() {
+                // Format with comma
+                limitText.textContent = parseInt(this.value).toLocaleString();
+            });
+        }
+    </script>
+</body></html>

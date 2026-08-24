@@ -1,0 +1,48 @@
+Folder _1:
+  Title: SmartEnergy - Login
+  Headings: SmartEnergy, أهلاً بعودتك
+--------------------------------------------------
+Folder _2:
+  Title: SmartEnergy - Live Dashboard
+  Headings: Live Power Curve
+--------------------------------------------------
+Folder _3:
+  Title: SmartEnergy - Sign Up
+  Headings: SmartEnergy, ابدأ رحلتك الذكية
+--------------------------------------------------
+Folder _4:
+  Title: SmartEnergy - الأجهزة
+  Headings: الأجهزة, مكيف الهواء, الثلاجة الذكية, السخان المركزي, إضاءة المطبخ
+--------------------------------------------------
+Folder _5:
+  Title: SmartEnergy - Promo
+  Headings: 
+--------------------------------------------------
+Folder _6:
+  Title: حماية الحمل الزائد - SmartEnergy
+  Headings: SmartEnergy, حماية الحمل الزائد, الحد الأقصى للطاقة, محاكاة الطوارئ
+--------------------------------------------------
+Folder _7:
+  Title: Pricing Plans - SmartEnergy
+  Headings: Select Your Plan, Free, Basic, Pro, Elite
+--------------------------------------------------
+Folder _8:
+  Title: Spaces Management - SmartEnergy
+  Headings: SmartEnergy Menu, إدارة المساحات, Home (منزلي), Office (تجاري), Beach House, عرض الخريطة التفاعلية
+--------------------------------------------------
+Folder _9:
+  Title: Analytics &amp; Reports - SmartEnergy
+  Headings: SmartEnergy, Analytics &amp; Reports, Weekly Consumption
+--------------------------------------------------
+Folder _10:
+  Title: SmartEnergy - Advanced Settings
+  Headings: Advanced Settings, SmartEnergy Menu
+--------------------------------------------------
+Folder _11:
+  Title: Profile - SmartEnergy
+  Headings: أحمد العلي, Personal Info, Security &amp; Privacy, Notifications, Language, Appearance
+--------------------------------------------------
+Folder _12:
+  Title: SmartEnergy - Add Device
+  Headings: Add Device
+--------------------------------------------------

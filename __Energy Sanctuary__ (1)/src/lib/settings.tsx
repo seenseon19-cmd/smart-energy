@@ -1,0 +1,402 @@
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+
+type Theme = "dark" | "light";
+export type Lang = "ar" | "en";
+
+type Ctx = {
+  theme: Theme;
+  lang: Lang;
+  setTheme: (t: Theme) => void;
+  setLang: (l: Lang) => void;
+  t: (key: string) => string;
+  num: (n: number) => string;
+};
+
+const DICT: Record<Lang, Record<string, string>> = {
+  ar: {
+    // Nav
+    "nav.dashboard": "اللوحة", "nav.devices": "الأجهزة", "nav.analytics": "التحليلات",
+    "nav.spaces": "المساحات", "nav.pricing": "الاشتراكات", "nav.safety": "الأمان",
+    "nav.settings": "الإعدادات", "nav.profile": "الملف",
+    // Common
+    "common.connected": "متصل", "common.live": "البث المباشر", "common.cancel": "إلغاء",
+    "common.save": "حفظ", "common.add": "إضافة", "common.edit": "تعديل", "common.delete": "حذف",
+    "common.create": "إنشاء", "common.upgrade": "ترقية", "common.current": "الحالية",
+    "common.available": "متاح", "common.home": "منزلي", "common.commercial": "تجاري",
+    "common.relay": "المرحل", "common.devices": "الأجهزة", "common.warning": "تحذير",
+    "common.safe": "آمن", "common.overload": "حمل زائد", "common.unlimited": "غير محدود",
+    "common.month": "شهر", "common.year": "سنة", "common.or": "أو",
+    // Header
+    "header.subscription": "الاشتراك الحالي", "header.deviceCount": "جهاز",
+    "header.warningOverload": "تحذير: تجاوز حد القدرة", "header.activeSpace": "المساحة النشطة",
+    // Dashboard
+    "dash.welcome": "مرحباً بعودتك", "dash.title": "لوحة التحكم المباشر",
+    "dash.voltage": "الجهد", "dash.current": "التيار", "dash.totalEnergy": "الطاقة الإجمالية",
+    "dash.bill": "الفاتورة المقدرة", "dash.liveConsumption": "الاستهلاك المباشر · 60 ثانية",
+    "dash.powerCurve": "منحنى القدرة (W)", "dash.activeDevices": "الأجهزة النشطة",
+    "dash.running": "يعمل", "dash.powerNow": "القدرة الآن", "dash.limit": "الحد",
+    // Devices
+    "dev.title": "الأجهزة", "dev.add": "إضافة جهاز", "dev.empty": "لا توجد أجهزة بعد. اضغط \"إضافة جهاز\" للبدء.",
+    "dev.editTitle": "تعديل الجهاز", "dev.addTitle": "إضافة جهاز جديد",
+    "dev.name": "اسم الجهاز", "dev.namePh": "مثال: مكيف الغرفة", "dev.icon": "الأيقونة",
+    "dev.selectRelay": "اختر منفذ الأجهزة (Relay)", "dev.ratedW": "الاستهلاك المقدر (W)",
+    "dev.saveEdit": "حفظ التعديلات", "dev.added": "تم إضافة الجهاز",
+    "dev.updated": "تم تحديث الجهاز", "dev.deleted": "تم حذف الجهاز",
+    "dev.errName": "أدخل اسم الجهاز", "dev.errRelay": "اختر مرحلاً (Relay)",
+    "dev.errRelayUsed": "هذا المرحل مستخدم بالفعل", "dev.errSave": "فشل الحفظ",
+    "dev.relayAssigned": "تم تخصيص Relay", "dev.upgradeTitle": "ترقية الاشتراك",
+    "dev.upgradeMsg": "لقد بلغت الحد الأقصى للأجهزة في خطتك الحالية. اختر خطة أعلى لإضافة المزيد.",
+    "dev.upTo": "حتى", "dev.planChanged": "تم التحديث إلى خطة",
+    // Spaces
+    "sp.title": "المساحات", "sp.subtitle": "بيئات مستقلة لكل موقع — اشتراك وأجهزة منفصلة.",
+    "sp.new": "مساحة جديدة", "sp.created": "تم إنشاء المساحة",
+    "sp.errName": "أدخل اسم المساحة", "sp.errBiz": "أكمل بيانات التحقق التجاري",
+    "sp.createTitle": "إنشاء مساحة جديدة", "sp.name": "اسم المساحة",
+    "sp.namePh": "مثال: المنزل / الفرع الثاني", "sp.type": "النوع",
+    "sp.plan": "الخطة", "sp.bizVerify": "نموذج التحقق التجاري مطلوب",
+    "sp.bizName": "اسم الشركة", "sp.taxId": "الرقم الضريبي",
+    // Safety
+    "sf.title": "الأمان وحماية الحمل الزائد",
+    "sf.subtitle": "حدد العتبات لحماية تركيبتك الكهربائية تلقائياً.",
+    "sf.globalLimit": "حد القدرة العالمي", "sf.maxAllowed": "أقصى استهلاك مسموح به للمساحة",
+    "sf.currentUse": "الاستهلاك الحالي", "sf.autoCutoff": "الفصل التلقائي عند التجاوز",
+    "sf.autoCutoffDesc": "يتم إيقاف أعلى جهاز استهلاكاً تلقائياً",
+    "sf.simTitle": "محاكاة حالة الطوارئ", "sf.simDesc": "اختبر استجابة النظام لحماية الأجهزة",
+    "sf.trigger": "تشغيل تحميل زائد", "sf.reset": "إعادة تشغيل بعد الفصل",
+    "sf.alertTitle": "⚠ تحذير: تجاوز حد القدرة!",
+    "sf.alertCutting": " جاري الفصل الآلي للحماية...",
+    "sf.alertHint": " يُنصح بإيقاف بعض الأجهزة فوراً.",
+    "sf.exceeds": "يتجاوز الحد المسموح",
+    // Pricing
+    "pr.kicker": "الاشتراكات", "pr.titleA": "خطة", "pr.titleB": "لكل مساحة",
+    "pr.titleC": "· تحكم بلا حدود",
+    "pr.subtitle": "كل مساحة (منزل أو فرع تجاري) تمتلك اشتراكها المستقل. اختر الخطة الأنسب لاحتياجاتك الكهربائية وعدد الأجهزة المتصلة.",
+    "pr.appliedTo": "الاشتراك يُطبَّق على المساحة:",
+    "pr.monthly": "شهري", "pr.quarterly": "3 أشهر", "pr.yearly": "سنوي",
+    "pr.homePricing": "عرض أسعار", "pr.homeBold": "المنازل",
+    "pr.bizBold": "الأعمال التجارية", "pr.forSpace": "لمساحة",
+    "pr.bestValue": "الأفضل قيمة", "pr.popular": "الأكثر شعبية",
+    "pr.currentPlan": "الخطة الحالية", "pr.upgradeUlt": "الترقية إلى ألتيميت",
+    "pr.choose": "اختر", "pr.activated": "تم تفعيل خطة",
+    "pr.feat1Title": "فوترة فورية", "pr.feat1Desc": "ادفع وفعّل الخطة على المساحة المحددة فوراً.",
+    "pr.feat2Title": "ترقية مرنة", "pr.feat2Desc": "بدّل بين الخطط في أي وقت دون فقد بياناتك.",
+    "pr.feat3Title": "دعم محلي", "pr.feat3Desc": "فريق دعم متاح طوال الأسبوع.",
+    "pr.perMonthly": "LYD/شهر", "pr.perQuarterly": "LYD/3 أشهر", "pr.perYearly": "LYD/سنة",
+    // Analytics
+    "an.kicker": "التحليلات والتقارير", "an.title": "رؤى ذكية لاستهلاكك",
+    "an.subtitle": "بيانات لحظية ومنحنيات تفاعلية لمساحة",
+    "an.generating": "جارٍ الحفظ...", "an.genPdf": "حفظ البيانات PDF",
+    "an.totalEnergy": "إجمالي الطاقة", "an.estBill": "الفاتورة المقدرة",
+    "an.average": "المتوسط", "an.trend": "الاتجاه مقابل البداية",
+    "an.curve": "منحنى الاستهلاك", "an.daily": "يومي", "an.weekly": "أسبوعي", "an.monthly": "شهري",
+    "an.distribution": "توزيع الاستهلاك", "an.byDevice": "حسب الجهاز", "an.totalW": "إجمالي W",
+    "an.consBill": "الاستهلاك والفوترة", "an.kwhVsLyd": "kWh مقابل LYD",
+    "an.peak": "الذروة", "an.topConsumers": "أعلى الأجهزة استهلاكاً",
+    "an.noActive": "لا توجد أجهزة فعّالة بعد.",
+    "an.liveNow": "البث المباشر الحالي", "an.pdfDone": "تم تحميل التقرير بنجاح",
+    "an.pdfFail": "فشل توليد التقرير",
+    // Profile
+    "pf.brand": "Secure Gateway", "pf.unnamed": "بدون اسم",
+    "pf.uploadNew": "رفع صورة جديدة", "pf.imgUpdated": "تم تحديث الصورة",
+    "pf.personalInfo": "المعلومات الشخصية", "pf.editBasics": "عدّل بياناتك الأساسية",
+    "pf.fullName": "الاسم الكامل", "pf.namePh": "أدخل اسمك",
+    "pf.phone": "رقم الهاتف", "pf.email": "البريد الإلكتروني", "pf.city": "المدينة",
+    "pf.accountType": "نوع الحساب",
+    "pf.accountTypeDesc": "يحدّد نوع الحساب الباقات والميزات المتاحة",
+    "pf.personal": "شخصي · منزل", "pf.personalDesc": "مثالي للأسر والشقق والمنازل الذكية",
+    "pf.business": "تجاري · أعمال", "pf.businessDesc": "للمكاتب والمحلات والمنشآت التجارية",
+    "pf.saveBtn": "حفظ التغييرات", "pf.saved": "تم حفظ التغييرات",
+    "pf.savedDesc": "تمت مزامنة بياناتك", "pf.errName": "الاسم مطلوب",
+    // Auth
+    "au.login": "تسجيل الدخول", "au.signup": "إنشاء حساب",
+    "au.welcomeBack": "أهلاً بعودتك", "au.startJourney": "ابدأ رحلتك الذكية",
+    "au.loginHint": "ادخل لمتابعة التحكم بأجهزتك",
+    "au.signupHint": "أنشئ حساباً للتحكم الكامل في طاقتك",
+    "au.byPhone": "رقم الهاتف", "au.byEmail": "البريد",
+    "au.password": "كلمة المرور", "au.forgot": "نسيت كلمة المرور؟",
+    "au.sendOtp": "إرسال رمز التحقق", "au.createAcc": "إنشاء الحساب",
+    "au.guest": "متابعة كزائر", "au.guestOk": "مرحباً بك (دخول تجريبي)",
+    "au.encrypted": "محمي بتشفير AES-256 · بوابة آمنة معتمدة",
+    "au.otpSent": "تم إرسال رمز التحقق", "au.otpDemo": "0000 (تجريبي)",
+    "au.otpTo": "أرسلنا رمز تحقق إلى", "au.changeNum": "تغيير الرقم",
+    "au.otpVerified": "تم التحقق بنجاح", "au.welcomeBackToast": "مرحباً بعودتك",
+    "au.accountCreated": "تم إنشاء حسابك",
+    "au.errPhone": "أدخل رقم هاتف صحيح", "au.errName": "أدخل الاسم",
+    "au.errFields": "أكمل البيانات",
+    // Settings
+    "settings.title": "الإعدادات", "settings.subtitle": "خصّص تجربتك وتنبيهاتك",
+    "settings.appearance": "المظهر", "settings.appearance.desc": "اختر الوضع المريح لعينيك",
+    "settings.dark": "الوضع الداكن", "settings.dark.on": "مفعّل — مثالي لليل",
+    "settings.dark.off": "وضع نهاري", "settings.language": "اللغة",
+    "settings.language.desc": "لغة الواجهة", "settings.notifications": "الإشعارات",
+    "settings.notifications.desc": "تحكّم في طرق التنبيه",
+    "settings.push": "إشعارات الدفع (Push)", "settings.push.hint": "إشعارات فورية على جهازك",
+    "settings.email": "تنبيهات البريد", "settings.email.hint": "تقارير وتحذيرات أسبوعية",
+    "settings.sms": "تنبيهات SMS", "settings.sms.hint": "رسائل نصية للحالات الحرجة",
+    "settings.about": "عن التطبيق", "settings.about.desc": "معلومات النظام والاتصال",
+    "settings.version": "إصدار التطبيق", "settings.deviceId": "معرّف الجهاز",
+    "settings.firebase": "حالة Firebase", "settings.connected": "متصل",
+    "toast.theme": "تم تغيير المظهر", "toast.lang": "تم تغيير اللغة",
+    // Plans
+    "plan.free": "مجاني", "plan.basic": "أساسي", "plan.pro": "احترافي", "plan.ultimate": "ألتيميت",
+    "plan.freeC": "تجريبي تجاري", "plan.basicC": "أساسي تجاري",
+    "plan.proC": "احترافي تجاري", "plan.ultC": "ألتيميت تجاري",
+    "plan.tagFree": "للتجربة والاستكشاف", "plan.tagBasic": "للمنزل الذكي الصغير",
+    "plan.tagPro": "الأكثر شعبية للمنازل", "plan.tagUlt": "بلا حدود · للمنازل الكبيرة",
+    "plan.tagFreeC": "لتقييم النظام", "plan.tagBasicC": "للمتاجر الصغيرة والمكاتب",
+    "plan.tagProC": "الأكثر طلباً للأعمال", "plan.tagUltC": "للمؤسسات والمصانع",
+    "plan.dev2": "حتى جهازين", "plan.dev6": "حتى 6 أجهزة",
+    "plan.dev20": "حتى 20 جهازاً", "plan.devInf": "أجهزة غير محدودة",
+    "pf.feat.dash": "لوحة تحكم مباشرة",
+    "pf.feat.basicTrack": "تتبع الاستهلاك الأساسي",
+    "pf.feat.oneRelay": "جهاز واحد لكل مرحل",
+    "pf.feat.emailSupport": "دعم عبر البريد",
+    "pf.feat.allFree": "كل مزايا الخطة المجانية",
+    "pf.feat.allFreeC": "كل مزايا التجريبي",
+    "pf.feat.allBasic": "كل مزايا الأساسي",
+    "pf.feat.allPro": "كل مزايا الاحترافي",
+    "pf.feat.overloadAlerts": "تنبيهات الحمل الزائد",
+    "pf.feat.weeklyReports": "تقارير أسبوعية",
+    "pf.feat.history30": "تاريخ استهلاك 30 يوماً",
+    "pf.feat.history90": "تاريخ استهلاك 90 يوماً",
+    "pf.feat.history1y": "تاريخ استهلاك سنة كاملة",
+    "pf.feat.history2y": "تاريخ استهلاك سنتان",
+    "pf.feat.pdfReports": "تقارير PDF تفصيلية",
+    "pf.feat.pdfBilling": "تقارير PDF احترافية للفوترة",
+    "pf.feat.autoCutoff": "الفصل التلقائي الذكي",
+    "pf.feat.automation": "أتمتة الأجهزة",
+    "pf.feat.unlimited": "أجهزة غير محدودة",
+    "pf.feat.unlimitedBranches": "أجهزة غير محدودة + فروع متعددة",
+    "pf.feat.priority247": "دعم فني ذو أولوية 24/7",
+    "pf.feat.voice": "تكامل المساعد الصوتي",
+    "pf.feat.cloudBackup": "نسخ احتياطي سحابي",
+    "pf.feat.earlyAccess": "أولوية الميزات الجديدة",
+    "pf.feat.oneWeekly": "تقرير أسبوعي واحد",
+    "pf.feat.instantOverload": "تنبيهات فورية للحمل الزائد",
+    "pf.feat.weeklyMonthly": "تقارير أسبوعية وشهرية",
+    "pf.feat.smsAlerts": "تنبيهات SMS فورية",
+    "pf.feat.api": "API مخصص للمطورين",
+    "pf.feat.uptime": "ضمان وقت تشغيل 99.9%",
+    "pf.feat.accountManager": "مدير حساب مخصص",
+    // Initial spaces & devices
+    "init.home": "المنزل", "init.office": "المكتب التجاري",
+    "dev.ac": "مكيف الصالة", "dev.fridge": "الثلاجة", "dev.kLight": "إضاءة المطبخ",
+    "dev.heater": "السخان", "dev.servers": "خوادم الشبكة", "dev.oLight": "إضاءة المكتب",
+    "dev.acMain": "مكيف رئيسي",
+    // Days/Months
+    "day.sun": "الأحد", "day.mon": "الإثنين", "day.tue": "الثلاثاء",
+    "day.wed": "الأربعاء", "day.thu": "الخميس", "day.fri": "الجمعة", "day.sat": "السبت",
+    "mon.1": "يناير", "mon.2": "فبراير", "mon.3": "مارس", "mon.4": "أبريل",
+    "mon.5": "مايو", "mon.6": "يونيو", "mon.7": "يوليو", "mon.8": "أغسطس",
+    "mon.9": "سبتمبر", "mon.10": "أكتوبر", "mon.11": "نوفمبر", "mon.12": "ديسمبر",
+  },
+  en: {
+    "nav.dashboard": "Dashboard", "nav.devices": "Devices", "nav.analytics": "Analytics",
+    "nav.spaces": "Spaces", "nav.pricing": "Plans", "nav.safety": "Safety",
+    "nav.settings": "Settings", "nav.profile": "Profile",
+    "common.connected": "Connected", "common.live": "Live stream", "common.cancel": "Cancel",
+    "common.save": "Save", "common.add": "Add", "common.edit": "Edit", "common.delete": "Delete",
+    "common.create": "Create", "common.upgrade": "Upgrade", "common.current": "Current",
+    "common.available": "Available", "common.home": "Home", "common.commercial": "Business",
+    "common.relay": "Relay", "common.devices": "Devices", "common.warning": "Warning",
+    "common.safe": "Safe", "common.overload": "Overload", "common.unlimited": "Unlimited",
+    "common.month": "month", "common.year": "year", "common.or": "OR",
+    "header.subscription": "Current plan", "header.deviceCount": "devices",
+    "header.warningOverload": "Warning: power limit exceeded", "header.activeSpace": "Active space",
+    "dash.welcome": "Welcome back", "dash.title": "Live Control Dashboard",
+    "dash.voltage": "Voltage", "dash.current": "Current", "dash.totalEnergy": "Total Energy",
+    "dash.bill": "Estimated Bill", "dash.liveConsumption": "Live consumption · 60 sec",
+    "dash.powerCurve": "Power curve (W)", "dash.activeDevices": "Active Devices",
+    "dash.running": "running", "dash.powerNow": "Power Now", "dash.limit": "Limit",
+    "dev.title": "Devices", "dev.add": "Add device",
+    "dev.empty": "No devices yet. Click \"Add device\" to start.",
+    "dev.editTitle": "Edit device", "dev.addTitle": "Add new device",
+    "dev.name": "Device name", "dev.namePh": "e.g. Living room AC", "dev.icon": "Icon",
+    "dev.selectRelay": "Choose hardware port (Relay)", "dev.ratedW": "Rated power (W)",
+    "dev.saveEdit": "Save changes", "dev.added": "Device added",
+    "dev.updated": "Device updated", "dev.deleted": "Device deleted",
+    "dev.errName": "Enter device name", "dev.errRelay": "Select a Relay",
+    "dev.errRelayUsed": "This relay is already in use", "dev.errSave": "Save failed",
+    "dev.relayAssigned": "Assigned Relay", "dev.upgradeTitle": "Upgrade plan",
+    "dev.upgradeMsg": "You've reached the device limit on your current plan. Pick a higher tier to add more.",
+    "dev.upTo": "Up to", "dev.planChanged": "Switched to plan",
+    "sp.title": "Spaces", "sp.subtitle": "Independent environments per location — separate plans & devices.",
+    "sp.new": "New space", "sp.created": "Space created",
+    "sp.errName": "Enter space name", "sp.errBiz": "Complete business verification",
+    "sp.createTitle": "Create new space", "sp.name": "Space name",
+    "sp.namePh": "e.g. Home / Branch 2", "sp.type": "Type",
+    "sp.plan": "Plan", "sp.bizVerify": "Business verification required",
+    "sp.bizName": "Company name", "sp.taxId": "Tax ID",
+    "sf.title": "Safety & Overload Protection",
+    "sf.subtitle": "Set thresholds to protect your installation automatically.",
+    "sf.globalLimit": "Global power limit", "sf.maxAllowed": "Max allowed consumption for this space",
+    "sf.currentUse": "Current usage", "sf.autoCutoff": "Auto-disconnect on overload",
+    "sf.autoCutoffDesc": "The highest-draw device is turned off automatically",
+    "sf.simTitle": "Emergency simulation", "sf.simDesc": "Test the system's protection response",
+    "sf.trigger": "Trigger overload", "sf.reset": "Restart after cutoff",
+    "sf.alertTitle": "⚠ Warning: power limit exceeded!",
+    "sf.alertCutting": " Auto cut-off in progress…",
+    "sf.alertHint": " It is recommended to turn off some devices immediately.",
+    "sf.exceeds": "exceeds the allowed limit",
+    "pr.kicker": "Plans", "pr.titleA": "A plan", "pr.titleB": "for every space",
+    "pr.titleC": "· limitless control",
+    "pr.subtitle": "Each space (home or business branch) has its own independent subscription. Pick the plan that fits your needs and number of devices.",
+    "pr.appliedTo": "Subscription applies to space:",
+    "pr.monthly": "Monthly", "pr.quarterly": "3 Months", "pr.yearly": "Yearly",
+    "pr.homePricing": "Showing", "pr.homeBold": "residential",
+    "pr.bizBold": "business", "pr.forSpace": "pricing for space",
+    "pr.bestValue": "Best value", "pr.popular": "Most popular",
+    "pr.currentPlan": "Current plan", "pr.upgradeUlt": "Upgrade to Ultimate",
+    "pr.choose": "Choose", "pr.activated": "Activated plan",
+    "pr.feat1Title": "Instant billing", "pr.feat1Desc": "Pay and activate the plan instantly.",
+    "pr.feat2Title": "Flexible upgrades", "pr.feat2Desc": "Switch plans anytime without losing data.",
+    "pr.feat3Title": "Local support", "pr.feat3Desc": "Support team available all week.",
+    "pr.perMonthly": "LYD/mo", "pr.perQuarterly": "LYD/3 mo", "pr.perYearly": "LYD/yr",
+    "an.kicker": "Analytics & Reports", "an.title": "Smart insights for your usage",
+    "an.subtitle": "Live data and interactive charts for space",
+    "an.generating": "Saving…", "an.genPdf": "Save Data PDF",
+    "an.totalEnergy": "Total Energy", "an.estBill": "Estimated Bill",
+    "an.average": "Average", "an.trend": "Trend vs start",
+    "an.curve": "Consumption curve", "an.daily": "Daily", "an.weekly": "Weekly", "an.monthly": "Monthly",
+    "an.distribution": "Consumption distribution", "an.byDevice": "By device", "an.totalW": "Total W",
+    "an.consBill": "Consumption & Billing", "an.kwhVsLyd": "kWh vs LYD",
+    "an.peak": "Peak", "an.topConsumers": "Top consuming devices",
+    "an.noActive": "No active devices yet.",
+    "an.liveNow": "Live stream", "an.pdfDone": "Report downloaded successfully",
+    "an.pdfFail": "Failed to generate report",
+    "pf.brand": "Secure Gateway", "pf.unnamed": "Unnamed",
+    "pf.uploadNew": "Upload new photo", "pf.imgUpdated": "Photo updated",
+    "pf.personalInfo": "Personal information", "pf.editBasics": "Edit your basic info",
+    "pf.fullName": "Full name", "pf.namePh": "Enter your name",
+    "pf.phone": "Phone number", "pf.email": "Email address", "pf.city": "City",
+    "pf.accountType": "Account type",
+    "pf.accountTypeDesc": "Determines available plans and features",
+    "pf.personal": "Personal · Home", "pf.personalDesc": "Perfect for families, apartments and smart homes",
+    "pf.business": "Commercial · Business", "pf.businessDesc": "For offices, shops and commercial facilities",
+    "pf.saveBtn": "Save changes", "pf.saved": "Changes saved",
+    "pf.savedDesc": "Your data has been synced", "pf.errName": "Name is required",
+    "au.login": "Sign in", "au.signup": "Create account",
+    "au.welcomeBack": "Welcome back", "au.startJourney": "Start your smart journey",
+    "au.loginHint": "Sign in to continue controlling your devices",
+    "au.signupHint": "Create an account for full control of your energy",
+    "au.byPhone": "Phone", "au.byEmail": "Email",
+    "au.password": "Password", "au.forgot": "Forgot password?",
+    "au.sendOtp": "Send verification code", "au.createAcc": "Create account",
+    "au.guest": "Continue as guest", "au.guestOk": "Welcome (demo login)",
+    "au.encrypted": "Protected with AES-256 · Certified secure gateway",
+    "au.otpSent": "Verification code sent", "au.otpDemo": "0000 (demo)",
+    "au.otpTo": "We sent a code to", "au.changeNum": "Change number",
+    "au.otpVerified": "Verified successfully", "au.welcomeBackToast": "Welcome back",
+    "au.accountCreated": "Your account is ready",
+    "au.errPhone": "Enter a valid phone number", "au.errName": "Enter your name",
+    "au.errFields": "Complete all fields",
+    "settings.title": "Settings", "settings.subtitle": "Customize your experience & alerts",
+    "settings.appearance": "Appearance", "settings.appearance.desc": "Pick what's easy on your eyes",
+    "settings.dark": "Dark Mode", "settings.dark.on": "Enabled — perfect for night",
+    "settings.dark.off": "Light mode", "settings.language": "Language",
+    "settings.language.desc": "Interface language", "settings.notifications": "Notifications",
+    "settings.notifications.desc": "Control how you get alerted",
+    "settings.push": "Push notifications", "settings.push.hint": "Instant alerts on your device",
+    "settings.email": "Email alerts", "settings.email.hint": "Weekly reports & warnings",
+    "settings.sms": "SMS alerts", "settings.sms.hint": "Texts for critical events",
+    "settings.about": "About app", "settings.about.desc": "System & connection info",
+    "settings.version": "App version", "settings.deviceId": "Device ID",
+    "settings.firebase": "Firebase status", "settings.connected": "Connected",
+    "toast.theme": "Theme updated", "toast.lang": "Language updated",
+    "plan.free": "Free", "plan.basic": "Basic", "plan.pro": "Pro", "plan.ultimate": "Ultimate",
+    "plan.freeC": "Trial Business", "plan.basicC": "Basic Business",
+    "plan.proC": "Pro Business", "plan.ultC": "Ultimate Business",
+    "plan.tagFree": "Try and explore", "plan.tagBasic": "For small smart homes",
+    "plan.tagPro": "Most popular for homes", "plan.tagUlt": "Limitless · for large homes",
+    "plan.tagFreeC": "Evaluate the system", "plan.tagBasicC": "For small shops & offices",
+    "plan.tagProC": "Most requested for business", "plan.tagUltC": "For enterprises & factories",
+    "plan.dev2": "Up to 2 devices", "plan.dev6": "Up to 6 devices",
+    "plan.dev20": "Up to 20 devices", "plan.devInf": "Unlimited devices",
+    "pf.feat.dash": "Live control dashboard",
+    "pf.feat.basicTrack": "Basic consumption tracking",
+    "pf.feat.oneRelay": "One device per relay",
+    "pf.feat.emailSupport": "Email support",
+    "pf.feat.allFree": "Everything in Free",
+    "pf.feat.allFreeC": "Everything in Trial",
+    "pf.feat.allBasic": "Everything in Basic",
+    "pf.feat.allPro": "Everything in Pro",
+    "pf.feat.overloadAlerts": "Overload alerts",
+    "pf.feat.weeklyReports": "Weekly reports",
+    "pf.feat.history30": "30-day usage history",
+    "pf.feat.history90": "90-day usage history",
+    "pf.feat.history1y": "Full year usage history",
+    "pf.feat.history2y": "2-year usage history",
+    "pf.feat.pdfReports": "Detailed PDF reports",
+    "pf.feat.pdfBilling": "Professional PDF billing reports",
+    "pf.feat.autoCutoff": "Smart auto cut-off",
+    "pf.feat.automation": "Device automation",
+    "pf.feat.unlimited": "Unlimited devices",
+    "pf.feat.unlimitedBranches": "Unlimited devices + multi-branch",
+    "pf.feat.priority247": "Priority 24/7 support",
+    "pf.feat.voice": "Voice assistant integration",
+    "pf.feat.cloudBackup": "Cloud backup",
+    "pf.feat.earlyAccess": "Early access to new features",
+    "pf.feat.oneWeekly": "One weekly report",
+    "pf.feat.instantOverload": "Instant overload alerts",
+    "pf.feat.weeklyMonthly": "Weekly & monthly reports",
+    "pf.feat.smsAlerts": "Instant SMS alerts",
+    "pf.feat.api": "Custom developer API",
+    "pf.feat.uptime": "99.9% uptime guarantee",
+    "pf.feat.accountManager": "Dedicated account manager",
+    "init.home": "Home", "init.office": "Business Office",
+    "dev.ac": "Living room AC", "dev.fridge": "Fridge", "dev.kLight": "Kitchen light",
+    "dev.heater": "Water heater", "dev.servers": "Network servers", "dev.oLight": "Office lights",
+    "dev.acMain": "Main AC",
+    "day.sun": "Sun", "day.mon": "Mon", "day.tue": "Tue",
+    "day.wed": "Wed", "day.thu": "Thu", "day.fri": "Fri", "day.sat": "Sat",
+    "mon.1": "Jan", "mon.2": "Feb", "mon.3": "Mar", "mon.4": "Apr",
+    "mon.5": "May", "mon.6": "Jun", "mon.7": "Jul", "mon.8": "Aug",
+    "mon.9": "Sep", "mon.10": "Oct", "mon.11": "Nov", "mon.12": "Dec",
+  },
+};
+
+const SettingsCtx = createContext<Ctx | null>(null);
+
+export function SettingsProvider({ children }: { children: ReactNode }) {
+  const [theme, setThemeState] = useState<Theme>("dark");
+  const [lang, setLangState] = useState<Lang>("ar");
+
+  useEffect(() => {
+    try {
+      const t = localStorage.getItem("se.theme") as Theme | null;
+      const l = localStorage.getItem("se.lang") as Lang | null;
+      if (t) setThemeState(t);
+      if (l) setLangState(l);
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    html.classList.toggle("dark", theme === "dark");
+    html.style.colorScheme = theme;
+    try { localStorage.setItem("se.theme", theme); } catch {}
+  }, [theme]);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    html.lang = lang;
+    html.dir = lang === "ar" ? "rtl" : "ltr";
+    try { localStorage.setItem("se.lang", lang); } catch {}
+  }, [lang]);
+
+  const t = (key: string) => DICT[lang][key] ?? DICT.ar[key] ?? key;
+  const num = (n: number) =>
+    n.toLocaleString(lang === "ar" ? "ar-LY" : "en-US");
+
+  return (
+    <SettingsCtx.Provider value={{ theme, lang, setTheme: setThemeState, setLang: setLangState, t, num }}>
+      {children}
+    </SettingsCtx.Provider>
+  );
+}
+
+export function useSettings() {
+  const c = useContext(SettingsCtx);
+  if (!c) throw new Error("useSettings outside provider");
+  return c;
+}

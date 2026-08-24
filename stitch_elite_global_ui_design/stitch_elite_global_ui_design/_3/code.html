@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="light" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SmartEnergy - Sign Up</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#ecedf4",
+                        "secondary": "#0051d5",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#00174b",
+                        "on-tertiary-container": "#5be6ff",
+                        "surface-container-low": "#f2f3fa",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#316bf3",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "on-primary-fixed": "#001c39",
+                        "inverse-on-surface": "#eff0f7",
+                        "inverse-primary": "#a3c9ff",
+                        "surface-variant": "#e1e2e9",
+                        "inverse-surface": "#2e3036",
+                        "on-primary": "#ffffff",
+                        "on-background": "#191c21",
+                        "primary": "#00457f",
+                        "tertiary": "#004b56",
+                        "tertiary-fixed-dim": "#2fd9f4",
+                        "surface": "#f8f9ff",
+                        "on-primary-container": "#bcd6ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#004e5a",
+                        "on-primary-fixed-variant": "#004883",
+                        "on-secondary-container": "#fefcff",
+                        "outline-variant": "#c1c7d3",
+                        "on-error": "#ffffff",
+                        "primary-container": "#005da7",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "on-tertiary-fixed": "#001f25",
+                        "surface-container-highest": "#e1e2e9",
+                        "on-surface": "#191c21",
+                        "surface-tint": "#0860aa",
+                        "on-surface-variant": "#414751",
+                        "outline": "#727782",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#dbe1ff",
+                        "surface-dim": "#d8dae0",
+                        "primary-fixed": "#d3e3ff",
+                        "surface-container-high": "#e7e8ef",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#a3c9ff",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#006573",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#a2eeff",
+                        "amber": {
+                            400: "#fbbf24",
+                            500: "#f59e0b",
+                        }
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-gap-sm": "8px",
+                        "card-padding": "20px",
+                        "unit": "4px",
+                        "gutter-grid": "16px",
+                        "stack-gap-lg": "32px",
+                        "margin-page": "24px",
+                        "stack-gap-md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Cairo", "sans-serif"],
+                        "display-lg": ["Cairo", "sans-serif"],
+                        "headline-md": ["Cairo", "sans-serif"],
+                        "headline-lg": ["Cairo", "sans-serif"],
+                        "description-sm": ["Cairo", "sans-serif"],
+                        "headline-lg-mobile": ["Cairo", "sans-serif"],
+                        "body-md": ["Cairo", "sans-serif"],
+                        "label-md": ["Cairo", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["42px", {"lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "description-sm": ["13px", {"lineHeight": "18px", "fontWeight": "300"}],
+                        "headline-lg-mobile": ["26px", {"lineHeight": "34px", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e1e2e9 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(0, 69, 127, 0.05);
+        }
+        .input-glass {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 69, 127, 0.1);
+            transition: all 0.3s ease;
+        }
+        .input-glass:focus-within {
+            border-color: #00457f;
+            box-shadow: 0 0 0 2px rgba(0, 69, 127, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Ambient Background Blur */
+        .ambient-blur {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(49, 107, 243, 0.15) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            top: -100px;
+            right: -100px;
+            pointer-events: none;
+        }
+        .ambient-blur-2 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 75, 86, 0.1) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            bottom: -150px;
+            left: -150px;
+            pointer-events: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface relative overflow-hidden">
+<!-- Ambient Background Effects -->
+<div class="ambient-blur"></div>
+<div class="ambient-blur-2"></div>
+<main class="w-full max-w-md p-margin-page relative z-10">
+<!-- Brand Header -->
+<div class="text-center mb-stack-gap-lg">
+<div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary text-on-primary mb-stack-gap-sm shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined" data-icon="bolt" style="font-size: 32px;">bolt</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary md:font-headline-lg md:text-headline-lg">SmartEnergy</h1>
+</div>
+<!-- Auth Card -->
+<div class="glass-panel rounded-3xl p-stack-gap-lg">
+<!-- Context Switcher -->
+<div class="flex p-1 bg-surface-container-high rounded-full mb-stack-gap-lg relative z-0">
+<!-- Highlight pill -->
+<div class="absolute left-1 top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-full shadow-sm border border-black/5 transition-transform duration-300 ease-in-out z-0"></div>
+<button class="flex-1 py-2 px-4 rounded-full font-label-md text-label-md text-on-surface-variant z-10 transition-colors" onclick="window.location.href='#'" type="button">
+                    تسجيل الدخول
+                </button>
+<button class="flex-1 py-2 px-4 rounded-full font-label-md text-label-md text-amber-500 font-bold z-10 transition-colors" type="button">
+                    إنشاء حساب
+                </button>
+</div>
+<!-- Welcome Text -->
+<div class="text-center mb-stack-gap-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-unit">ابدأ رحلتك الذكية</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">أنشئ حساباً للتحكم الكامل في طاقتك</p>
+</div>
+<!-- Sign Up Form -->
+<form class="space-y-stack-gap-md">
+<!-- Full Name Field -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-unit">الاسم الكامل</label>
+<div class="input-glass rounded-xl flex items-center px-4 py-3 relative overflow-hidden">
+<span class="material-symbols-outlined text-outline mr-3" data-icon="person">person</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-on-surface font-body-md text-body-md p-0 placeholder-outline-variant" placeholder="أدخل اسمك الكامل" required="" type="text"/>
+</div>
+</div>
+<!-- Phone Number Field -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-unit">رقم الهاتف</label>
+<div class="input-glass rounded-xl flex items-center px-4 py-3 relative overflow-hidden">
+<span class="material-symbols-outlined text-outline mr-3" data-icon="phone_iphone">phone_iphone</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-on-surface font-body-md text-body-md p-0 placeholder-outline-variant text-right" dir="ltr" placeholder="05X XXX XXXX" required="" type="tel"/>
+</div>
+</div>
+<!-- Email Field -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-unit">البريد الإلكتروني</label>
+<div class="input-glass rounded-xl flex items-center px-4 py-3 relative overflow-hidden">
+<span class="material-symbols-outlined text-outline mr-3" data-icon="mail">mail</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-on-surface font-body-md text-body-md p-0 placeholder-outline-variant" placeholder="name@example.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-unit">كلمة المرور</label>
+<div class="input-glass rounded-xl flex items-center px-4 py-3 relative overflow-hidden">
+<span class="material-symbols-outlined text-outline mr-3" data-icon="lock">lock</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-on-surface font-body-md text-body-md p-0 placeholder-outline-variant" placeholder="••••••••" required="" type="password"/>
+<button class="text-outline hover:text-primary transition-colors ml-2" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility_off">visibility_off</span>
+</button>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-primary hover:bg-primary-fixed-variant text-on-primary rounded-xl py-4 font-label-md text-label-md mt-stack-gap-md transition-all duration-300 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 active:scale-[0.98] flex items-center justify-center gap-2 group" type="submit">
+<span>إنشاء الحساب</span>
+<span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform" data-icon="arrow_backward">arrow_back</span>
+</button>
+</form>
+<!-- Social Sign Up / Or Divider -->
+<div class="mt-stack-gap-lg">
+<div class="relative flex items-center py-4">
+<div class="flex-grow border-t border-outline-variant/30"></div>
+<span class="flex-shrink-0 mx-4 text-outline font-description-sm text-description-sm">أو باستخدام</span>
+<div class="flex-grow border-t border-outline-variant/30"></div>
+</div>
+<div class="flex gap-4 mt-unit justify-center">
+<button class="flex-1 input-glass rounded-xl py-3 flex items-center justify-center hover:bg-white transition-colors">
+<!-- Placeholder for Google Icon, using a colored material icon for demonstration -->
+<span class="material-symbols-outlined" data-icon="account_circle" style="color: #DB4437;">account_circle</span>
+</button>
+<button class="flex-1 input-glass rounded-xl py-3 flex items-center justify-center hover:bg-white transition-colors">
+<!-- Placeholder for Apple Icon, using a colored material icon for demonstration -->
+<span class="material-symbols-outlined" data-icon="apple" style="color: #000000;">ios</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer Link -->
+<div class="text-center mt-stack-gap-lg">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                لديك حساب بالفعل؟ 
+                <a class="text-primary font-bold hover:text-primary-container transition-colors" href="#">تسجيل الدخول</a>
+</p>
+</div>
+</main>
+<script>
+        // Simple script to demonstrate active states or interactions if needed.
+        // Currently, styling handles most visual feedback.
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.classList.add('shadow-sm');
+                });
+                input.addEventListener('blur', () => {
+                    input.parentElement.classList.remove('shadow-sm');
+                });
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pricing Plans - SmartEnergy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#ecedf4",
+                        "secondary": "#0051d5",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#00174b",
+                        "on-tertiary-container": "#5be6ff",
+                        "surface-container-low": "#f2f3fa",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#316bf3",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "on-primary-fixed": "#001c39",
+                        "inverse-on-surface": "#eff0f7",
+                        "inverse-primary": "#a3c9ff",
+                        "surface-variant": "#e1e2e9",
+                        "inverse-surface": "#2e3036",
+                        "on-primary": "#ffffff",
+                        "on-background": "#191c21",
+                        "primary": "#00457f",
+                        "tertiary": "#004b56",
+                        "tertiary-fixed-dim": "#2fd9f4",
+                        "surface": "#f8f9ff",
+                        "on-primary-container": "#bcd6ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#004e5a",
+                        "on-primary-fixed-variant": "#004883",
+                        "on-secondary-container": "#fefcff",
+                        "outline-variant": "#c1c7d3",
+                        "on-error": "#ffffff",
+                        "primary-container": "#005da7",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "on-tertiary-fixed": "#001f25",
+                        "surface-container-highest": "#e1e2e9",
+                        "on-surface": "#191c21",
+                        "surface-tint": "#0860aa",
+                        "on-surface-variant": "#414751",
+                        "outline": "#727782",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#dbe1ff",
+                        "surface-dim": "#d8dae0",
+                        "primary-fixed": "#d3e3ff",
+                        "surface-container-high": "#e7e8ef",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#a3c9ff",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#006573",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#a2eeff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem"
+                    },
+                    "spacing": {
+                        "stack-gap-sm": "8px",
+                        "card-padding": "20px",
+                        "unit": "4px",
+                        "gutter-grid": "16px",
+                        "stack-gap-lg": "32px",
+                        "margin-page": "24px",
+                        "stack-gap-md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Cairo"],
+                        "display-lg": ["Cairo"],
+                        "headline-md": ["Cairo"],
+                        "headline-lg": ["Cairo"],
+                        "description-sm": ["Cairo"],
+                        "headline-lg-mobile": ["Cairo"],
+                        "body-md": ["Cairo"],
+                        "label-md": ["Cairo"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["42px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "description-sm": ["13px", { "lineHeight": "18px", "fontWeight": "300" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "34px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(37, 99, 235, 0.05);
+        }
+        .bg-gradient-corporate {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e7e8ef 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-gradient-corporate min-h-screen font-body-md text-on-surface antialiased pt-20 pb-28">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl bg-surface-container/40 dark:bg-surface-container-high/40 border-b border-white/10 shadow-sm text-primary dark:text-primary-fixed-dim font-headline-md text-headline-md hover:bg-primary/10 dark:hover:bg-primary-container/20 active:scale-95 duration-200 ease-in-out">
+<div class="flex items-center gap-2 text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+<span>SmartEnergy</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium">Live Stream - Connected</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-[1440px] mx-auto px-margin-page md:px-8">
+<div class="mb-stack-gap-lg text-center mt-8">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-primary mb-2">Select Your Plan</h1>
+<p class="font-body-md text-on-surface-variant max-w-2xl mx-auto">Upgrade your smart home experience with advanced automation, superior security features, and comprehensive energy insights.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter-grid">
+<!-- Free Plan -->
+<div class="glass-card rounded-3xl p-6 flex flex-col transition-transform duration-300 hover:scale-[1.02]">
+<div class="mb-4">
+<h3 class="font-headline-md text-on-surface mb-1">Free</h3>
+<div class="flex items-baseline gap-1">
+<span class="font-display-lg text-primary">0</span>
+<span class="font-body-md text-on-surface-variant">LYD / mo</span>
+</div>
+</div>
+<p class="font-description-sm text-on-surface-variant mb-6 flex-grow">Essential smart home controls for basic needs.</p>
+<ul class="space-y-3 mb-8 flex-grow">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1" data-icon="check_circle">check_circle</span>
+<span class="font-body-md text-on-surface text-sm">Up to 5 devices</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1" data-icon="check_circle">check_circle</span>
+<span class="font-body-md text-on-surface text-sm">Basic remote access</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-outline text-sm mt-1" data-icon="cancel">cancel</span>
+<span class="font-body-md text-outline text-sm line-through">Automated routines</span>
+</li>
+</ul>
+<button class="w-full py-3 rounded-full bg-surface-container-high text-on-surface font-label-md hover:bg-surface-variant transition-colors">
+                    Current Plan
+                </button>
+</div>
+<!-- Basic Plan -->
+<div class="glass-card rounded-3xl p-6 flex flex-col transition-transform duration-300 hover:scale-[1.02]">
+<div class="mb-4">
+<h3 class="font-headline-md text-on-surface mb-1">Basic</h3>
+<div class="flex items-baseline gap-1">
+<span class="font-display-lg text-primary">15</span>
+<span class="font-body-md text-on-surface-variant">LYD / mo</span>
+</div>
+</div>
+<p class="font-description-sm text-on-surface-variant mb-6 flex-grow">Expanded connectivity for growing smart homes.</p>
+<ul class="space-y-3 mb-8 flex-grow">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1" data-icon="check_circle">check_circle</span>
+<span class="font-body-md text-on-surface text-sm">Up to 20 devices</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1" data-icon="check_circle">check_circle</span>
+<span class="font-body-md text-on-surface text-sm">Automated routines</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-outline text-sm mt-1" data-icon="cancel">cancel</span>
+<span class="font-body-md text-outline text-sm line-through">Energy insights</span>
+</li>
+</ul>
+<button class="w-full py-3 rounded-full border-2 border-primary text-primary font-label-md hover:bg-primary/5 transition-colors">
+                    Upgrade to Basic
+                </button>
+</div>
+<!-- Pro Plan (Active/Highlighted) -->
+<div class="rounded-3xl p-6 flex flex-col relative transform scale-105 z-10 bg-primary shadow-[0_20px_40px_rgba(0,69,127,0.3)] border border-primary-container">
+<div class="absolute top-0 right-0 bg-tertiary-fixed-dim text-on-tertiary-fixed px-3 py-1 rounded-bl-xl rounded-tr-3xl font-label-md text-xs font-bold uppercase tracking-wider">
+                    Recommended
+                </div>
+<div class="mb-4">
+<h3 class="font-headline-md text-on-primary mb-1">Pro</h3>
+<div class="flex items-baseline gap-1">
+<span class="font-display-lg text-on-primary">35</span>
+<span class="font-body-md text-primary-fixed-dim">LYD / mo</span>
+</div>
+</div>
+<p class="font-description-sm text-primary-fixed-dim mb-6 flex-grow">Full automation and deep insights for the modern home.</p>
+<ul class="space-y-3 mb-8 flex-grow">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-sm mt-1" data-icon="check_circle" data-weight="fill">check_circle</span>
+<span class="font-body-md text-on-primary text-sm">Unlimited devices</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-sm mt-1" data-icon="check_circle" data-weight="fill">check_circle</span>
+<span class="font-body-md text-on-primary text-sm">Advanced AI routines</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-sm mt-1" data-icon="check_circle" data-weight="fill">check_circle</span>
+<span class="font-body-md text-on-primary text-sm">Deep energy analytics</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-sm mt-1" data-icon="check_circle" data-weight="fill">check_circle</span>
+<span class="font-body-md text-on-primary text-sm">Priority support</span>
+</li>
+</ul>
+<button class="w-full py-3 rounded-full bg-tertiary-fixed-dim text-on-tertiary-fixed font-label-md hover:bg-tertiary-fixed transition-colors font-bold shadow-lg shadow-tertiary-fixed-dim/20">
+                    Get Pro
+                </button>
+</div>
+<!-- Elite Plan -->
+<div class="glass-card rounded-3xl p-6 flex flex-col transition-transform duration-300 hover:scale-[1.02]">
+<div class="mb-4">
+<h3 class="font-headline-md text-on-surface mb-1">Elite</h3>
+<div class="flex items-baseline gap-1">
+<span class="font-display-lg text-primary">80</span>
+<span class="font-body-md text-on-surface-variant">LYD / mo</span>
+</div>
+</div>
+<p class="font-description-sm text-on-surface-variant mb-6 flex-grow">The ultimate tier for expansive estates and enterprise-level control.</p>
+<ul class="space-y-3 mb-8 flex-grow">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1" data-icon="check_circle">check_circle</span>
+<span class="font-body-md text-on-surface text-sm">Everything in Pro</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1" data-icon="check_circle">check_circle</span>
+<span class="font-body-md text-on-surface text-sm">Professional monitoring</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-sm mt-1" data-icon="check_circle">check_circle</span>
+<span class="font-body-md text-on-surface text-sm">Dedicated account manager</span>
+</li>
+</ul>
+<button class="w-full py-3 rounded-full border-2 border-primary text-primary font-label-md hover:bg-primary/5 transition-colors">
+                    Upgrade to Elite
+                </button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-surface/90 dark:bg-inverse-surface/90 backdrop-blur-2xl text-secondary-container dark:text-secondary-fixed font-label-md text-label-md rounded-t-[32px] border-t border-white/20 shadow-[0_-4px_20px_rgba(37,99,235,0.05)] hover:bg-surface-container-high dark:hover:bg-surface-container-highest">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="text-xs">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="settings_remote">settings_remote</span>
+<span class="text-xs">Devices</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 w-16" href="#">
+<span class="material-symbols-outlined mb-1 text-primary" data-icon="add_circle">add_circle</span>
+<span class="text-xs">Add</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="insights">insights</span>
+<span class="text-xs">Insights</span>
+</a>
+<!-- Active Tab: Profile (closest match for account/billing/pricing) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container dark:bg-secondary dark:text-on-secondary rounded-2xl p-2 shadow-[0_0_15px_rgba(49,107,243,0.4)] active:scale-90 transition-transform duration-150 w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person" data-weight="fill">person</span>
+<span class="text-xs font-bold">Profile</span>
+</a>
+</nav>
+</body></html>

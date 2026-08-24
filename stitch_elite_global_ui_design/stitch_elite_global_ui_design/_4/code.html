@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SmartEnergy - الأجهزة</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#ecedf4",
+                        "secondary": "#0051d5",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#00174b",
+                        "on-tertiary-container": "#5be6ff",
+                        "surface-container-low": "#f2f3fa",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#316bf3",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "on-primary-fixed": "#001c39",
+                        "inverse-on-surface": "#eff0f7",
+                        "inverse-primary": "#a3c9ff",
+                        "surface-variant": "#e1e2e9",
+                        "inverse-surface": "#2e3036",
+                        "on-primary": "#ffffff",
+                        "on-background": "#191c21",
+                        "primary": "#00457f",
+                        "tertiary": "#004b56",
+                        "tertiary-fixed-dim": "#2fd9f4",
+                        "surface": "#f8f9ff",
+                        "on-primary-container": "#bcd6ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#004e5a",
+                        "on-primary-fixed-variant": "#004883",
+                        "on-secondary-container": "#fefcff",
+                        "outline-variant": "#c1c7d3",
+                        "on-error": "#ffffff",
+                        "primary-container": "#005da7",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "on-tertiary-fixed": "#001f25",
+                        "surface-container-highest": "#e1e2e9",
+                        "on-surface": "#191c21",
+                        "surface-tint": "#0860aa",
+                        "on-surface-variant": "#414751",
+                        "outline": "#727782",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#dbe1ff",
+                        "surface-dim": "#d8dae0",
+                        "primary-fixed": "#d3e3ff",
+                        "surface-container-high": "#e7e8ef",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#a3c9ff",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#006573",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#a2eeff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-gap-sm": "8px",
+                        "card-padding": "20px",
+                        "unit": "4px",
+                        "gutter-grid": "16px",
+                        "stack-gap-lg": "32px",
+                        "margin-page": "24px",
+                        "stack-gap-md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Cairo"],
+                        "display-lg": ["Cairo"],
+                        "headline-md": ["Cairo"],
+                        "headline-lg": ["Cairo"],
+                        "description-sm": ["Cairo"],
+                        "headline-lg-mobile": ["Cairo"],
+                        "body-md": ["Cairo"],
+                        "label-md": ["Cairo"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["42px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "description-sm": ["13px", { "lineHeight": "18px", "fontWeight": "300" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "34px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(13, 37, 99, 0.05);
+        }
+        .ambient-shadow {
+            box-shadow: 0 20px 40px -10px rgba(13, 37, 99, 0.08);
+        }
+        .gradient-bg {
+            background: radial-gradient(circle at top right, #e7e8ef 0%, #f8f9ff 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen gradient-bg antialiased pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl shadow-sm border-b border-white/10">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary font-bold text-2xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">SmartEnergy</span>
+</div>
+<div class="flex items-center gap-2 text-primary font-label-md text-label-md bg-primary-container/10 px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-sm">sensors</span>
+            Live Stream - Connected
+        </div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-[88px] px-margin-page max-w-[1440px] mx-auto md:px-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-stack-gap-lg gap-4">
+<div>
+<h1 class="font-display-lg text-display-lg text-primary mb-2">الأجهزة</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined">memory</span>
+                    متصل 4 / 20 Pro
+                </p>
+</div>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-[24px] shadow-lg shadow-primary/20 hover:bg-primary-container hover:text-on-primary-container transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                إضافة جهاز
+            </button>
+</div>
+<!-- Room Filters -->
+<div class="flex gap-3 overflow-x-auto pb-4 mb-stack-gap-md scrollbar-hide">
+<button class="bg-secondary text-on-secondary px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap shadow-md shadow-secondary/20">الكل</button>
+<button class="glass-panel text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container transition-colors">غرفة المعيشة</button>
+<button class="glass-panel text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container transition-colors">المطبخ</button>
+<button class="glass-panel text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container transition-colors">غرفة النوم</button>
+</div>
+<!-- Device Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-grid">
+<!-- Device Card: AC -->
+<div class="glass-panel rounded-2xl p-card-padding relative overflow-hidden group transition-all hover:scale-[1.02] ambient-shadow">
+<div class="absolute top-0 right-0 w-32 h-32 bg-tertiary-container/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+<div class="flex justify-between items-start mb-6 relative z-10">
+<div class="w-12 h-12 rounded-xl bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-3xl">air</span>
+</div>
+<!-- Toggle Switch (ON) -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-14 h-8 bg-surface-variant rounded-full peer peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:right-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-secondary shadow-inner"></div>
+</label>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">مكيف الهواء</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">غرفة المعيشة</p>
+<div class="flex justify-between items-end border-t border-surface-variant pt-4 mt-4">
+<div>
+<span class="font-description-sm text-description-sm text-on-surface-variant block">الاستهلاك الحالي</span>
+<span class="font-headline-md text-headline-md text-tertiary font-bold">1.2 kW</span>
+</div>
+<span class="text-secondary font-label-md text-label-md flex items-center gap-1 bg-secondary/10 px-2 py-1 rounded-md">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">thermostat</span> 22°C
+                        </span>
+</div>
+</div>
+</div>
+<!-- Device Card: Refrigerator -->
+<div class="glass-panel rounded-2xl p-card-padding relative overflow-hidden group transition-all hover:scale-[1.02] ambient-shadow">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-container/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+<div class="flex justify-between items-start mb-6 relative z-10">
+<div class="w-12 h-12 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">kitchen</span>
+</div>
+<!-- Toggle Switch (ON) -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-14 h-8 bg-surface-variant rounded-full peer peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:right-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-secondary shadow-inner"></div>
+</label>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">الثلاجة الذكية</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">المطبخ</p>
+<div class="flex justify-between items-end border-t border-surface-variant pt-4 mt-4">
+<div>
+<span class="font-description-sm text-description-sm text-on-surface-variant block">الاستهلاك الحالي</span>
+<span class="font-headline-md text-headline-md text-primary font-bold">450 W</span>
+</div>
+<span class="text-secondary font-label-md text-label-md flex items-center gap-1 bg-secondary/10 px-2 py-1 rounded-md">
+<span class="material-symbols-outlined text-sm">ac_unit</span> -4°C
+                        </span>
+</div>
+</div>
+</div>
+<!-- Device Card: Heater (OFF) -->
+<div class="glass-panel rounded-2xl p-card-padding relative overflow-hidden opacity-75 grayscale-[0.2] transition-all hover:opacity-100 hover:grayscale-0">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-xl bg-surface-variant flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-3xl">mode_heat</span>
+</div>
+<!-- Toggle Switch (OFF) -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-14 h-8 bg-surface-variant rounded-full peer peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:right-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-secondary shadow-inner"></div>
+</label>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">السخان المركزي</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">غرفة النوم الرئيسية</p>
+<div class="flex justify-between items-end border-t border-surface-variant pt-4 mt-4">
+<div>
+<span class="font-description-sm text-description-sm text-on-surface-variant block">الاستهلاك الحالي</span>
+<span class="font-headline-md text-headline-md text-outline font-bold">0 W</span>
+</div>
+<span class="text-outline font-label-md text-label-md bg-surface-container px-2 py-1 rounded-md">متوقف</span>
+</div>
+</div>
+</div>
+<!-- Device Card: Kitchen Lighting -->
+<div class="glass-panel rounded-2xl p-card-padding relative overflow-hidden group transition-all hover:scale-[1.02] ambient-shadow border-secondary/30">
+<div class="absolute inset-0 bg-secondary/5 rounded-2xl"></div>
+<div class="flex justify-between items-start mb-6 relative z-10">
+<div class="w-12 h-12 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center shadow-[0_0_15px_rgba(49,107,243,0.4)]">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+</div>
+<!-- Toggle Switch (ON) -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-14 h-8 bg-surface-variant rounded-full peer peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:right-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-secondary shadow-inner"></div>
+</label>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">إضاءة المطبخ</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">المطبخ</p>
+<div class="flex justify-between items-end border-t border-surface-variant pt-4 mt-4">
+<div>
+<span class="font-description-sm text-description-sm text-on-surface-variant block">الاستهلاك الحالي</span>
+<span class="font-headline-md text-headline-md text-secondary font-bold">60 W</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_rgba(49,107,243,0.8)] animate-pulse"></span>
+<span class="text-secondary font-label-md text-label-md">80% سطوع</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile only, hidden on Web) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-surface/90 dark:bg-inverse-surface/90 backdrop-blur-2xl rounded-t-[32px] border-t border-white/20 shadow-[0_-4px_20px_rgba(37,99,235,0.05)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-2xl transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container dark:bg-secondary dark:text-on-secondary rounded-2xl p-2 shadow-[0_0_15px_rgba(49,107,243,0.4)] scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings_remote</span>
+<span class="font-label-md text-label-md mt-1">Devices</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-2xl transition-colors" href="#">
+<span class="material-symbols-outlined text-3xl -mt-2 text-primary">add_circle</span>
+<span class="font-label-md text-label-md mt-1">Add</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-2xl transition-colors" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-label-md text-label-md mt-1">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-2xl transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

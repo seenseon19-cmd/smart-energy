@@ -1,0 +1,56 @@
+name: smart_energy
+description: "نظام مراقبة الطاقة الذكية — Smart Home Energy Monitoring System"
+publish_to: 'none'
+version: 2.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  # ── Firebase — أحدث الإصدارات المستقرة المتوافقة ──
+  firebase_core: ^3.12.1           # المكتبة الأساسية — لا تعمل أي خدمة بدونها
+  firebase_auth: ^5.5.1            # مصادقة الهاتف OTP (+218)
+  firebase_database: ^11.3.1       # Realtime Database لقراءات ESP32
+  firebase_messaging: ^15.2.4      # إشعارات FCM للتنبيهات الأمنية
+  # ── الرسوم البيانية ──
+  fl_chart: ^1.2.0
+  # ── إدارة الحالة ──
+  provider: ^6.1.2
+  # ── الخطوط والأيقونات ──
+  google_fonts: ^8.1.0
+  font_awesome_flutter: ^11.0.0
+  # ── مؤشرات تقدم ──
+  percent_indicator: ^4.2.3
+  # ── تخزين محلي ──
+  shared_preferences: ^2.3.4
+  # ── رسوم متحركة ──
+  lottie: ^3.3.1
+  # ── التاريخ والوقت ──
+  intl: ^0.20.2
+  # ── تقارير PDF ──
+  pdf: ^3.11.2
+  printing: ^5.13.5
+  # ── مشاركة ──
+  share_plus: ^13.1.0
+  # ── صورة الملف الشخصي ──
+  image_picker: ^1.1.2
+  # ── المصادقة البيومترية ──
+  local_auth: ^2.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/images/
+    - assets/animations/

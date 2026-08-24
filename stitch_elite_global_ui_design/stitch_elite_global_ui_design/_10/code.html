@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SmartEnergy - Advanced Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#ecedf4",
+                        "secondary": "#0051d5",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#00174b",
+                        "on-tertiary-container": "#5be6ff",
+                        "surface-container-low": "#f2f3fa",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#316bf3",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "on-primary-fixed": "#001c39",
+                        "inverse-on-surface": "#eff0f7",
+                        "inverse-primary": "#a3c9ff",
+                        "surface-variant": "#e1e2e9",
+                        "inverse-surface": "#2e3036",
+                        "on-primary": "#ffffff",
+                        "on-background": "#191c21",
+                        "primary": "#00457f",
+                        "tertiary": "#004b56",
+                        "tertiary-fixed-dim": "#2fd9f4",
+                        "surface": "#f8f9ff",
+                        "on-primary-container": "#bcd6ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#004e5a",
+                        "on-primary-fixed-variant": "#004883",
+                        "on-secondary-container": "#fefcff",
+                        "outline-variant": "#c1c7d3",
+                        "on-error": "#ffffff",
+                        "primary-container": "#005da7",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "on-tertiary-fixed": "#001f25",
+                        "surface-container-highest": "#e1e2e9",
+                        "on-surface": "#191c21",
+                        "surface-tint": "#0860aa",
+                        "on-surface-variant": "#414751",
+                        "outline": "#727782",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#dbe1ff",
+                        "surface-dim": "#d8dae0",
+                        "primary-fixed": "#d3e3ff",
+                        "surface-container-high": "#e7e8ef",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#a3c9ff",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#006573",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#a2eeff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-gap-sm": "8px",
+                        "card-padding": "20px",
+                        "unit": "4px",
+                        "gutter-grid": "16px",
+                        "stack-gap-lg": "32px",
+                        "margin-page": "24px",
+                        "stack-gap-md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Cairo"],
+                        "display-lg": ["Cairo"],
+                        "headline-md": ["Cairo"],
+                        "headline-lg": ["Cairo"],
+                        "description-sm": ["Cairo"],
+                        "headline-lg-mobile": ["Cairo"],
+                        "body-md": ["Cairo"],
+                        "label-md": ["Cairo"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["42px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "description-sm": ["13px", { "lineHeight": "18px", "fontWeight": "300" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "34px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background: linear-gradient(135deg, #f8f9ff 0%, #ecedf4 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.05);
+        }
+        .ambient-shadow {
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.05);
+        }
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #316bf3;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #316bf3;
+        }
+        .toggle-checkbox:checked + .toggle-label:after {
+            transform: translateX(100%);
+            border-color: white;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-background font-body-md overflow-x-hidden pt-20 pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl bg-surface-container/40 dark:bg-surface-container-high/40 border-b border-white/10 shadow-sm transition-transform duration-200 ease-in-out">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="bolt">bolt</span>
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">SmartEnergy</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container hover:bg-primary/10 dark:hover:bg-primary-container/20 cursor-pointer">
+<span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant">Live Stream - Connected</span>
+</div>
+</header>
+<main class="max-w-3xl mx-auto px-margin-page">
+<div class="mb-stack-gap-lg">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">Advanced Settings</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage your app preferences and system configurations.</p>
+</div>
+<div class="grid grid-cols-1 gap-gutter-grid">
+<!-- Appearance Category -->
+<section class="glass-card rounded-xl p-card-padding">
+<h2 class="font-headline-md text-headline-md text-primary-container mb-stack-gap-sm flex items-center gap-2 border-b border-surface-variant pb-2">
+<span class="material-symbols-outlined text-secondary" data-icon="palette" style="font-variation-settings: 'FILL' 1;">palette</span>
+                    Appearance
+                </h2>
+<div class="flex items-center justify-between py-3">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="dark_mode">dark_mode</span>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">Dark Mode</p>
+<p class="font-description-sm text-description-sm text-on-surface-variant">Switch between light and dark themes.</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer outline-none transition-transform duration-200" id="dark-mode-toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-surface-variant cursor-pointer shadow-inner" for="dark-mode-toggle"></label>
+</div>
+</div>
+</section>
+<!-- Language Category -->
+<section class="glass-card rounded-xl p-card-padding">
+<h2 class="font-headline-md text-headline-md text-primary-container mb-stack-gap-sm flex items-center gap-2 border-b border-surface-variant pb-2">
+<span class="material-symbols-outlined text-secondary" data-icon="language" style="font-variation-settings: 'FILL' 1;">language</span>
+                    Language
+                </h2>
+<div class="flex items-center justify-between py-3">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="translate">translate</span>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">App Language</p>
+<p class="font-description-sm text-description-sm text-on-surface-variant">Select your preferred language.</p>
+</div>
+</div>
+<div class="relative">
+<select class="appearance-none bg-surface-container-low border border-outline-variant text-on-surface font-body-md text-body-md rounded-lg focus:ring-secondary focus:border-secondary block w-full p-2.5 pr-8 cursor-pointer shadow-inner">
+<option selected="" value="en">English</option>
+<option value="ar">Arabic (العربية)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Notifications Category -->
+<section class="glass-card rounded-xl p-card-padding">
+<h2 class="font-headline-md text-headline-md text-primary-container mb-stack-gap-sm flex items-center gap-2 border-b border-surface-variant pb-2">
+<span class="material-symbols-outlined text-secondary" data-icon="notifications" style="font-variation-settings: 'FILL' 1;">notifications</span>
+                    Notifications
+                </h2>
+<div class="space-y-4 pt-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications_active">notifications_active</span>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">Push Notifications</p>
+<p class="font-description-sm text-description-sm text-on-surface-variant">Receive alerts on your device.</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-secondary-container appearance-none cursor-pointer outline-none transition-transform duration-200" id="push-toggle" name="toggle" style="right: 0;" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-secondary-container cursor-pointer shadow-inner" for="push-toggle"></label>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="mail">mail</span>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">Email Alerts</p>
+<p class="font-description-sm text-description-sm text-on-surface-variant">Weekly summaries and critical alerts.</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer outline-none transition-transform duration-200" id="email-toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-surface-variant cursor-pointer shadow-inner" for="email-toggle"></label>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="sms">sms</span>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">SMS Notifications</p>
+<p class="font-description-sm text-description-sm text-on-surface-variant">For emergency grid status only.</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-secondary-container appearance-none cursor-pointer outline-none transition-transform duration-200" id="sms-toggle" name="toggle" style="right: 0;" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-secondary-container cursor-pointer shadow-inner" for="sms-toggle"></label>
+</div>
+</div>
+</div>
+</section>
+<!-- System Info Category -->
+<section class="glass-card rounded-xl p-card-padding">
+<h2 class="font-headline-md text-headline-md text-primary-container mb-stack-gap-sm flex items-center gap-2 border-b border-surface-variant pb-2">
+<span class="material-symbols-outlined text-secondary" data-icon="info" style="font-variation-settings: 'FILL' 1;">info</span>
+                    System Information
+                </h2>
+<div class="space-y-3 pt-2">
+<div class="flex justify-between items-center bg-surface-container-low p-3 rounded-lg">
+<span class="font-body-md text-body-md text-on-surface-variant">Device ID</span>
+<span class="font-label-md text-label-md text-on-surface font-mono bg-surface-variant px-2 py-1 rounded">ESP32-LY01</span>
+</div>
+<div class="flex justify-between items-center bg-surface-container-low p-3 rounded-lg">
+<span class="font-body-md text-body-md text-on-surface-variant">App Version</span>
+<span class="font-label-md text-label-md text-on-surface font-mono">v2.0.0</span>
+</div>
+<div class="flex justify-between items-center bg-surface-container-low p-3 rounded-lg">
+<span class="font-body-md text-body-md text-on-surface-variant">Firebase Status</span>
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="font-label-md text-label-md text-tertiary">Connected</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-surface/90 dark:bg-inverse-surface/90 backdrop-blur-2xl border-t border-white/20 shadow-[0_-4px_20px_rgba(37,99,235,0.05)] md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="home">home</span>
+<span class="font-label-md text-label-md mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="settings_remote">settings_remote</span>
+<span class="font-label-md text-label-md mt-1">Devices</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="add_circle">add_circle</span>
+<span class="font-label-md text-label-md mt-1">Add</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="insights">insights</span>
+<span class="font-label-md text-label-md mt-1">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container dark:bg-secondary dark:text-on-secondary rounded-2xl p-2 shadow-[0_0_15px_rgba(49,107,243,0.4)] scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-md text-label-md mt-1">Profile</span>
+</a>
+</nav>
+<!-- SideNav (Desktop) -->
+<aside class="hidden md:flex fixed inset-y-0 left-0 z-[60] flex-col p-6 docked full-height left-0 w-72 bg-surface dark:bg-surface-dim bg-surface-container-low dark:bg-surface-container shadow-2xl pt-24">
+<h2 class="font-headline-md text-headline-md font-extrabold text-primary mb-8 px-4">SmartEnergy Menu</h2>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 px-4 py-3 font-body-lg text-body-lg text-on-surface-variant hover:bg-surface-variant/50 hover:translate-x-1 transition-transform duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+                Energy Usage
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 font-body-lg text-body-lg text-on-surface-variant hover:bg-surface-variant/50 hover:translate-x-1 transition-transform duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+                Grid Status
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 font-body-lg text-body-lg bg-primary-container text-on-primary-container rounded-r-full font-bold" href="#">
+<span class="material-symbols-outlined" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 font-body-lg text-body-lg text-on-surface-variant hover:bg-surface-variant/50 hover:translate-x-1 transition-transform duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+                Support
+            </a>
+</nav>
+</aside>
+<script>
+        // Simple toggle interactivity for demonstration
+        document.querySelectorAll('.toggle-checkbox').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                if(this.checked) {
+                    this.style.right = '0';
+                    this.classList.add('border-secondary-container');
+                    this.nextElementSibling.classList.add('bg-secondary-container');
+                    this.nextElementSibling.classList.remove('bg-surface-variant');
+                } else {
+                    this.style.right = 'auto';
+                    this.classList.remove('border-secondary-container');
+                    this.nextElementSibling.classList.remove('bg-secondary-container');
+                    this.nextElementSibling.classList.add('bg-surface-variant');
+                }
+            });
+        });
+    </script>
+</body></html>
