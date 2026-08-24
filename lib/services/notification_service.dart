@@ -11,6 +11,7 @@
 /// القيمة المرجعة: خدمة ثابتة (static) لإدارة FCM
 /// ══════════════════════════════════════════════════════════════════════════════
 
+import 'app_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -22,9 +23,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 /// القيمة المرجعة: [Future<void>]
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  debugPrint('🔔 رسالة خلفية: ${message.messageId}');
-  debugPrint('   العنوان: ${message.notification?.title}');
-  debugPrint('   المحتوى: ${message.notification?.body}');
+  AppLogger.debug('🔔 رسالة خلفية: ${message.messageId}');
+  AppLogger.debug('   العنوان: ${message.notification?.title}');
+  AppLogger.debug('   المحتوى: ${message.notification?.body}');
 }
 
 /// كلاس خدمة الإشعارات — يدير FCM بالكامل
@@ -55,44 +56,44 @@ class NotificationService {
       sound: true,
     );
 
-    debugPrint('🔔 أذونات FCM: ${settings.authorizationStatus}');
+    AppLogger.debug('🔔 أذونات FCM: ${settings.authorizationStatus}');
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized ||
         settings.authorizationStatus == AuthorizationStatus.provisional) {
       // الحصول على رمز FCM
       try {
         final token = await _messaging.getToken();
-        debugPrint('🔔 رمز FCM: $token');
+        AppLogger.debug('🔔 رمز FCM: $token');
       } catch (e) {
-        debugPrint('🔔 خطأ في رمز FCM: $e');
+        AppLogger.debug('🔔 خطأ في رمز FCM: $e');
       }
 
       // الاستماع لتحديث الرمز
       _messaging.onTokenRefresh.listen((newToken) {
-        debugPrint('🔔 تم تحديث رمز FCM: $newToken');
+        AppLogger.debug('🔔 تم تحديث رمز FCM: $newToken');
       });
 
       // معالج الرسائل الأمامية (التطبيق مفتوح)
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        debugPrint('🔔 رسالة أمامية: ${message.messageId}');
+        AppLogger.debug('🔔 رسالة أمامية: ${message.messageId}');
         final notification = message.notification;
         if (notification != null) {
-          debugPrint('   العنوان: ${notification.title}');
-          debugPrint('   المحتوى: ${notification.body}');
+          AppLogger.debug('   العنوان: ${notification.title}');
+          AppLogger.debug('   المحتوى: ${notification.body}');
           _showInAppNotification(notification);
         }
       });
 
       // معالج النقر على الإشعار (التطبيق في الخلفية)
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-        debugPrint('🔔 تم فتح إشعار: ${message.messageId}');
+        AppLogger.debug('🔔 تم فتح إشعار: ${message.messageId}');
         _handleNotificationTap(message);
       });
 
       // التحقق من إشعار الفتح الأولي (التطبيق كان مغلقاً)
       final initialMessage = await _messaging.getInitialMessage();
       if (initialMessage != null) {
-        debugPrint('🔔 رسالة أولية: ${initialMessage.messageId}');
+        AppLogger.debug('🔔 رسالة أولية: ${initialMessage.messageId}');
         _handleNotificationTap(initialMessage);
       }
     }
@@ -105,7 +106,7 @@ class NotificationService {
   /// المعاملات:
   ///   - [notification]: بيانات الإشعار
   static void _showInAppNotification(RemoteNotification notification) {
-    debugPrint('📢 إشعار داخلي: ${notification.title} — ${notification.body}');
+    AppLogger.debug('📢 إشعار داخلي: ${notification.title} — ${notification.body}');
   }
 
   /// معالجة النقر على الإشعار والتوجيه حسب البيانات
@@ -114,7 +115,7 @@ class NotificationService {
   ///   - [message]: الرسالة التي تم النقر عليها
   static void _handleNotificationTap(RemoteMessage message) {
     final data = message.data;
-    debugPrint('📢 بيانات النقر: $data');
+    AppLogger.debug('📢 بيانات النقر: $data');
   }
 
   /// الاشتراك في موضوع FCM (مثل: 'energy_alerts')
@@ -125,7 +126,7 @@ class NotificationService {
   /// القيمة المرجعة: [Future<void>]
   static Future<void> subscribeToTopic(String topic) async {
     await _messaging.subscribeToTopic(topic);
-    debugPrint('🔔 تم الاشتراك في: $topic');
+    AppLogger.debug('🔔 تم الاشتراك في: $topic');
   }
 
   /// إلغاء الاشتراك من موضوع FCM
@@ -136,6 +137,6 @@ class NotificationService {
   /// القيمة المرجعة: [Future<void>]
   static Future<void> unsubscribeFromTopic(String topic) async {
     await _messaging.unsubscribeFromTopic(topic);
-    debugPrint('🔔 تم إلغاء الاشتراك من: $topic');
+    AppLogger.debug('🔔 تم إلغاء الاشتراك من: $topic');
   }
 }

@@ -6,12 +6,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
+import '../services/screen_security_service.dart';
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 import '../widgets/app_logo.dart';
 import 'complete_profile_screen.dart';
 import 'account_type_screen.dart';
 import 'main_shell.dart';
+import 'privacy_policy_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -31,6 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool _showPassword = false;
   bool _showConfirmPassword = false;
+  bool _acceptedPolicies = false;
 
   @override
   void dispose() {
@@ -47,6 +50,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
+
+    if (!_acceptedPolicies) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('يجب الموافقة على سياسة الخصوصية وشروط الاستخدام'), backgroundColor: AppTheme.neonRed));
+      return;
+    }
 
     if (email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -242,7 +250,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onTogglePassword: () => setState(() => _showConfirmPassword = !_showConfirmPassword),
                           isDark: isDark,
                         ),
-                        const SizedBox(height: 28),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Checkbox(value: _acceptedPolicies, onChanged: (v) => setState(() => _acceptedPolicies = v ?? false)),
+                            Expanded(child: Padding(
+                              padding: const EdgeInsets.only(top: 11),
+                              child: Wrap(children: [
+                                const Text('أوافق على '),
+                                GestureDetector(onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen())), child: Text('سياسة الخصوصية وشروط الاستخدام', style: const TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.w800))),
+                              ]),
+                            )),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
 
                         // زر إنشاء الحساب والمتابعة
                         SizedBox(
@@ -254,7 +275,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                               elevation: 2,
                             ),
-                            onPressed: auth.isLoading ? null : () => _handleRegister(auth),
+                            onPressed: auth.isLoading || !_acceptedPolicies ? null : () => _handleRegister(auth),
                             child: auth.isLoading
                                 ? const SizedBox(
                                     width: 22,

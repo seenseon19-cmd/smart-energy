@@ -3,14 +3,16 @@
 /// المرحلة الثانية: الاسم الكامل + رقم الهاتف + العمر
 /// ══════════════════════════════════════════════════════════════════════════════
 
+import '../services/app_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../services/secure_storage_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:lottie/lottie.dart';
 import '../theme/app_theme.dart';
+import '../services/screen_security_service.dart';
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 import '../core/app_animations.dart';
@@ -33,6 +35,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   @override
   void initState() {
     super.initState();
+    ScreenSecurityService.enable();
     _loadExistingUserData();
   }
 
@@ -86,7 +89,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = await SecureStorageService.instance;
       final uid = FirebaseAuth.instance.currentUser?.uid;
 
       await prefs.setString('user_full_name', fullName);
@@ -108,7 +111,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
             'updatedAt': ServerValue.timestamp,
           });
         } catch (e) {
-          debugPrint('Firebase profile update error: $e');
+          AppLogger.debug('Firebase profile update error: $e');
         }
       }
 

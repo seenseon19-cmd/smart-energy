@@ -4,10 +4,12 @@
 /// يجمع بين بيانات الطاقة اللحظية وحالات الأجهزة والمساحات التفاعلية
 /// ═══════════════════════════════════════════════════════════════
 
+import '../services/app_logger.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
+import '../services/secure_storage_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../models/energy_data.dart';
@@ -66,7 +68,7 @@ class EnergyProvider extends ChangeNotifier {
   void setResidentialPlan(String plan) async {
     _residentialPlan = plan;
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await SecureStorageService.instance;
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null && uid.isNotEmpty) {
       await prefs.setString('residential_plan_$uid', plan);
@@ -79,7 +81,7 @@ class EnergyProvider extends ChangeNotifier {
   void setCommercialPlan(String plan) async {
     _commercialPlan = plan;
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await SecureStorageService.instance;
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null && uid.isNotEmpty) {
       await prefs.setString('commercial_plan_$uid', plan);
@@ -93,7 +95,7 @@ class EnergyProvider extends ChangeNotifier {
   void setPlanType(bool isCommercial) async {
     _isCommercial = isCommercial;
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await SecureStorageService.instance;
     await prefs.setBool('account_type_commercial', isCommercial);
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null && uid.isNotEmpty) {
@@ -239,7 +241,7 @@ class EnergyProvider extends ChangeNotifier {
         notifyListeners();
       },
       onError: (error) {
-        debugPrint('خطأ بث الطاقة: $error');
+        AppLogger.debug('خطأ بث الطاقة: $error');
         // ✅ Fallback: أعد تشغيل Demo عند فشل البث
         if (_firebaseDataReceived) {
           _firebaseDataReceived = false;
@@ -260,13 +262,13 @@ class EnergyProvider extends ChangeNotifier {
         }
         notifyListeners();
       },
-      onError: (error) => debugPrint('خطأ بث الريلي: $error'),
+      onError: (error) => AppLogger.debug('خطأ بث الريلي: $error'),
     );
   }
 
   Future<void> _loadLocalLogs() async {
-    final prefs = await SharedPreferences.getInstance();
-    final logsJson = prefs.getString('local_activity_logs');
+    final prefs = await SecureStorageService.instance;
+    final logsJson = await prefs.getString('local_activity_logs');
     if (logsJson != null) {
       try {
         final List<dynamic> decoded = json.decode(logsJson);
@@ -297,7 +299,7 @@ class EnergyProvider extends ChangeNotifier {
     notifyListeners();
 
     // حفظ محلياً
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await SecureStorageService.instance;
     await prefs.setString('local_activity_logs', json.encode(_localLogs));
 
     // إرسال لـ Firebase RTDB
@@ -336,18 +338,18 @@ class EnergyProvider extends ChangeNotifier {
 
   /// تحميل المساحات والأجهزة من التخزين المحلي بمعرف المستخدم UID
   Future<void> _loadSpacesAndDevices() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await SecureStorageService.instance;
     final uid = FirebaseAuth.instance.currentUser?.uid;
 
     if (uid != null && uid.isNotEmpty) {
-      final userAccountType = prefs.getString('account_type_$uid') ?? prefs.getString('account_type');
+      final userAccountType = (await prefs.getString('account_type_$uid')) ?? (await prefs.getString('account_type'));
       if (userAccountType != null) {
         _isCommercial = (userAccountType == 'commercial');
       }
-      _residentialPlan = prefs.getString('residential_plan_$uid') ?? 'pro';
-      _commercialPlan = prefs.getString('commercial_plan_$uid') ?? 'free';
+      _residentialPlan = (await prefs.getString('residential_plan_$uid')) ?? 'pro';
+      _commercialPlan = (await prefs.getString('commercial_plan_$uid')) ?? 'free';
     } else {
-      final userAccountType = prefs.getString('account_type');
+      final userAccountType = await prefs.getString('account_type');
       if (userAccountType != null) {
         _isCommercial = (userAccountType == 'commercial');
       }
@@ -357,7 +359,7 @@ class EnergyProvider extends ChangeNotifier {
     final devicesKey = (uid != null && uid.isNotEmpty) ? 'devices_list_$uid' : 'devices_list_guest';
 
     // 1. تحميل المساحات — معزولة 100% لكل UID
-    final spacesJson = prefs.getString(spacesKey);
+    final spacesJson = await prefs.getString(spacesKey);
     if (spacesJson != null) {
       try {
         final List<dynamic> decoded = json.decode(spacesJson);
@@ -378,10 +380,10 @@ class EnergyProvider extends ChangeNotifier {
     }
 
     final currentKey = (uid != null && uid.isNotEmpty) ? 'current_space_id_$uid' : 'current_space_id_guest';
-    _currentSpaceId = prefs.getString(currentKey) ?? _spaces.first.id;
+    _currentSpaceId = (await prefs.getString(currentKey)) ?? _spaces.first.id;
 
     // 2. تحميل الأجهزة — معزولة 100% لكل UID (مستخدم جديد = 0 أجهزة)
-    final devicesJson = prefs.getString(devicesKey);
+    final devicesJson = await prefs.getString(devicesKey);
     if (devicesJson != null) {
       try {
         final List<dynamic> decoded = json.decode(devicesJson);
@@ -399,7 +401,7 @@ class EnergyProvider extends ChangeNotifier {
 
   /// حفظ المساحات في التخزين المحلي
   Future<void> _saveSpaces() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await SecureStorageService.instance;
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final spacesKey = (uid != null && uid.isNotEmpty) ? 'user_spaces_list_$uid' : 'user_spaces_list_guest';
     final currentKey = (uid != null && uid.isNotEmpty) ? 'current_space_id_$uid' : 'current_space_id_guest';
@@ -409,7 +411,7 @@ class EnergyProvider extends ChangeNotifier {
 
   /// حفظ الأجهزة في التخزين المحلي
   Future<void> _saveDevices() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await SecureStorageService.instance;
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final devicesKey = (uid != null && uid.isNotEmpty) ? 'devices_list_$uid' : 'devices_list_guest';
     await prefs.setString(devicesKey, json.encode(_devices.map((d) => d.toMap()).toList()));
@@ -503,7 +505,7 @@ class EnergyProvider extends ChangeNotifier {
   void switchSpace(String spaceId) async {
     _currentSpaceId = spaceId;
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await SecureStorageService.instance;
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final currentKey = (uid != null && uid.isNotEmpty) ? 'current_space_id_$uid' : 'current_space_id_guest';
     await prefs.setString(currentKey, _currentSpaceId);

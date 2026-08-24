@@ -17,9 +17,12 @@
 /// القيمة المرجعة: ChangeNotifier يدير حالة المصادقة بالكامل
 /// ══════════════════════════════════════════════════════════════════════════════
 
+import 'app_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'secure_storage_service.dart';
 
 /// كلاس خدمة المصادقة — يدير دورة حياة المصادقة بالكامل
 class AuthService extends ChangeNotifier {
@@ -130,9 +133,9 @@ class AuthService extends ChangeNotifier {
   ///   3. ضمان حسم الحالة خلال ثانيتين كحد أقصى
   Future<void> _init() async {
     // ── تحميل حالة التسجيل التجريبي والمستخدم المحفوظة ──
-    final prefs = await SharedPreferences.getInstance();
-    _isSimulatedLogin = prefs.getBool('simulated_login') ?? false;
-    _simulatedPhone = prefs.getString('simulated_phone') ?? '';
+    final prefs = await SecureStorageService.instance;
+    _isSimulatedLogin = kDebugMode && (await prefs.getBool('simulated_login') ?? false);
+    _simulatedPhone = (await prefs.getString('simulated_phone')) ?? '';
 
     final currentUid = _auth.currentUser?.uid;
     if (currentUid != null && currentUid.isNotEmpty) {
@@ -140,16 +143,16 @@ class AuthService extends ChangeNotifier {
       final suffix = cleanUid.length >= 6 ? cleanUid.substring(0, 6) : cleanUid.padRight(6, '0');
       _accountNumber = 'SE-LY-$suffix';
       await prefs.setString('unique_account_id_$currentUid', _accountNumber);
-      _displayName = prefs.getString('display_name_$currentUid') ?? (_auth.currentUser?.displayName ?? '');
+      _displayName = (await prefs.getString('display_name_$currentUid')) ?? (_auth.currentUser?.displayName ?? '');
     } else {
-      _displayName = prefs.getString('display_name') ?? '';
-      _accountNumber = prefs.getString('unique_account_id_guest') ?? 'SE-LY-789234';
+      _displayName = (await prefs.getString('display_name')) ?? '';
+      _accountNumber = (await prefs.getString('unique_account_id_guest')) ?? 'SE-LY-789234';
     }
 
     // ── الاستماع لتغييرات حالة المصادقة في Firebase ──
     _auth.authStateChanges().listen((User? user) async {
       _user = user;
-      final p = await SharedPreferences.getInstance();
+      final p = await SecureStorageService.instance;
       if (user != null && user.uid.isNotEmpty) {
         final cleanUid = user.uid.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '').toUpperCase();
         final suffix = cleanUid.length >= 6 ? cleanUid.substring(0, 6) : cleanUid.padRight(6, '0');
@@ -230,7 +233,7 @@ class AuthService extends ChangeNotifier {
           try {
             await _auth.signInWithCredential(credential);
           } catch (e) {
-            debugPrint('خطأ في تسجيل الدخول التلقائي: $e');
+            AppLogger.debug('خطأ في تسجيل الدخول التلقائي: $e');
           }
           _isLoading = false;
           notifyListeners();
@@ -238,7 +241,7 @@ class AuthService extends ChangeNotifier {
 
         /// فشل التحقق — الانتقال للوضع التجريبي عند أخطاء معينة
         verificationFailed: (FirebaseAuthException e) {
-          debugPrint('فشل مصادقة الهاتف: ${e.code} — ${e.message}');
+          AppLogger.debug('فشل مصادقة الهاتف: ${e.code} — ${e.message}');
           // أخطاء قابلة للاسترداد → وضع تجريبي
           if (e.code == 'app-not-authorized' ||
               e.code == 'invalid-app-credential' ||
@@ -266,7 +269,7 @@ class AuthService extends ChangeNotifier {
       );
     } catch (e) {
       // ── أي خطأ غير متوقع → وضع تجريبي ──
-      debugPrint('خطأ في مصادقة الهاتف: $e');
+      AppLogger.debug('خطأ في مصادقة الهاتف: $e');
       _simulateOTPSend(formattedPhone);
     }
   }
@@ -277,11 +280,16 @@ class AuthService extends ChangeNotifier {
   /// المعاملات:
   ///   - [phone]: رقم الهاتف بالصيغة الدولية
   void _simulateOTPSend(String phone) {
+    if (kReleaseMode) {
+      _setError('verification_failed');
+      _isLoading = false;
+      return;
+    }
     _simulatedPhone = phone;
     _otpSent = true;
     _isLoading = false;
     _errorMessage = null;
-    debugPrint('📱 وضع تجريبي: OTP "123456" أُرسل إلى $phone');
+    AppLogger.debug('📱 وضع تجريبي: OTP "123456" أُرسل إلى $phone');
     notifyListeners();
   }
 
@@ -307,7 +315,7 @@ class AuthService extends ChangeNotifier {
         notifyListeners();
         return true;
       } catch (e) {
-        debugPrint('خطأ في التحقق من OTP: $e');
+        AppLogger.debug('خطأ في التحقق من OTP: $e');
         // فشل التحقق الحقيقي → عرض خطأ
         _setError('invalid_otp');
         return false;
@@ -315,9 +323,9 @@ class AuthService extends ChangeNotifier {
     }
 
     // ── الاحتياطي التجريبي: قبول "123456" فقط عند غياب verificationId ──
-    if (otp == '123456') {
+    if (!kReleaseMode && otp == '123456') {
       _isSimulatedLogin = true;
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = await SecureStorageService.instance;
       await prefs.setBool('simulated_login', true);
       await prefs.setString('simulated_phone', _simulatedPhone);
       _isLoading = false;
@@ -366,11 +374,11 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
       return true;
     } on FirebaseAuthException catch (e) {
-      debugPrint('خطأ تسجيل الدخول بالبريد: ${e.code}');
+      AppLogger.debug('خطأ تسجيل الدخول بالبريد: ${e.code}');
       _setError(_mapEmailError(e.code));
       return false;
     } catch (e) {
-      debugPrint('خطأ غير متوقع في تسجيل الدخول: $e');
+      AppLogger.debug('خطأ غير متوقع في تسجيل الدخول: $e');
       _setError('email_auth_failed');
       return false;
     }
@@ -405,11 +413,11 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
       return true;
     } on FirebaseAuthException catch (e) {
-      debugPrint('خطأ إنشاء الحساب: ${e.code}');
+      AppLogger.debug('خطأ إنشاء الحساب: ${e.code}');
       _setError(_mapSignUpError(e.code));
       return false;
     } catch (e) {
-      debugPrint('خطأ غير متوقع في إنشاء الحساب: $e');
+      AppLogger.debug('خطأ غير متوقع في إنشاء الحساب: $e');
       _setError('email_auth_failed');
       return false;
     }
@@ -429,9 +437,9 @@ class AuthService extends ChangeNotifier {
 
     try {
       await targetUser.sendEmailVerification();
-      debugPrint('✉️ تم إرسال رابط التحقق إلى: ${targetUser.email}');
+      AppLogger.debug('✉️ تم إرسال رابط التحقق إلى: ${targetUser.email}');
     } catch (e) {
-      debugPrint('⚠️ فشل إرسال رابط التحقق: $e');
+      AppLogger.debug('⚠️ فشل إرسال رابط التحقق: $e');
       // لا نوقف التدفق — الحساب أُنشئ بنجاح حتى لو فشل إرسال الرابط
     }
   }
@@ -471,11 +479,11 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
       return true;
     } on FirebaseAuthException catch (e) {
-      debugPrint('خطأ إعادة تعيين كلمة المرور: ${e.code}');
+      AppLogger.debug('خطأ إعادة تعيين كلمة المرور: ${e.code}');
       _setError(_mapEmailError(e.code));
       return false;
     } catch (e) {
-      debugPrint('خطأ غير متوقع: $e');
+      AppLogger.debug('خطأ غير متوقع: $e');
       _setError('email_auth_failed');
       return false;
     }
@@ -520,7 +528,7 @@ class AuthService extends ChangeNotifier {
     } on FirebaseAuthException catch (e) {
       _isLoading = false;
       notifyListeners();
-      debugPrint('خطأ في تغيير كلمة المرور: ${e.code}');
+      AppLogger.debug('خطأ في تغيير كلمة المرور: ${e.code}');
       if (e.code == 'wrong-password' || e.code == 'invalid-credential') {
         return {'success': false, 'message': 'كلمة المرور الحالية غير صحيحة'};
       } else if (e.code == 'weak-password') {
@@ -533,7 +541,7 @@ class AuthService extends ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       notifyListeners();
-      debugPrint('خطأ غير متوقع في تغيير كلمة المرور: $e');
+      AppLogger.debug('خطأ غير متوقع في تغيير كلمة المرور: $e');
       return {'success': false, 'message': 'حدث خطأ أثناء تغيير كلمة المرور'};
     }
   }
@@ -549,7 +557,7 @@ class AuthService extends ChangeNotifier {
   Future<void> updateDisplayName(String name) async {
     _displayName = name;
     // حفظ الاسم محلياً في SharedPreferences بمعرف المستخدم
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await SecureStorageService.instance;
     final uid = _user?.uid;
     if (uid != null && uid.isNotEmpty) {
       await prefs.setString('display_name_$uid', name);
@@ -578,11 +586,12 @@ class AuthService extends ChangeNotifier {
     _verificationId = null;
 
     // ── مسح البيانات المحفوظة محلياً ──
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await SecureStorageService.instance;
     await prefs.remove('simulated_login');
     await prefs.remove('simulated_phone');
     await prefs.remove('display_name');
-    await prefs.setBool('onboarding_done', false);
+    final localPrefs = await SharedPreferences.getInstance();
+    await localPrefs.setBool('onboarding_done', false);
 
     notifyListeners();
   }

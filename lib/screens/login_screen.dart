@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/app_theme.dart';
+import '../services/screen_security_service.dart';
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 import '../providers/energy_provider.dart';
@@ -75,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   void initState() {
     super.initState();
+    ScreenSecurityService.enable();
     _glowController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),

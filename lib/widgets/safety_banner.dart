@@ -15,7 +15,7 @@ class SafetyBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
-    final isOverload = power > limit * 0.8;
+    final isOverload = power > limit;
     final color = isOverload ? AppTheme.accentRed : AppTheme.accentGreen;
 
     return ClipRRect(

@@ -1,3 +1,4 @@
+import '../services/app_logger.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -63,7 +64,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
           'updatedAt': ServerValue.timestamp,
         });
       } catch (e) {
-        debugPrint('Firebase update account type error: $e');
+        AppLogger.debug('Firebase update account type error: $e');
       }
     }
 

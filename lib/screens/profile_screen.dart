@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../services/secure_storage_service.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
@@ -15,9 +15,9 @@ import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 import '../providers/energy_provider.dart';
+import 'activity_log_screen.dart';
 import 'login_screen.dart';
 import 'subscription_screen.dart';
-import 'activity_history_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -36,20 +36,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _loadProfileData() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await SecureStorageService.instance;
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    setState(() {
-      _profileImagePath = (uid != null && uid.isNotEmpty)
-          ? prefs.getString('profile_image_path_$uid')
-          : prefs.getString('profile_image_path_guest');
-    });
+    final path = (uid != null && uid.isNotEmpty)
+        ? await prefs.getString('profile_image_path_$uid')
+        : await prefs.getString('profile_image_path_guest');
+    if (mounted) setState(() => _profileImagePath = path);
   }
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final image = await picker.pickImage(source: ImageSource.gallery, maxWidth: 512, maxHeight: 512, imageQuality: 85);
     if (image != null) {
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = await SecureStorageService.instance;
       final uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid != null && uid.isNotEmpty) {
         await prefs.setString('profile_image_path_$uid', image.path);
@@ -170,7 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       textSecondary: textSecondary,
                       onTap: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const ActivityHistoryScreen()),
+                        MaterialPageRoute(builder: (_) => const ActivityLogScreen()),
                       ),
                     ),
                   ],

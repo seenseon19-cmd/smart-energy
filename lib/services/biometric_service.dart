@@ -1,3 +1,4 @@
+import 'app_logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
@@ -23,10 +24,10 @@ class BiometricService {
       final canCheck = await _auth.canCheckBiometrics;
       return isSupported || canCheck;
     } on PlatformException catch (e) {
-      debugPrint('Biometric support check error: $e');
+      AppLogger.debug('Biometric support check error: $e');
       return false;
     } catch (e) {
-      debugPrint('Biometric support check unexpected error: $e');
+      AppLogger.debug('Biometric support check unexpected error: $e');
       return false;
     }
   }
@@ -36,7 +37,7 @@ class BiometricService {
     try {
       return await _auth.getAvailableBiometrics();
     } on PlatformException catch (e) {
-      debugPrint('Error getting available biometrics: $e');
+      AppLogger.debug('Error getting available biometrics: $e');
       return [];
     }
   }
@@ -60,10 +61,10 @@ class BiometricService {
         ),
       );
     } on PlatformException catch (e) {
-      debugPrint('Biometric authentication PlatformException: ${e.code} - ${e.message}');
+      AppLogger.debug('Biometric authentication PlatformException: ${e.code} - ${e.message}');
       return false;
     } catch (e) {
-      debugPrint('Biometric authentication error: $e');
+      AppLogger.debug('Biometric authentication error: $e');
       return false;
     }
   }
