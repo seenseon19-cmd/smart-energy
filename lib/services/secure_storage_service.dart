@@ -19,6 +19,7 @@ class SecureStorageService {
     return value == null ? null : value == 'true';
   }
   Future<void> setBool(String key, bool value) => setString(key, value.toString());
+  Future<void> setInt(String key, int value) => setString(key, value.toString());
   Future<void> remove(String key) => _storage.delete(key: key);
   Future<void> deleteAll() => _storage.deleteAll();
 }

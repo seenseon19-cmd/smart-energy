@@ -158,10 +158,10 @@ class AuthService extends ChangeNotifier {
         final suffix = cleanUid.length >= 6 ? cleanUid.substring(0, 6) : cleanUid.padRight(6, '0');
         _accountNumber = 'SE-LY-$suffix';
         await p.setString('unique_account_id_${user.uid}', _accountNumber);
-        _displayName = p.getString('display_name_${user.uid}') ?? (user.displayName ?? '');
+        _displayName = (await p.getString('display_name_${user.uid}')) ?? (user.displayName ?? '');
       } else if (_isSimulatedLogin) {
-        _accountNumber = p.getString('unique_account_id_simulated') ?? 'SE-LY-789234';
-        _displayName = p.getString('display_name') ?? '';
+        _accountNumber = (await p.getString('unique_account_id_simulated')) ?? 'SE-LY-789234';
+        _displayName = (await p.getString('display_name')) ?? '';
       }
       _authResolved = true;
       notifyListeners();
