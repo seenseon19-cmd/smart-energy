@@ -15,6 +15,7 @@ import '../services/screen_security_service.dart';
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 import '../providers/energy_provider.dart';
+import '../widgets/smart_energy_logo.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -181,75 +182,24 @@ class _LoginScreenState extends State<LoginScreen>
   // الشعار المتوهج العلوي
   // ══════════════════════════════════════════════════════════════
   Widget _buildAnimatedLogo() {
-    final isDark = context.read<ThemeProvider>().isDarkMode;
     return AnimatedBuilder(
       animation: _glowAnimation,
-      builder: (context, child) => Column(
-        children: [
-          // 🟢 بداية: الحاوية المتوهجة بالظل النيوني للأزرق الرئيسي لـ Stitch
-          Container(
-            width: 80,
-            height: 80,
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: isDark ? AppTheme.darkCard : Colors.white,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: isDark ? AppTheme.darkBorder.withOpacity(0.3) : Colors.white.withOpacity(0.5)),
-              boxShadow: [
-                BoxShadow(
-                  color: AppTheme.primaryBlue.withOpacity(0.25 * _glowAnimation.value),
-                  blurRadius: 30,
-                  offset: const Offset(0, 8),
-                ),
-              ],
+      builder: (context, child) => Container(
+        width: 190,
+        height: 190,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(28),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.primaryBlue.withOpacity(0.16 * _glowAnimation.value),
+              blurRadius: 28,
+              offset: const Offset(0, 8),
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Image.asset(
-                'assets/images/logo.webp',
-                fit: BoxFit.contain,
-                errorBuilder: (_, __, ___) => Icon(
-                  Icons.bolt,
-                  size: 44,
-                  color: isDark ? AppTheme.neonCyan : AppTheme.primaryBlue,
-                ),
-              ),
-            ),
-          ),
-          // 🔵 نهاية: الحاوية المتوهجة
-          
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "الطاقة ",
-                style: AppTheme.getTextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w900,
-                  color: isDark ? AppTheme.darkText : const Color(0xFF191C21),
-                ),
-              ),
-              Text(
-                "الذكية",
-                style: AppTheme.getTextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w900,
-                  color: isDark ? AppTheme.neonCyan : AppTheme.primaryBlue,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Text(
-            "بوابة التحكم الآمنة والمستدامة",
-            style: AppTheme.getTextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              color: isDark ? AppTheme.darkText.withOpacity(0.7) : const Color(0xFF414751),
-            ),
-          ),
-        ],
+          ],
+        ),
+        child: const SmartEnergyLogo(size: 174),
       ),
     );
   }

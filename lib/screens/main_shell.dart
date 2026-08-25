@@ -16,6 +16,7 @@ import 'spaces_screen.dart'; // 🟢 بداية: استيراد شاشة إدا�
 import 'security_screen.dart';
 import 'login_screen.dart';
 import '../widgets/app_logo.dart';
+import '../widgets/smart_energy_logo.dart';
 
 /// ═══════════════════════════════════════════════════════════════
 /// القشرة الرئيسية — MainShell (Stitch Dark Premium Shell Design)
@@ -110,44 +111,8 @@ class _MainShellState extends State<MainShell> {
           ),
           // 🔵 نهاية: زر ترويسة هامبرغر
           
-          // 🟢 بداية: شعار الترويسة الموحد "SmartEnergy" مع الشعار الرسمي
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                'assets/images/logo.webp',
-                width: 28,
-                height: 28,
-                fit: BoxFit.contain,
-                errorBuilder: (_, __, ___) => Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: AppTheme.neonCyan.withOpacity(0.15),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.bolt_rounded, color: AppTheme.neonCyan, size: 18),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'Smart',
-                style: AppTheme.getTextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: isDark ? Colors.white : AppTheme.lightText,
-                ),
-              ),
-              Text(
-                'Energy',
-                style: AppTheme.getTextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: isDark ? AppTheme.neonCyan : AppTheme.primaryBlue,
-                ),
-              ),
-            ],
-          ),
-          // 🔵 نهاية: شعار الترويسة الموحد
+          // الشعار الداخلي هادئ وصغير حتى يبقى المحتوى هو البطل.
+          const SmartEnergyLogo(size: 42),
  
           // 🟢 بداية: كبسولة البث المباشر مع وميض نيون متحرك
           Consumer<EnergyProvider>(builder: (context, ep, _) {

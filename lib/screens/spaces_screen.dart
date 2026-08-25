@@ -10,6 +10,7 @@ import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/energy_provider.dart';
 import '../models/space_model.dart';
+import '../widgets/smart_energy_logo.dart';
 
 class SpacesScreen extends StatelessWidget {
   const SpacesScreen({super.key});
@@ -32,13 +33,20 @@ class SpacesScreen extends StatelessWidget {
             backgroundColor: Colors.transparent,
             elevation: 0,
             surfaceTintColor: Colors.transparent,
-            title: Text(
-              loc.tr('spacesLabel'),
-              style: AppTheme.getTextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w800,
-                color: isDark ? AppTheme.darkText : AppTheme.lightText,
-              ),
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SmartEnergyLogo(size: 34),
+                const SizedBox(width: 8),
+                Text(
+                  loc.tr('spacesLabel'),
+                  style: AppTheme.getTextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                    color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                  ),
+                ),
+              ],
             ),
             leading: IconButton(
               onPressed: () => Navigator.pop(context),

@@ -9,7 +9,7 @@ import '../theme/app_theme.dart';
 import '../services/screen_security_service.dart';
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
-import '../widgets/app_logo.dart';
+import '../widgets/smart_energy_logo.dart';
 import 'complete_profile_screen.dart';
 import 'account_type_screen.dart';
 import 'main_shell.dart';
@@ -167,12 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // شعار التطبيق
-                  AppLogo(
-                    isDark: isDark,
-                    fontSize: 26,
-                    iconSize: 32,
-                    isHorizontal: true,
-                  ),
+                  const SmartEnergyLogo(size: 156),
                   const SizedBox(height: 24),
 
                   // كرت إنشاء الحساب

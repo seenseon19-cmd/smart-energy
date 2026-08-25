@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/energy_provider.dart';
+import '../widgets/smart_energy_logo.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});
@@ -106,13 +107,20 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 surfaceTintColor: Colors.transparent,
-                title: Text(
-                  loc.tr('upgradePlan'),
-                  style: AppTheme.getTextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                    color: isDark ? AppTheme.darkText : AppTheme.lightText,
-                  ),
+                title: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SmartEnergyLogo(size: 34),
+                    const SizedBox(width: 8),
+                    Text(
+                      loc.tr('upgradePlan'),
+                      style: AppTheme.getTextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900,
+                        color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                      ),
+                    ),
+                  ],
                 ),
                 leading: IconButton(
                   onPressed: () => Navigator.pop(context),

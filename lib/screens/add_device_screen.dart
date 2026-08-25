@@ -6,6 +6,7 @@ import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
 import '../models/device_model.dart';
 import '../providers/energy_provider.dart';
+import '../widgets/smart_energy_logo.dart';
 
 /// ══════════════════════════════════════════════════════════════════════════════
 /// شاشة إضافة جهاز ذكي جديد — AddDeviceScreen
@@ -209,13 +210,20 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
             icon: Icon(Icons.arrow_back_ios_rounded, color: textPrimary, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
-          title: Text(
-            loc.tr('addDevice'),
-            style: AppTheme.getTextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
-              color: textPrimary,
-            ),
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SmartEnergyLogo(size: 32),
+              const SizedBox(width: 8),
+              Text(
+                loc.tr('addDevice'),
+                style: AppTheme.getTextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: textPrimary,
+                ),
+              ),
+            ],
           ),
           centerTitle: true,
           bottom: PreferredSize(

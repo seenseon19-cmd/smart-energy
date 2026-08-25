@@ -9,6 +9,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:lottie/lottie.dart';
 import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/smart_energy_logo.dart';
 import '../providers/energy_provider.dart';
 import '../core/app_animations.dart';
 import 'main_shell.dart';
@@ -158,6 +159,8 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const SmartEnergyLogo(size: 82),
+                      const SizedBox(height: 8),
                       // أنيميشن التحويل التفاعلي
                       Container(
                         width: 120,

@@ -42,6 +42,7 @@ import 'services/auth_service.dart';
 import 'services/biometric_service.dart';
 // 11. استيراد خدمة الإشعارات (FCM)
 import 'services/notification_service.dart';
+import 'widgets/smart_energy_logo.dart';
 // 12. استيراد مزوّد بيانات الطاقة (يستمع لقراءات ESP32 اللحظية)
 import 'providers/energy_provider.dart';
 // 13. استيراد الشاشات — كل شاشة تمثل واجهة مستقلة في التطبيق
@@ -441,14 +442,15 @@ class _StartupLoadingScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 76,
-              height: 76,
+              width: 178,
+              height: 178,
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: const LinearGradient(colors: [Color(0xFF38BDF8), Color(0xFF10B981)]),
-                boxShadow: [BoxShadow(color: AppTheme.neonGreen.withOpacity(0.28), blurRadius: 30)],
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(28),
+                boxShadow: [BoxShadow(color: AppTheme.neonGreen.withOpacity(0.22), blurRadius: 30)],
               ),
-              child: const Icon(Icons.bolt_rounded, color: Colors.white, size: 42),
+              child: const SmartEnergyLogo(size: 162),
             ),
             const SizedBox(height: 24),
             const CircularProgressIndicator(color: AppTheme.neonGreen, strokeWidth: 2.5),
