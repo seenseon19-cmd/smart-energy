@@ -62,8 +62,11 @@ class EnergyProvider extends ChangeNotifier {
   String get residentialPlan => _residentialPlan;
   String get commercialPlan => _commercialPlan;
 
-  bool get isCommercialPlanActive => _commercialPlan != 'free';
-  bool get needsCommercialUpgrade => currentSpace.isCommercial && !isCommercialPlanActive;
+  /// لا تُعد الأهلية التجارية متاحة إلا بوجود مساحة تجارية نشطة محفوظة.
+  bool get hasActiveCommercialSpace => _spaces.any((space) => space.isActive && space.isCommercial);
+  bool get hasActiveResidentialSpace => _spaces.any((space) => space.isActive && !space.isCommercial);
+  bool get isCommercialPlanActive => hasActiveCommercialSpace && _commercialPlan != 'free';
+  bool get needsCommercialUpgrade => hasActiveCommercialSpace && !isCommercialPlanActive;
 
   void setResidentialPlan(String plan) async {
     _residentialPlan = plan;
@@ -79,6 +82,8 @@ class EnergyProvider extends ChangeNotifier {
   }
 
   void setCommercialPlan(String plan) async {
+    // حارس أعمال: لا يمكن تفعيل أي باقة تجارية مدفوعة دون مساحة تجارية نشطة.
+    if (plan != 'free' && !hasActiveCommercialSpace) return;
     _commercialPlan = plan;
     notifyListeners();
     final prefs = await SecureStorageService.instance;

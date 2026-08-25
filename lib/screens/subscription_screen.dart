@@ -81,10 +81,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     final energyProvider = context.watch<EnergyProvider>();
-    final currentPlanKey = _isCommercial ? energyProvider.commercialPlan : energyProvider.residentialPlan;
-    final activeIndex = _getPlanIndex(currentPlanKey, _isCommercial);
+    final commercialEligible = energyProvider.hasActiveCommercialSpace;
+    final isCommercial = _isCommercial && commercialEligible;
+    final currentPlanKey = isCommercial ? energyProvider.commercialPlan : energyProvider.residentialPlan;
+    final activeIndex = _getPlanIndex(currentPlanKey, isCommercial);
 
-    final plans = _isCommercial ? _commercialPlans(loc) : _personalPlans(loc);
+    final plans = isCommercial ? _commercialPlans(loc) : _personalPlans(loc);
     final durations = ['شهر', '3 أشهر', 'سنة'];
     final themeProvider = context.watch<ThemeProvider>();
     final isDark = themeProvider.isDarkMode;
@@ -141,12 +143,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             () => setState(() { _isCommercial = false; }),
                           ),
                           const SizedBox(width: 4),
-                          _tab(
-                            loc.tr('commercial'), 
-                            _isCommercial,
-                            isDark,
-                            () => setState(() { _isCommercial = true; }),
-                          ),
+                          if (commercialEligible) ...[
+                            const SizedBox(width: 4),
+                            _tab(
+                              loc.tr('commercial'),
+                              isCommercial,
+                              isDark,
+                              () => setState(() => _isCommercial = true),
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -252,6 +257,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   /// 🟢 بناء كروت الباقات الأربعة بتصميم زجاجي وتدرجات لونية مطابقة لـ Stitch _7
   Widget _buildCard(_Tier tier, int index, int activeIndex, AppLocalizations loc, bool isDark, EnergyProvider energyProvider) {
+    final isCommercialContext = _isCommercial && energyProvider.hasActiveCommercialSpace;
     final isPro = tier.name == 'الاحترافية';
     final isGold = tier.name == 'الذهبية';
     final isActivePlan = (index == activeIndex);
@@ -364,8 +370,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           const SizedBox(height: 20),
           _InteractiveScale(
             onTap: isActivePlan ? null : () {
-              final newPlanKey = _getPlanKeyFromIndex(index, _isCommercial);
-              if (_isCommercial) {
+              final newPlanKey = _getPlanKeyFromIndex(index, isCommercialContext);
+              if (isCommercialContext) {
                 energyProvider.setCommercialPlan(newPlanKey);
               } else {
                 energyProvider.setResidentialPlan(newPlanKey);
@@ -425,8 +431,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     // بناء الكرت زجاجياً أو متدرجاً
     return GestureDetector(
       onTap: isActivePlan ? null : () {
-        final newPlanKey = _getPlanKeyFromIndex(index, _isCommercial);
-        if (_isCommercial) {
+        final newPlanKey = _getPlanKeyFromIndex(index, isCommercialContext);
+        if (isCommercialContext) {
           energyProvider.setCommercialPlan(newPlanKey);
         } else {
           energyProvider.setResidentialPlan(newPlanKey);

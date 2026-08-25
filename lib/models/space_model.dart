@@ -11,6 +11,7 @@ class SpaceModel {
   String name;
   String type; // 'residential' أو 'commercial'
   String iconKey;
+  bool isActive;
 
   bool get isCommercial => type == 'commercial';
   int get deviceLimit => type == 'commercial' ? 12 : 8;
@@ -20,6 +21,7 @@ class SpaceModel {
     required this.name,
     this.type = 'residential',
     this.iconKey = 'home',
+    this.isActive = true,
   });
 
   Map<String, dynamic> toMap() => {
@@ -27,6 +29,7 @@ class SpaceModel {
         'name': name,
         'type': type,
         'iconKey': iconKey,
+        'isActive': isActive,
       };
 
   factory SpaceModel.fromMap(Map<String, dynamic> map) => SpaceModel(
@@ -34,5 +37,6 @@ class SpaceModel {
         name: map['name'] ?? '',
         type: map['type'] ?? 'residential',
         iconKey: map['iconKey'] ?? 'home',
+        isActive: map['isActive'] is bool ? map['isActive'] as bool : true,
       );
 }
