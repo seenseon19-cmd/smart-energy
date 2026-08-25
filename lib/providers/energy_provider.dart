@@ -77,7 +77,9 @@ class EnergyProvider extends ChangeNotifier {
       await prefs.setString('residential_plan_$uid', plan);
       try {
         await FirebaseDatabase.instance.ref('users/$uid/residentialPlan').set(plan);
-      } catch (_) {}
+      } catch (e) {
+        AppLogger.debug('Residential plan sync failed: ${e.runtimeType}');
+      }
     }
   }
 
@@ -93,7 +95,9 @@ class EnergyProvider extends ChangeNotifier {
       try {
         await FirebaseDatabase.instance.ref('users/$uid/commercialPlan').set(plan);
         await FirebaseDatabase.instance.ref('users/$uid/commercialPlanStatus').set(plan != 'free' ? 'active' : 'free');
-      } catch (_) {}
+      } catch (e) {
+        AppLogger.debug('Commercial plan sync failed: ${e.runtimeType}');
+      }
     }
   }
 
@@ -110,7 +114,9 @@ class EnergyProvider extends ChangeNotifier {
         await FirebaseDatabase.instance.ref('users/$uid/accountType').set(
           isCommercial ? 'commercial' : 'residential'
         );
-      } catch (_) {}
+      } catch (e) {
+        AppLogger.debug('Account type sync failed: ${e.runtimeType}');
+      }
     }
   }
 

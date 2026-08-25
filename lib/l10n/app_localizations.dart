@@ -501,6 +501,7 @@ class AppLocalizations {
     'secretCopied': {'en': 'Secret key copied to clipboard', 'ar': 'تم نسخ المفتاح السري إلى الحافظة'},
     'twoFactorDisabled': {'en': 'Two-factor authentication disabled', 'ar': 'تم تعطيل المصادقة الثنائية'},
     'twoFactorEnabled': {'en': 'Two-factor authentication enabled successfully', 'ar': 'تم تفعيل المصادقة الثنائية بنجاح'},
+    'twoFactorBackendRequired': {'en': 'Two-factor enrollment is not available until a verified Firebase/Backend flow is configured.', 'ar': 'لا يمكن تفعيل المصادقة الثنائية قبل إعداد مسار تحقق موثق عبر Firebase أو الخادم.'},
     'step': {'en': 'Step', 'ar': 'الخطوة'},
     'of': {'en': 'of', 'ar': 'من'},
     'signupCredentialsHint': {'en': 'Enter your basic credentials to start managing your energy', 'ar': 'أدخل بيانات الدخول الأساسية للبدء في إدارة طاقتك'},

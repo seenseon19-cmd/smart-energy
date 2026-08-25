@@ -80,13 +80,6 @@ Future<void> main() async {
     return;
   }
 
-  // تهيئة خدمة الإشعارات (FCM) مع مهلة حتى لا يتعطل البدء عند انقطاع الشبكة.
-  try {
-    await NotificationService.initialize().timeout(const Duration(seconds: 12));
-  } catch (error) {
-    debugPrint('Notification initialization skipped: $error');
-  }
-
   // تخصيص مظهر شريط الحالة — شفاف مع أيقونات بيضاء للتوافق مع الثيم الداكن
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -347,8 +340,28 @@ class _BiometricGateScreenState extends State<_BiometricGateScreen> {
   }
 }
 
-class _PostLoginRouter extends StatelessWidget {
+class _PostLoginRouter extends StatefulWidget {
   const _PostLoginRouter();
+
+  @override
+  State<_PostLoginRouter> createState() => _PostLoginRouterState();
+}
+
+class _PostLoginRouterState extends State<_PostLoginRouter> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _initializeNotifications());
+  }
+
+  Future<void> _initializeNotifications() async {
+    try {
+      await NotificationService.initialize().timeout(const Duration(seconds: 12));
+    } catch (error) {
+      // FCM اختياري؛ لا يمنع فتح التطبيق عند رفض الإذن أو انقطاع الشبكة.
+      debugPrint('Notification initialization skipped: ${error.runtimeType}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

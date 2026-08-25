@@ -24,8 +24,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   AppLogger.debug('🔔 رسالة خلفية: ${message.messageId}');
-  AppLogger.debug('   العنوان: ${message.notification?.title}');
-  AppLogger.debug('   المحتوى: ${message.notification?.body}');
+  AppLogger.debug('Background notification received without logging title or body');
 }
 
 /// كلاس خدمة الإشعارات — يدير FCM بالكامل
@@ -78,8 +77,7 @@ class NotificationService {
         AppLogger.debug('🔔 رسالة أمامية: ${message.messageId}');
         final notification = message.notification;
         if (notification != null) {
-          AppLogger.debug('   العنوان: ${notification.title}');
-          AppLogger.debug('   المحتوى: ${notification.body}');
+          AppLogger.debug('Foreground notification received without logging title or body');
           _showInAppNotification(notification);
         }
       });
@@ -106,7 +104,7 @@ class NotificationService {
   /// المعاملات:
   ///   - [notification]: بيانات الإشعار
   static void _showInAppNotification(RemoteNotification notification) {
-    AppLogger.debug('📢 إشعار داخلي: ${notification.title} — ${notification.body}');
+    AppLogger.debug('In-app notification prepared without logging title or body');
   }
 
   /// معالجة النقر على الإشعار والتوجيه حسب البيانات
@@ -114,8 +112,7 @@ class NotificationService {
   /// المعاملات:
   ///   - [message]: الرسالة التي تم النقر عليها
   static void _handleNotificationTap(RemoteMessage message) {
-    final data = message.data;
-    AppLogger.debug('📢 بيانات النقر: $data');
+    AppLogger.debug('Notification tap handled without logging payload data');
   }
 
   /// الاشتراك في موضوع FCM (مثل: 'energy_alerts')

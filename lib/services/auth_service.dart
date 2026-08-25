@@ -307,7 +307,7 @@ class AuthService extends ChangeNotifier {
     _otpSent = true;
     _isLoading = false;
     _errorMessage = null;
-    AppLogger.debug('📱 وضع تجريبي: OTP "123456" أُرسل إلى $phone');
+    AppLogger.debug('Demo OTP flow initialized without logging OTP or phone number');
     notifyListeners();
   }
 
@@ -485,7 +485,7 @@ class AuthService extends ChangeNotifier {
 
     try {
       await targetUser.sendEmailVerification();
-      AppLogger.debug('✉️ تم إرسال رابط التحقق إلى: ${targetUser.email}');
+      AppLogger.debug('Verification email request completed without logging the email address');
     } catch (e) {
       AppLogger.debug('⚠️ فشل إرسال رابط التحقق: $e');
       // لا نوقف التدفق — الحساب أُنشئ بنجاح حتى لو فشل إرسال الرابط

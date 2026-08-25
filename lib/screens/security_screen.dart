@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
+
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +9,7 @@ import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 import '../services/biometric_service.dart';
+import '../services/secure_storage_service.dart';
 
 /// ══════════════════════════════════════════════════════════════════════════════
 /// شاشة الحساب والأمان والمصادقة المتقدمة — SecurityScreen
@@ -24,8 +27,9 @@ class _SecurityScreenState extends State<SecurityScreen> {
   bool _deviceSupportsBiometrics = false;
   bool _isLoading = true;
 
-  static const String _twoFactorPrefKey = 'two_factor_auth_enabled';
-  static const String _secretKey = 'SE2FA-9942-KR71-ENERGY-SMART';
+  String _secretKey = '';
+
+  String _twoFactorKey(String uid) => 'two_factor_auth_enabled_$uid';
 
   @override
   void initState() {
@@ -41,13 +45,25 @@ class _SecurityScreenState extends State<SecurityScreen> {
       final bioEnabled = auth.user?.uid != null
           ? await BiometricService.isEnabledForUser(auth.user!.uid)
           : false;
-      final twoFactorEnabled = prefs.getBool(_twoFactorPrefKey) ?? false;
+      final uid = auth.user?.uid ?? 'guest';
+      final twoFactorEnabled = prefs.getBool(_twoFactorKey(uid)) ?? false;
+      final secure = await SecureStorageService.instance;
+      var secretKey = await secure.getString('two_factor_secret_$uid');
+      if (secretKey == null || secretKey.isEmpty) {
+        final random = Random.secure();
+        secretKey = List.generate(
+          20,
+          (_) => random.nextInt(36).toRadixString(36).toUpperCase(),
+        ).join();
+        await secure.setString('two_factor_secret_$uid', secretKey);
+      }
 
       if (!mounted) return;
       setState(() {
         _deviceSupportsBiometrics = supportsBio;
         _isBiometricsEnabled = bioEnabled;
         _is2faEnabled = twoFactorEnabled;
+        _secretKey = secretKey!;
         _isLoading = false;
       });
     } catch (_) {
@@ -493,7 +509,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                               icon: const Icon(Icons.copy_rounded, color: Color(0xFF38BDF8), size: 20),
                               tooltip: 'نسخ المفتاح',
                               onPressed: () {
-                                Clipboard.setData(const ClipboardData(text: _secretKey));
+                                Clipboard.setData(ClipboardData(text: _secretKey));
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('تم نسخ المفتاح السري إلى الحافظة 📋'),
@@ -570,7 +586,10 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                   if (_is2faEnabled) {
                                     // تعطيل 2FA
                                     final prefs = await SharedPreferences.getInstance();
-                                    await prefs.setBool(_twoFactorPrefKey, false);
+                                    final uid = context.read<AuthService>().user?.uid;
+                                    if (uid != null) {
+                                      await prefs.setBool(_twoFactorKey(uid), false);
+                                    }
                                     setState(() => _is2faEnabled = false);
                                     Navigator.pop(ctx);
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -591,25 +610,9 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                   }
 
                                   setModalState(() {
-                                    isVerifying = true;
-                                    errorText = null;
+                                    isVerifying = false;
+                                    errorText = loc.tr('twoFactorBackendRequired');
                                   });
-
-                                  await Future.delayed(const Duration(milliseconds: 600));
-
-                                  final prefs = await SharedPreferences.getInstance();
-                                  await prefs.setBool(_twoFactorPrefKey, true);
-
-                                  if (mounted) {
-                                    setState(() => _is2faEnabled = true);
-                                    Navigator.pop(ctx);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('تم تفعيل المصادقة الثنائية بنجاح 🔒✅'),
-                                        backgroundColor: Color(0xFF10B981),
-                                      ),
-                                    );
-                                  }
                                 },
                           child: isVerifying
                               ? const SizedBox(

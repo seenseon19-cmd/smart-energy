@@ -29,6 +29,7 @@
 
 import 'package:firebase_database/firebase_database.dart';
 import '../models/energy_data.dart';
+import 'app_logger.dart';
 
 /// كلاس خدمة Firebase — يوفر واجهة موحدة للتعامل مع Realtime Database
 ///
@@ -254,7 +255,8 @@ class FirebaseService {
         'time': DateTime.now().millisecondsSinceEpoch,
       });
     } catch (e) {
-      // صامت في حالة عدم الاتصال بالسحابة
+      // لا نعرض تفاصيل Firebase للمستخدم، لكن نسجل رمز الخطأ في Debug فقط.
+      AppLogger.debug('Activity log write failed safely: ${e.runtimeType}');
     }
   }
 
