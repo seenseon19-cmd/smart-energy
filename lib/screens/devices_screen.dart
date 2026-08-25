@@ -5,6 +5,8 @@ import '../l10n/app_localizations.dart';
 import '../providers/energy_provider.dart';
 import '../models/device_model.dart';
 import '../widgets/device_card.dart';
+import '../widgets/lottie_widgets.dart';
+import '../core/app_animations.dart';
 import 'add_device_screen.dart';
 
 /// ══════════════════════════════════════════════════════════════════════════════
@@ -119,6 +121,57 @@ class DevicesScreen extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // بطاقة الأتمتة الذكية — حركة توعوية وليست إعلانًا.
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: cardBg,
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(color: cardBorder),
+                      ),
+                      child: Row(
+                        children: [
+                          PremiumLottie(
+                            assetPath: AppAnimations.smartHomesDevices,
+                            width: 74,
+                            height: 74,
+                            fallbackIcon: Icons.home_work_rounded,
+                            fallbackColor: const Color(0xFF38BDF8),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  loc.tr('devices'),
+                                  style: AppTheme.getTextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w900,
+                                    color: textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  loc.tr('deviceControlSub'),
+                                  style: AppTheme.getTextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
+                                    color: textSecondary,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
 
                     const SizedBox(height: 20),

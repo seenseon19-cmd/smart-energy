@@ -8,6 +8,7 @@ import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/energy_provider.dart';
 import '../core/app_animations.dart';
+import '../widgets/lottie_widgets.dart';
 
 class StatisticsScreen extends StatefulWidget {
   const StatisticsScreen({super.key});
@@ -313,12 +314,22 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                 ),
               ),
               const SizedBox(width: 10),
-              Text(
-                loc.tr('powerConsumption'),
+              PremiumLottie(
+                assetPath: AppAnimations.electricity,
+                width: 42,
+                height: 42,
+                fallbackIcon: Icons.electric_bolt_rounded,
+                fallbackColor: isDark ? AppTheme.neonCyan : AppTheme.primaryBlue,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  loc.tr('powerConsumption'),
                 style: AppTheme.getTextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w800,
                   color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                  ),
                 ),
               ),
             ]

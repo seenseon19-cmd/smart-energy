@@ -8,6 +8,47 @@ import '../core/app_animations.dart';
 import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
 
+/// Widget موحد للحركات Premium المحلية.
+///
+/// الأصول محلية لتفادي أعطال الشبكة، و`errorBuilder` يحافظ على الواجهة
+/// قابلة للاستخدام إذا تعذر تحليل ملف JSON على جهاز معين.
+class PremiumLottie extends StatelessWidget {
+  final String assetPath;
+  final double width;
+  final double height;
+  final IconData fallbackIcon;
+  final Color fallbackColor;
+  final bool repeat;
+
+  const PremiumLottie({
+    super.key,
+    required this.assetPath,
+    required this.width,
+    required this.height,
+    required this.fallbackIcon,
+    this.fallbackColor = const Color(0xFF10B981),
+    this.repeat = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Lottie.asset(
+        assetPath,
+        fit: BoxFit.contain,
+        repeat: repeat,
+        errorBuilder: (_, __, ___) => Icon(
+          fallbackIcon,
+          color: fallbackColor,
+          size: (width < height ? width : height) * 0.55,
+        ),
+      ),
+    );
+  }
+}
+
 /// ══════════════════════════════════════════════════════════════════════════════
 /// 1. زر تبديل الثيم المتحرك — LottieThemeToggle
 /// ══════════════════════════════════════════════════════════════════════════════
@@ -258,6 +299,7 @@ class EnergySavingPromoCard extends StatelessWidget {
     final cardBorder = isDark ? const Color(0xFF1E2A42) : const Color(0xFFE2E8F0);
     final textPrimary = isDark ? Colors.white : const Color(0xFF0F172A);
     final textSecondary = isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B);
+    final loc = AppLocalizations.of(context);
 
     return GestureDetector(
       onTap: onAction,
@@ -282,15 +324,11 @@ class EnergySavingPromoCard extends StatelessWidget {
           SizedBox(
             width: 72,
             height: 72,
-            child: Lottie.network(
-              AppAnimations.energySavingPromo,
-              fit: BoxFit.contain,
-              repeat: true,
-              errorBuilder: (_, __, ___) => const Icon(
-                Icons.energy_savings_leaf_rounded,
-                color: Color(0xFF10B981),
-                size: 40,
-              ),
+            child: PremiumLottie(
+              assetPath: AppAnimations.energySavingPromo,
+              width: 72,
+              height: 72,
+              fallbackIcon: Icons.energy_savings_leaf_rounded,
             ),
           ),
           const SizedBox(width: 14),
@@ -308,7 +346,7 @@ class EnergySavingPromoCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        'ترشيد الطاقة 🌿',
+                        loc.tr('energySavingBadge'),
                         style: AppTheme.getTextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w800,
@@ -320,7 +358,7 @@ class EnergySavingPromoCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'وفر حتى 25% من استهلاك الكهرباء',
+                  loc.tr('energySavingTitle'),
                   style: AppTheme.getTextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w800,
@@ -329,7 +367,7 @@ class EnergySavingPromoCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  'إيقاف الأجهزة غير الضرورية وقت الذروة يقلل من فاتورتك الشهرية بشكل فعال.',
+                  loc.tr('energySavingBody'),
                   style: AppTheme.getTextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
@@ -370,6 +408,7 @@ class EnergyAdvisoryDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final textPrimary = isDark ? Colors.white : const Color(0xFF0F172A);
     final textSecondary = isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B);
+    final loc = AppLocalizations.of(context);
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -390,20 +429,17 @@ class EnergyAdvisoryDialog extends StatelessWidget {
               SizedBox(
                 width: 140,
                 height: 140,
-                child: Lottie.network(
-                  AppAnimations.energyAdvisoryDialog,
-                  fit: BoxFit.contain,
-                  repeat: true,
-                  errorBuilder: (_, __, ___) => const Icon(
-                    Icons.tips_and_updates_rounded,
-                    color: Color(0xFFF59E0B),
-                    size: 64,
-                  ),
+                child: PremiumLottie(
+                  assetPath: AppAnimations.energyAdvisoryDialog,
+                  width: 140,
+                  height: 140,
+                  fallbackIcon: Icons.tips_and_updates_rounded,
+                  fallbackColor: const Color(0xFFF59E0B),
                 ),
               ),
               const SizedBox(height: 12),
               Text(
-                'إرشادات السلامة وترشيد الطاقة',
+                loc.tr('energySavingDialogTitle'),
                 style: AppTheme.getTextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
@@ -413,7 +449,7 @@ class EnergyAdvisoryDialog extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                'يقوم نظام الطاقة الذكي بمراقبة الأحمال وحمايتك من ارتفاع الجهد. نوصي بتوزيع استهلاك الأجهزة الثقيلة وتجنب تشغيلها دفعة واحدة.',
+                loc.tr('energySavingDialogBody'),
                 style: AppTheme.getTextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,

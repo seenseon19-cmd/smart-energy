@@ -10,6 +10,7 @@ import 'package:lottie/lottie.dart';
 import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/smart_energy_logo.dart';
+import '../widgets/lottie_widgets.dart';
 import '../providers/energy_provider.dart';
 import '../core/app_animations.dart';
 import 'main_shell.dart';
@@ -189,24 +190,13 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
                             ),
                           ],
                         ),
-                        child: ClipOval(
-                          child: Lottie.network(
-                            _isCommercial == true
-                                ? AppAnimations.resToCom
-                                : (_isCommercial == false
-                                    ? AppAnimations.comToRes
-                                    : AppAnimations.welcomeOnboarding),
-                            key: ValueKey(_isCommercial),
-                            fit: BoxFit.contain,
-                            repeat: true,
-                            errorBuilder: (_, __, ___) => Center(
-                              child: FaIcon(
-                                FontAwesomeIcons.boltLightning,
-                                size: 40,
-                                color: isDark ? AppTheme.neonCyan : AppTheme.accentCyan,
-                              ),
-                            ),
-                          ),
+                        child: PremiumLottie(
+                          key: ValueKey(_isCommercial),
+                          assetPath: AppAnimations.conceptSmartHome,
+                          width: 100,
+                          height: 100,
+                          fallbackIcon: FontAwesomeIcons.house,
+                          fallbackColor: isDark ? AppTheme.neonCyan : AppTheme.accentCyan,
                         ),
                       ),
                       const SizedBox(height: 24),

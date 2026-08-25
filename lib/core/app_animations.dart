@@ -1,36 +1,47 @@
 /// مدير مصادر الرسوم المتحركة Lottie — AppAnimations
 ///
-/// تُحفظ الروابط في مكان واحد حتى تبقى شاشات التطبيق متسقة وسهلة الصيانة.
+/// جميع الحركات Premium محلية بصيغة JSON مستخرجة من ملفات dotLottie
+/// الرسمية التي تم تنزيلها من صفحات LottieFiles المحددة. هذا يمنع
+/// الاعتماد على GIF أو روابط غير مستقرة، ويجعل فشل الشبكة غير مؤثر.
 class AppAnimations {
   AppAnimations._();
 
-  /// ترحيب الدخول بعد التسجيل.
+  /// الحركة المستخدمة في شرح الدخول بعد التسجيل.
   static const String welcomeOnboarding =
-      'https://lottie.host/ed8606ef-102c-44d0-9bdc-852f9e5df3f4/ajmOqZjCFd.json';
+      'assets/lottie/premium/smart_home_animation_2.json';
 
-  /// زر تبديل الوضع النهاري والليلي.
+  /// الحركة الحالية لزر تبديل الوضع النهاري والليلي.
   static const String themeToggle =
       'https://lottie.host/149d38e6-45fb-41b2-991b-26f586f9c9d5/mZHwwCR2mE.json';
 
-  /// بطاقة خفض الاستهلاك في الرئيسية.
+  /// Saving Energy = Saving Money — بطاقة Dashboard.
   static const String energySavingPromo =
-      'https://lottie.host/dfa6dd8e-b464-4200-b1aa-123b7a6b924a/v0cqW3sbND.json';
+      'assets/lottie/premium/saving_energy_saving_money.json';
 
   /// أزرار فتح وإغلاق الأجهزة.
   static const String powerToggle =
       'https://lottie.host/91be81ee-cfb9-440f-9278-747ebd9e7955/4REGnkyv7q.json';
 
-  /// الانتقال إلى الحساب التجاري.
-  static const String resToCom =
-      'https://lottie.host/2064d4dc-cda2-4856-b25c-4f5b94cf16d4/kkwXwXyL34.json';
+  /// Concept Smart Home — اختيار المنزل الذكي.
+  static const String conceptSmartHome =
+      'assets/lottie/premium/concept_smart_home.json';
 
-  /// الانتقال إلى الحساب المنزلي.
-  static const String comToRes =
-      'https://lottie.host/b0a4e140-1c02-4c31-a630-2c7b0fb97425/GKkLCgEWPe.json';
+  /// Smart Homes Devices — شاشة الأجهزة والأتمتة.
+  static const String smartHomesDevices =
+      'assets/lottie/premium/smart_homes_devices.json';
 
-  /// إعلان ترشيد استهلاك الكهرباء داخل Dialog.
+  /// Electricity / Smart Appliances — قسم استهلاك الكهرباء.
+  static const String electricity = 'assets/lottie/premium/electricity.json';
+
+  /// الحركة الحالية للانتقال التجاري، مع إبقاء المرجع القديم للتوافق.
+  static const String resToCom = conceptSmartHome;
+
+  /// الحركة الحالية للانتقال المنزلي، مع إبقاء المرجع القديم للتوافق.
+  static const String comToRes = 'assets/lottie/premium/concept_smart_home.json';
+
+  /// Energy Saving — Dialog التوعية.
   static const String energyAdvisoryDialog =
-      'https://lottie.host/dfa6dd8e-b464-4200-b1aa-123b7a6b924a/v0cqW3sbND.json';
+      'assets/lottie/premium/energy_saving.json';
 
   /// تنبيه الحمل الزائد.
   static const String overloadWarning =
@@ -39,4 +50,8 @@ class AppAnimations {
   /// هيدر شاشة الإحصائيات.
   static const String analyticsHero =
       'https://lottie.host/9860f184-bdbd-4a42-a490-25a1e9db730c/Z7Z53NtprF.json';
+
+  /// المصدر الرسمي للحركة السادسة لأغراض التوثيق والترخيص.
+  static const String smartHomeAnimation2 =
+      'assets/lottie/premium/smart_home_animation_2.json';
 }

@@ -8,6 +8,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/smart_energy_logo.dart';
+import '../widgets/lottie_widgets.dart';
+import '../core/app_animations.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final VoidCallback onComplete;
@@ -41,6 +43,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         title: loc.tr('onboard2Title'),
         desc: loc.tr('onboard2Desc'),
         gradientColors: [AppTheme.accentCyan, AppTheme.accentGreen],
+        animationAsset: AppAnimations.smartHomeAnimation2,
       ),
       _OnboardingData(
         icon: FontAwesomeIcons.shieldHalved,
@@ -265,11 +268,19 @@ class _OnboardingPageWidgetState extends State<_OnboardingPageWidget>
                         width: 1.5,
                       ),
                     ),
-                    child: FaIcon(
-                      widget.page.icon,
-                      size: 70,
-                      color: widget.page.gradientColors[0],
-                    ),
+                    child: widget.page.animationAsset != null
+                        ? PremiumLottie(
+                            assetPath: widget.page.animationAsset!,
+                            width: 150,
+                            height: 150,
+                            fallbackIcon: widget.page.icon,
+                            fallbackColor: widget.page.gradientColors[0],
+                          )
+                        : FaIcon(
+                            widget.page.icon,
+                            size: 70,
+                            color: widget.page.gradientColors[0],
+                          ),
                   ),
                 ),
               );
@@ -313,10 +324,12 @@ class _OnboardingData {
   final FaIconData icon;
   final String title, desc;
   final List<Color> gradientColors;
+  final String? animationAsset;
   const _OnboardingData({
     required this.icon,
     required this.title,
     required this.desc,
     required this.gradientColors,
+    this.animationAsset,
   });
 }
