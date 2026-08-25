@@ -368,6 +368,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showLanguageModal(BuildContext context, LocaleProvider localeProvider, bool isDark) {
+    final loc = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       backgroundColor: isDark ? const Color(0xFF10192C) : Colors.white,
@@ -419,12 +420,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!opened && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).tr('openAppFailed')),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).tr('openAppFailed')),
+        ),
       );
     }
   }
 
   void _showSupportModal(BuildContext context, bool isDark) {
+    final loc = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       backgroundColor: isDark ? const Color(0xFF10192C) : Colors.white,
@@ -438,7 +442,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'مركز الدعم والمساعدة',
+                loc.tr('supportCenter'),
                 style: AppTheme.getTextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
@@ -470,6 +474,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showAboutModal(BuildContext context, bool isDark) {
+    final loc = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (ctx) => Directionality(
@@ -477,7 +482,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: AlertDialog(
           backgroundColor: Theme.of(context).cardColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: const Text(loc.tr('supportOpenAbout'), style: TextStyle(fontWeight: FontWeight.w800)),
+          title: Text(loc.tr('supportOpenAbout'), style: const TextStyle(fontWeight: FontWeight.w800)),
           content: Text(AppLocalizations.of(context).tr('supportAboutDescription')),
           actions: [
             TextButton(
