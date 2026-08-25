@@ -27,18 +27,6 @@ class BiometricService {
   static const MethodChannel _channel = MethodChannel('smartenergy/biometric');
   static const String _enabledKey = 'biometric_auth_enabled';
   static const String _uidKey = 'biometric_auth_uid';
-  static bool _skipNextStartupPrompt = false;
-
-  static void skipNextStartupPrompt() {
-    _skipNextStartupPrompt = true;
-  }
-
-  static bool consumeStartupPromptSkip() {
-    final value = _skipNextStartupPrompt;
-    _skipNextStartupPrompt = false;
-    return value;
-  }
-
   /// يعيد قيمة BiometricManager.canAuthenticate على Android.
   static Future<int?> canAuthenticate() async {
     if (kIsWeb) return null;

@@ -56,6 +56,7 @@ class AuthService extends ChangeNotifier {
   /// يمنع عرض محتوى التطبيق عند وجود جلسة محفوظة قبل نجاح biometric.
   bool _biometricPending = false;
   bool _biometricPromptInProgress = false;
+  bool _interactiveSignInInProgress = false;
 
   // ── حالة التسجيل التجريبي (Fallback) ──
   /// هل المستخدم مسجل بالوضع التجريبي (عند فشل Firebase)
@@ -146,8 +147,7 @@ class AuthService extends ChangeNotifier {
 
     final currentUid = _auth.currentUser?.uid;
     if (currentUid != null && currentUid.isNotEmpty) {
-      _biometricPending = await BiometricService.isEnabledForUser(currentUid) &&
-          !BiometricService.consumeStartupPromptSkip();
+      _biometricPending = await BiometricService.isEnabledForUser(currentUid);
       final cleanUid = currentUid.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '').toUpperCase();
       final suffix = cleanUid.length >= 6 ? cleanUid.substring(0, 6) : cleanUid.padRight(6, '0');
       _accountNumber = 'SE-LY-$suffix';
@@ -163,8 +163,11 @@ class AuthService extends ChangeNotifier {
       _user = user;
       if (user == null) {
         _biometricPending = false;
-      } else if (!_biometricPromptInProgress && !BiometricService.consumeStartupPromptSkip()) {
+      } else if (!_biometricPromptInProgress && !_interactiveSignInInProgress) {
         _biometricPending = await BiometricService.isEnabledForUser(user.uid);
+      } else if (_interactiveSignInInProgress) {
+        _biometricPending = false;
+        _interactiveSignInInProgress = false;
       }
       final p = await SecureStorageService.instance;
       if (user != null && user.uid.isNotEmpty) {
@@ -245,7 +248,7 @@ class AuthService extends ChangeNotifier {
         /// التحقق التلقائي (Android فقط) — يتم عند قراءة SMS تلقائياً
         verificationCompleted: (PhoneAuthCredential credential) async {
           try {
-            BiometricService.skipNextStartupPrompt();
+            _interactiveSignInInProgress = true;
             await _auth.signInWithCredential(credential);
           } catch (e) {
             AppLogger.debug('خطأ في تسجيل الدخول التلقائي: $e');
@@ -325,12 +328,13 @@ class AuthService extends ChangeNotifier {
           verificationId: _verificationId!,
           smsCode: otp,
         );
-        BiometricService.skipNextStartupPrompt();
+        _interactiveSignInInProgress = true;
         await _auth.signInWithCredential(credential);
         _isLoading = false;
         notifyListeners();
         return true;
       } catch (e) {
+        _interactiveSignInInProgress = false;
         AppLogger.debug('خطأ في التحقق من OTP: $e');
         // فشل التحقق الحقيقي → عرض خطأ
         _setError('invalid_otp');
@@ -340,7 +344,7 @@ class AuthService extends ChangeNotifier {
 
     // ── الاحتياطي التجريبي: قبول "123456" فقط عند غياب verificationId ──
     if (!kReleaseMode && otp == '123456') {
-      BiometricService.skipNextStartupPrompt();
+      _interactiveSignInInProgress = true;
       _isSimulatedLogin = true;
       final prefs = await SecureStorageService.instance;
       await prefs.setBool('simulated_login', true);
@@ -376,7 +380,6 @@ class AuthService extends ChangeNotifier {
   /// القيمة المرجعة: true إذا نجح تسجيل الدخول
   Future<bool> signInWithEmail(String email, String password) async {
     _setLoading(true);
-    BiometricService.skipNextStartupPrompt();
 
     // ── التحقق من صحة المدخلات ──
     if (!_isValidEmail(email)) { _setError('invalid_email'); return false; }
@@ -384,6 +387,7 @@ class AuthService extends ChangeNotifier {
 
     // ── محاولة تسجيل الدخول عبر Firebase ──
     try {
+      _interactiveSignInInProgress = true;
       await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password,
@@ -392,10 +396,12 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
       return true;
     } on FirebaseAuthException catch (e) {
+      _interactiveSignInInProgress = false;
       AppLogger.debug('خطأ تسجيل الدخول بالبريد: ${e.code}');
       _setError(_mapEmailError(e.code));
       return false;
     } catch (e) {
+      _interactiveSignInInProgress = false;
       AppLogger.debug('خطأ غير متوقع في تسجيل الدخول: $e');
       _setError('email_auth_failed');
       return false;
@@ -423,7 +429,7 @@ class AuthService extends ChangeNotifier {
   /// يلغي بوابة biometric للجلسة الحالية دون تسجيل الدخول.
   Future<void> cancelBiometricGate() async {
     _biometricPending = false;
-    await signOut();
+    await signOut(resetOnboarding: false);
   }
 
   /// إنشاء حساب جديد بالبريد الإلكتروني وكلمة السر
@@ -613,7 +619,7 @@ class AuthService extends ChangeNotifier {
   }
 
   /// تسجيل الخروج — يمسح جميع حالات المصادقة ويعيد تعيين التطبيق
-  Future<void> signOut() async {
+  Future<void> signOut({bool resetOnboarding = true}) async {
     // ── تسجيل الخروج من Firebase ──
     try {
       await _auth.signOut();
@@ -633,8 +639,10 @@ class AuthService extends ChangeNotifier {
     await prefs.remove('simulated_login');
     await prefs.remove('simulated_phone');
     await prefs.remove('display_name');
-    final localPrefs = await SharedPreferences.getInstance();
-    await localPrefs.setBool('onboarding_done', false);
+    if (resetOnboarding) {
+      final localPrefs = await SharedPreferences.getInstance();
+      await localPrefs.setBool('onboarding_done', false);
+    }
 
     notifyListeners();
   }
