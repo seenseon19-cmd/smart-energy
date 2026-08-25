@@ -124,14 +124,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final themeProvider = context.watch<ThemeProvider>();
     final isDark = themeProvider.isDarkMode;
     final auth = context.watch<AuthService>();
-    final textPrimary = isDark ? Colors.white : const Color(0xFF0F172A);
-    final cardBg = isDark ? const Color(0xFF10192C) : Colors.white;
-    final cardBorder = isDark ? const Color(0xFF1E2A42) : const Color(0xFFE2E8F0);
+    const textPrimary = Colors.white;
+    final cardBg = const Color(0xFF141B2B).withOpacity(0.88);
+    final cardBorder = Colors.white.withOpacity(0.16);
 
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: loc.locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
-        backgroundColor: isDark ? const Color(0xFF070C18) : const Color(0xFFF8FAFC),
+        backgroundColor: const Color(0xFF070E1D),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -140,8 +140,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
             onPressed: () => Navigator.pop(context),
           ),
         ),
-        body: SafeArea(
-          child: Center(
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/stitch_auth_bg.png'),
+                    fit: BoxFit.cover,
+                  ),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.black.withOpacity(0.30), const Color(0xFF070E1D).withOpacity(0.95)],
+                  ),
+                  backgroundBlendMode: BlendMode.darken,
+                ),
+              ),
+            ),
+            SafeArea(
+              child: Center(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -209,7 +227,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           loc.tr('signupCredentialsHint'),
                           style: AppTheme.getTextStyle(
                             fontSize: 13,
-                            color: isDark ? Colors.white60 : AppTheme.lightTextSecondary,
+                            color: Colors.white.withOpacity(0.68),
                           ),
                         ),
                         const SizedBox(height: 24),
@@ -314,7 +332,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         loc.tr('alreadyHaveAccount'),
                         style: AppTheme.getTextStyle(
                           fontSize: 13,
-                          color: isDark ? Colors.white70 : AppTheme.lightTextSecondary,
+                          color: Colors.white.withOpacity(0.72),
                         ),
                       ),
                       TextButton(
@@ -408,9 +426,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onPressed: onTogglePassword,
                 ),
             ],
-          ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:lottie/lottie.dart';
 import '../theme/app_theme.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/energy_provider.dart';
 import '../core/app_animations.dart';
 import 'main_shell.dart';
@@ -87,14 +88,28 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
     final isDark = themeProvider.isDarkMode;
+    final loc = AppLocalizations.of(context);
 
-    return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBg : AppTheme.lightBg,
+    return Directionality(
+      textDirection: loc.locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
+      child: Scaffold(
+      backgroundColor: const Color(0xFF070E1D),
       body: Stack(
         children: [
           // خلفية متدرجة
           Container(
-            decoration: isDark ? AppTheme.darkBackgroundDecoration : AppTheme.lightBackgroundDecoration,
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                image: AssetImage('assets/images/stitch_space_bg.png'),
+                fit: BoxFit.cover,
+              ),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.black.withOpacity(0.28), const Color(0xFF070E1D).withOpacity(0.95)],
+              ),
+              backgroundBlendMode: BlendMode.darken,
+            ),
           ),
 
           // طبقات التوهج النيوني
@@ -195,20 +210,20 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
 
                       // العنوان الرئيسي
                       Text(
-                        "اختر نوع حسابك",
+                        loc.tr('selectAccountType'),
                         style: AppTheme.getTextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                          color: Colors.white,
                         ),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "حدد كيف تريد إدارة استهلاك الطاقة",
+                        loc.tr('manageSpacesDesc'),
                         style: AppTheme.getTextStyle(
                           fontSize: 14,
-                          color: isDark ? AppTheme.darkText.withOpacity(0.7) : AppTheme.lightTextSecondary,
+                          color: Colors.white.withOpacity(0.72),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -216,9 +231,9 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
 
                       // كرت النوع الشخصي
                       _buildTypeCard(
-                        title: "شخصي",
-                        subtitle: "Personal",
-                        description: "مراقبة طاقة المنزل والتحكم الذكي",
+                        title: loc.tr('personal'),
+                        subtitle: loc.tr('personal'),
+                        description: loc.tr('personalDesc'),
                         icon: FontAwesomeIcons.houseUser,
                         isSelected: _isCommercial == false,
                         activeColor: AppTheme.neonCyan,
@@ -228,9 +243,9 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
 
                       // كرت النوع التجاري
                       _buildTypeCard(
-                        title: "تجاري",
-                        subtitle: "Commercial",
-                        description: "ذكاء الطاقة للأعمال والمنشآت المتعددة",
+                        title: loc.tr('commercial'),
+                        subtitle: loc.tr('commercial'),
+                        description: loc.tr('commercialDesc'),
                         icon: FontAwesomeIcons.buildingShield,
                         isSelected: _isCommercial == true,
                         activeColor: AppTheme.neonGreen,
@@ -292,7 +307,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "متابعة",
+                                    loc.tr('continueBtn'),
                                     style: AppTheme.getTextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
@@ -315,6 +330,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
             ),
           ),
         ],
+      ),
       ),
     );
   }
@@ -371,12 +387,12 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
                   end: Alignment.bottomRight,
                   colors: isSelected
                       ? [
-                          activeColor.withOpacity(0.12),
-                          isDark ? AppTheme.darkCard : Colors.white.withOpacity(0.92),
+                          activeColor.withOpacity(0.20),
+                          const Color(0xFF141B2B).withOpacity(0.88),
                         ]
                       : [
-                          isDark ? AppTheme.darkBg.withOpacity(0.6) : Colors.white.withOpacity(0.95),
-                          isDark ? AppTheme.darkCard.withOpacity(0.3) : Colors.white.withOpacity(0.85),
+                          const Color(0xFF141B2B).withOpacity(0.76),
+                          const Color(0xFF232A3A).withOpacity(0.68),
                         ],
                 ),
               ),
@@ -417,7 +433,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
                               style: AppTheme.getTextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                                color: Colors.white,
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -437,7 +453,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen>
                           description,
                           style: AppTheme.getTextStyle(
                             fontSize: 13,
-                            color: isDark ? AppTheme.darkText.withOpacity(0.7) : AppTheme.lightTextSecondary,
+                            color: Colors.white.withOpacity(0.72),
                           ),
                         ),
                       ],

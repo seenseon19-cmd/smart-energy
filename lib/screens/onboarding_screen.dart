@@ -56,9 +56,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ];
 
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: loc.locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
       child: Container(
-        decoration: AppTheme.lightBackgroundDecoration,
+        decoration: BoxDecoration(
+          image: const DecorationImage(
+            image: AssetImage('assets/images/stitch_onboarding_bg.png'),
+            fit: BoxFit.cover,
+          ),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.black.withOpacity(0.08), const Color(0xFF070E1D).withOpacity(0.96)],
+          ),
+          backgroundBlendMode: BlendMode.darken,
+        ),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: SafeArea(
@@ -108,7 +119,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       width: _currentPage == i ? 32 : 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: _currentPage == i ? AppTheme.accentCyan : AppTheme.lightBorder.withOpacity(0.5),
+                        color: _currentPage == i ? const Color(0xFF10B981) : Colors.white.withOpacity(0.55),
                         borderRadius: BorderRadius.circular(4),
                         boxShadow: _currentPage == i
                             ? [BoxShadow(color: AppTheme.accentCyan.withOpacity(0.4), blurRadius: 6)]
@@ -174,7 +185,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             style: AppTheme.getTextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
-                              color: const Color(0xFF414751),
+                              color: Colors.white.withOpacity(0.86),
                             ),
                           ),
                         ),

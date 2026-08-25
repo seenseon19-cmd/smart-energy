@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen>
   String _selectedAccountType = 'residential'; // 'residential' or 'commercial'
 
   bool _isLoginMode = true;
-  bool _isPhoneMethod = true;
+  bool _isPhoneMethod = false;
   bool _showPassword = false;
 
   Timer? _resendTimer;
@@ -125,7 +125,21 @@ class _LoginScreenState extends State<LoginScreen>
         children: [
           // 🟢 بداية: تدرج الخلفية الانسيابي الفاخر — Light Glassmorphic Gradient
           Container(
-            decoration: isDark ? AppTheme.darkBackgroundDecoration : AppTheme.lightBackgroundDecoration,
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                image: AssetImage('assets/images/stitch_auth_bg.png'),
+                fit: BoxFit.cover,
+              ),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.28),
+                  const Color(0xFF070E1D).withOpacity(0.96),
+                ],
+              ),
+              backgroundBlendMode: BlendMode.darken,
+            ),
           ),
           // 🔵 نهاية: تدرج الخلفية الانسيابي
 
@@ -251,11 +265,6 @@ class _LoginScreenState extends State<LoginScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // 🟢 بداية: شريط التبديل الزجاجي الانسيابي الدائري المطابق لتصميم Stitch _1
-          _buildSegmentedControl(loc),
-          const SizedBox(height: 28),
-          // 🔵 نهاية: شريط التبديل
-
           Text(
             _isLoginMode ? loc.tr('welcomeLogin') : loc.tr('signUp'),
             style: AppTheme.getTextStyle(
@@ -275,10 +284,7 @@ class _LoginScreenState extends State<LoginScreen>
           ),
           const SizedBox(height: 28),
 
-          // 🟢 بداية: شريط تبويب طريقة التسجيل (هاتف / بريد) بتصميم زجاجي ناعم
-          _buildMethodTabs(loc),
-          const SizedBox(height: 24),
-          // 🔵 نهاية: شريط تبويب طريقة التسجيل
+          // البريد الإلكتروني هو المسار المرئي الافتراضي المطابق لتصميم Stitch.
 
             // نموذج الحقول الحية بناءً على الوضع المحدد (مؤمن بالكامل من الناحية الأمنية)
             AnimatedSize(
@@ -286,6 +292,14 @@ class _LoginScreenState extends State<LoginScreen>
               curve: Curves.easeInOut,
               child: _isPhoneMethod ? _buildPhoneMode(loc, auth) : _buildEmailMode(loc, auth),
             ),
+            if (_isLoginMode && !_isPhoneMethod)
+              Align(
+                alignment: Alignment.center,
+                child: TextButton(
+                  onPressed: () => setState(() => _isPhoneMethod = true),
+                  child: Text(loc.tr('loginWithPhone')),
+                ),
+              ),
 
             // 🟢 بداية: خيار الدخول كزائر (يظهر فقط في وضع تسجيل الدخول)
             if (_isLoginMode) ...[
