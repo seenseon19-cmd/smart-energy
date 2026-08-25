@@ -377,6 +377,25 @@ class EnergySavingPromoCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
+                const SizedBox(height: 8),
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: TextButton.icon(
+                    onPressed: onAction,
+                    icon: const Icon(Icons.arrow_back_rounded, size: 15),
+                    label: Text(loc.tr('energySavingAction')),
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xFF10B981),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      visualDensity: VisualDensity.compact,
+                      textStyle: AppTheme.getTextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

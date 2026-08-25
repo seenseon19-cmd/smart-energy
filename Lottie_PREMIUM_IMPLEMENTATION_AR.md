@@ -12,8 +12,7 @@
 
 | الحركة | صفحة المصدر | الملف المحلي | الموضع |
 |---|---|---|---|
-| Saving Energy = Saving Money | https://lottiefiles.com/free-animation/saving-energy-saving-money-6DLt5YDhWc | `assets/lottie/premium/saving_energy_saving_money.json` | `EnergySavingPromoCard` في Dashboard |
-| Energy Saving | https://lottiefiles.com/free-animation/energy-saving-WJTSj12RUC | `assets/lottie/premium/energy_saving.json` | `EnergyAdvisoryDialog` |
+| Energy Saving | https://lottiefiles.com/free-animation/energy-saving-tktaQk8Po2 | `assets/lottie/premium/energy_saving_tktaQk8Po2.json` | `EnergySavingPromoCard` في Dashboard و`EnergyAdvisoryDialog` |
 | Smart Homes Devices | https://lottiefiles.com/free-animation/smart-homes-devices-aW2rgR9101 | `assets/lottie/premium/smart_homes_devices.json` | بطاقة Smart Automation في Devices |
 | Electricity / Smart Appliances | https://lottiefiles.com/free-animation/electricity-hzLaicjib1 | `assets/lottie/premium/electricity.json` | رأس قسم Power Consumption في Statistics |
 | Concept Smart Home | https://lottiefiles.com/free-animation/concept-smart-home-ulbRRNfnad | `assets/lottie/premium/concept_smart_home.json` | Account Type / Smart Home Selection |
@@ -28,8 +27,8 @@
 ## تحقق المسارات
 
 ```text
-DashboardScreen → EnergySavingPromoCard → saving_energy_saving_money.json
-DashboardScreen → user tap → EnergyAdvisoryDialog → energy_saving.json
+DashboardScreen → EnergySavingPromoCard → energy_saving_tktaQk8Po2.json
+DashboardScreen → user tap → EnergyAdvisoryDialog → energy_saving_tktaQk8Po2.json
 DevicesScreen → Smart Automation card → smart_homes_devices.json
 StatisticsScreen → Power Consumption header → electricity.json
 Register flow → AccountTypeScreen → concept_smart_home.json

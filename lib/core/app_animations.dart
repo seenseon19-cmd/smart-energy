@@ -14,9 +14,9 @@ class AppAnimations {
   static const String themeToggle =
       'https://lottie.host/149d38e6-45fb-41b2-991b-26f586f9c9d5/mZHwwCR2mE.json';
 
-  /// Saving Energy = Saving Money — بطاقة Dashboard.
+  /// Energy Saving — بطاقة ترشيد الطاقة داخل Dashboard.
   static const String energySavingPromo =
-      'assets/lottie/premium/saving_energy_saving_money.json';
+      'assets/lottie/premium/energy_saving_tktaQk8Po2.json';
 
   /// أزرار فتح وإغلاق الأجهزة.
   static const String powerToggle =
@@ -41,7 +41,7 @@ class AppAnimations {
 
   /// Energy Saving — Dialog التوعية.
   static const String energyAdvisoryDialog =
-      'assets/lottie/premium/energy_saving.json';
+      'assets/lottie/premium/energy_saving_tktaQk8Po2.json';
 
   /// تنبيه الحمل الزائد.
   static const String overloadWarning =
