@@ -258,8 +258,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   /// 🟢 بناء كروت الباقات الأربعة بتصميم زجاجي وتدرجات لونية مطابقة لـ Stitch _7
   Widget _buildCard(_Tier tier, int index, int activeIndex, AppLocalizations loc, bool isDark, EnergyProvider energyProvider) {
     final isCommercialContext = _isCommercial && energyProvider.hasActiveCommercialSpace;
-    final isPro = tier.name == 'الاحترافية';
-    final isGold = tier.name == 'الذهبية';
+    final isPro = tier.name == loc.tr('professionalPlan');
+    final isGold = tier.name == loc.tr('goldPlan');
     final isActivePlan = (index == activeIndex);
     final sel = isActivePlan;
 
@@ -488,12 +488,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   List<_Tier> _personalPlans(AppLocalizations l) => [
     _Tier(
       l.tr('free'), '0', l.tr('free'),
-      [l.tr('monitoring'), '${l.tr('maxDevices')}: 2', 'لوحة تحكم أساسية'],
+      [l.tr('monitoring'), '${l.tr('maxDevices')}: 2', l.tr('basicDashboard')],
       null, null, null,
     ),
     _Tier(
-      'البرونزية', '15', l.tr('oneMonth'),
-      [l.tr('monitoring'), '${l.tr('maxDevices')}: 6', 'سجل استهلاك 30 يوم', l.tr('reports')],
+      l.tr('basicPlan'), '15', l.tr('oneMonth'),
+      [l.tr('monitoring'), '${l.tr('maxDevices')}: 6', l.tr('consumption30Days'), l.tr('reports')],
       null,
       const LinearGradient(
         colors: [Color(0xFF7C3AED), Color(0xFFEC4899)],
@@ -502,8 +502,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       const Color(0xFF7C3AED),
     ),
     _Tier(
-      'الاحترافية', '35', l.tr('threeMonths'),
-      [l.tr('monitoring'), '${l.tr('maxDevices')}: 15', l.tr('reports'), l.tr('scheduling'), 'تنبيهات ذكية'],
+      l.tr('professionalPlan'), '35', l.tr('threeMonths'),
+      [l.tr('monitoring'), '${l.tr('maxDevices')}: 15', l.tr('reports'), l.tr('scheduling'), l.tr('smartAlerts')],
       'الباقة الحالية',
       const LinearGradient(
         colors: [Color(0xFF0EA5E9), Color(0xFF10B981)],
@@ -512,8 +512,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       AppTheme.accentCyan,
     ),
     _Tier(
-      'الذهبية', '50', 'غير محدودة',
-      [l.tr('monitoring'), '${l.tr('maxDevices')}: ${l.tr('unlimited')}', l.tr('reports'), l.tr('scheduling'), l.tr('prioritySupport'), 'دعم فني 24/7'],
+      l.tr('goldPlan'), '50', l.tr('unlimited'),
+      [l.tr('monitoring'), '${l.tr('maxDevices')}: ${l.tr('unlimited')}', l.tr('reports'), l.tr('scheduling'), l.tr('prioritySupport'), l.tr('support247')],
       l.tr('bestValue'),
       AppTheme.goldGradient,
       AppTheme.accentAmber,
@@ -530,7 +530,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       null, null, null,
     ),
     _Tier(
-      'البرونزية', '50', l.tr('oneMonth'),
+      l.tr('basicPlan'), '50', l.tr('oneMonth'),
       [l.tr('monitoring'), '${l.tr('maxDevices')}: 20', l.tr('reports')],
       null,
       const LinearGradient(
@@ -540,7 +540,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       const Color(0xFF7C3AED),
     ),
     _Tier(
-      'الاحترافية', '120', l.tr('threeMonths'),
+      l.tr('professionalPlan'), '120', l.tr('threeMonths'),
       [l.tr('monitoring'), '${l.tr('maxDevices')}: 50', l.tr('reports'), l.tr('scheduling')],
       l.tr('mostPopular'),
       const LinearGradient(
@@ -550,7 +550,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       AppTheme.accentCyan,
     ),
     _Tier(
-      'الذهبية', '400', 'غير محدودة',
+      l.tr('goldPlan'), '400', l.tr('unlimited'),
       [l.tr('monitoring'), '${l.tr('maxDevices')}: ${l.tr('unlimited')}', l.tr('reports'), l.tr('prioritySupport')],
       l.tr('bestValue'),
       AppTheme.goldGradient,

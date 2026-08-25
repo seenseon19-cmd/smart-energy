@@ -55,8 +55,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
   Future<void> _toggleBiometrics(bool value) async {
     if (value && !_deviceSupportsBiometrics) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('المصادقة البيومترية غير متاحة. أضف بصمة أو Face ID من إعدادات الجهاز أولاً.'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).tr('biometricUnavailable')),
           backgroundColor: Color(0xFFEF4444),
           behavior: SnackBarBehavior.floating,
         ),
@@ -66,15 +66,15 @@ class _SecurityScreenState extends State<SecurityScreen> {
     if (value) {
       try {
         final success = await BiometricService.authenticate(
-          localizedReason: 'يرجى تأكيد البصمة أو رمز القفل لتفعيل الدخول البيومتري',
+          localizedReason: AppLocalizations.of(context).tr('biometricEnableReason'),
         );
         if (success) {
           await BiometricService.setBiometricEnabled(true);
           if (mounted) {
             setState(() => _isBiometricsEnabled = true);
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('تم تفعيل المصادقة البيومترية بنجاح 🛡️'),
+              SnackBar(
+                content: Text(AppLocalizations.of(context).tr('biometricEnabledSuccess')),
                 backgroundColor: Color(0xFF10B981),
                 behavior: SnackBarBehavior.floating,
               ),
@@ -83,8 +83,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
         } else {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('لم يتم التحقق من البصمة أو تم إلغاء العملية'),
+              SnackBar(
+                content: Text(AppLocalizations.of(context).tr('biometricCancelled')),
                 backgroundColor: Color(0xFFEF4444),
                 behavior: SnackBarBehavior.floating,
               ),
@@ -95,7 +95,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: Text('تعذر تشغيل المصادقة البيومترية. تحقق من إعدادات الجهاز ثم حاول مرة أخرى.'),
+                content: Text(AppLocalizations.of(context).tr('biometricError')),
               backgroundColor: const Color(0xFFEF4444),
               behavior: SnackBarBehavior.floating,
             ),
@@ -107,8 +107,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
       if (mounted) {
         setState(() => _isBiometricsEnabled = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('تم إلغاء تفعيل المصادقة البيومترية'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).tr('biometricDisabledSuccess')),
             backgroundColor: Color(0xFF64748B),
             behavior: SnackBarBehavior.floating,
           ),

@@ -57,7 +57,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final textSecondary = isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B);
     const accentBlue = Color(0xFF38BDF8);
 
-    final currentLangLabel = localeProvider.locale.languageCode == 'ar' ? 'العربية' : 'English';
+    final currentLangLabel = loc.tr(localeProvider.locale.languageCode == 'ar' ? 'arabicLanguage' : 'englishLanguage');
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -88,7 +88,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 1️⃣ المظهر والواجهة (Appearance)
-                _buildSectionHeader('المظهر والتخصيص', accentBlue),
+                _buildSectionHeader(loc.tr('appearanceCustomization'), accentBlue),
                 _buildGroupCard(
                   cardBg: cardBg,
                   cardBorder: cardBorder,
@@ -119,7 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ),
                                 ),
                                 Text(
-                                  isDark ? 'الوضع المظلم مفعل' : 'الوضع المضيء مفعل',
+                                  loc.tr(isDark ? 'darkModeEnabled' : 'lightModeEnabled'),
                                   style: AppTheme.getTextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,
@@ -142,7 +142,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 20),
 
                 // 2️⃣ اللغة والإشعارات (General Preferences)
-                _buildSectionHeader('اللغة والتنبيهات', accentBlue),
+                _buildSectionHeader(loc.tr('languageNotifications'), accentBlue),
                 _buildGroupCard(
                   cardBg: cardBg,
                   cardBorder: cardBorder,
@@ -194,7 +194,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 20),
 
                 // 3️⃣ الأمان والحماية الذكية
-                _buildSectionHeader('الأمان والحماية', accentBlue),
+                _buildSectionHeader(loc.tr('securityProtection'), accentBlue),
                 _buildGroupCard(
                   cardBg: cardBg,
                   cardBorder: cardBorder,
@@ -202,7 +202,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _buildSettingsTile(
                       icon: Icons.shield_outlined,
                       iconColor: AppTheme.neonGreen,
-                      title: 'تنبيهات وحماية الأحمال الكهربائية',
+                      title: loc.tr('loadProtectionAlerts'),
                       textPrimary: textPrimary,
                       textSecondary: textSecondary,
                       onTap: () => Navigator.push(
@@ -214,7 +214,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _buildSettingsTile(
                       icon: Icons.security_rounded,
                       iconColor: accentBlue,
-                      title: 'الأمان المتقدم والمصادقة الثنائية (2FA)',
+                      title: loc.tr('advancedSecurity2fa'),
                       textPrimary: textPrimary,
                       textSecondary: textSecondary,
                       onTap: () => Navigator.push(
@@ -228,7 +228,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 20),
 
                 // 4️⃣ التقارير والدعم الفني
-                _buildSectionHeader('التقارير والدعم الفني', accentBlue),
+                _buildSectionHeader(loc.tr('reportsTechnicalSupport'), accentBlue),
                 _buildGroupCard(
                   cardBg: cardBg,
                   cardBorder: cardBorder,
@@ -236,7 +236,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _buildSettingsTile(
                       icon: Icons.analytics_outlined,
                       iconColor: AppTheme.primaryBlue,
-                      title: 'تقارير استهلاك الطاقة الشهرية',
+                      title: loc.tr('monthlyEnergyReports'),
                       textPrimary: textPrimary,
                       textSecondary: textSecondary,
                       onTap: () => Navigator.push(
@@ -258,7 +258,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       icon: Icons.info_outline_rounded,
                       iconColor: AppTheme.neonCyan,
                       title: loc.tr('aboutApp'),
-                      sideValue: 'v1.0.0',
+                      sideValue: loc.tr('supportAppVersion'),
                       textPrimary: textPrimary,
                       textSecondary: textSecondary,
                       onTap: () => _showAboutModal(context, isDark),
@@ -380,7 +380,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'اختيار لغة التطبيق',
+                loc.tr('chooseAppLanguage'),
                 style: AppTheme.getTextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
@@ -389,23 +389,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 16),
               ListTile(
-                title: const Text('العربية (Arabic) 🇱🇾', style: TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(loc.tr('arabicLanguageOption'), style: const TextStyle(fontWeight: FontWeight.bold)),
                 trailing: localeProvider.locale.languageCode == 'ar'
                     ? const Icon(Icons.check_circle_rounded, color: AppTheme.primaryBlue)
                     : null,
-                onTap: () {
-                  localeProvider.setLocale(const Locale('ar'));
-                  Navigator.pop(ctx);
+                onTap: () async {
+                  await localeProvider.setLocale(const Locale('ar'));
+                  if (ctx.mounted) Navigator.pop(ctx);
                 },
               ),
               ListTile(
-                title: const Text('English (الإنجليزية) 🇺🇸', style: TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(loc.tr('englishLanguageOption'), style: const TextStyle(fontWeight: FontWeight.bold)),
                 trailing: localeProvider.locale.languageCode == 'en'
                     ? const Icon(Icons.check_circle_rounded, color: AppTheme.primaryBlue)
                     : null,
-                onTap: () {
-                  localeProvider.setLocale(const Locale('en'));
-                  Navigator.pop(ctx);
+                onTap: () async {
+                  await localeProvider.setLocale(const Locale('en'));
+                  if (ctx.mounted) Navigator.pop(ctx);
                 },
               ),
             ],
@@ -419,7 +419,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!opened && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تعذر فتح التطبيق المطلوب على هذا الجهاز')),
+        SnackBar(content: Text(AppLocalizations.of(context).tr('openAppFailed')),
       );
     }
   }
@@ -446,18 +446,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              const Text('فريق الدعم الفني جاهز لمساعدتك على مدار الساعة بشأن الأجهزة والمراقبة.'),
+              Text(loc.tr('supportDescription')),
               const SizedBox(height: 16),
               ListTile(
                 leading: const Icon(Icons.email_outlined, color: AppTheme.primaryBlue),
-                title: const Text('البريد الإلكتروني للدعم'),
+                title: Text(loc.tr('supportEmailTitle')),
                 subtitle: const Text('souhaylsaaid4@gmail.com'),
                 trailing: const Icon(Icons.open_in_new_rounded, size: 18),
                 onTap: () => _launchSupportUri(context, Uri(scheme: 'mailto', path: 'souhaylsaaid4@gmail.com')),
               ),
               ListTile(
                 leading: const Icon(Icons.phone_outlined, color: AppTheme.neonGreen),
-                title: const Text('الخط الساخن المباشر'),
+                title: Text(loc.tr('supportPhoneTitle')),
                 subtitle: const Text('00218915775774'),
                 trailing: const Icon(Icons.open_in_new_rounded, size: 18),
                 onTap: () => _launchSupportUri(context, Uri(scheme: 'tel', path: '00218915775774')),
@@ -477,14 +477,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: AlertDialog(
           backgroundColor: Theme.of(context).cardColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: const Text('عن تطبيق SmartEnergy', style: TextStyle(fontWeight: FontWeight.w800)),
-          content: const Text(
-            'منظومة SmartEnergy هي الحل الذكي الرائد لمراقبة وإدارة استهلاك الطاقة وحماية الشبكات الكهربائية المنزلية والتجارية في ليبيا بتقنيات إنترنت الأشياء (IoT).',
-          ),
+          title: const Text(loc.tr('supportOpenAbout'), style: TextStyle(fontWeight: FontWeight.w800)),
+          content: Text(AppLocalizations.of(context).tr('supportAboutDescription')),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: const Text('إغلاق', style: TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.bold)),
+              child: Text(AppLocalizations.of(context).tr('close'), style: const TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.bold)),
             ),
           ],
         ),

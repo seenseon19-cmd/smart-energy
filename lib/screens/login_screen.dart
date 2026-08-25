@@ -266,7 +266,7 @@ class _LoginScreenState extends State<LoginScreen>
           ),
           const SizedBox(height: 4),
           Text(
-            _isLoginMode ? loc.tr('loginSubtitle') : "أنشئ حساباً للتحكم الكامل في طاقتك",
+            _isLoginMode ? loc.tr('loginSubtitle') : loc.tr('signUpSubtitle'),
             style: AppTheme.getTextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w500,
@@ -296,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen>
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      "أو",
+                      loc.tr('or'),
                       style: AppTheme.getTextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -310,7 +310,7 @@ class _LoginScreenState extends State<LoginScreen>
               const SizedBox(height: 20),
               _InteractiveScale(
                 onTap: () async {
-                  _autoSaveUserProfile(name: 'زائر الطاقة الذكية', phone: '+218910000000');
+                  _autoSaveUserProfile(name: loc.tr('guestEnergyProfile'), phone: '+218910000000');
                   if (context.mounted) widget.onLoginSuccess();
                   auth.sendOTP('910000000');
                   auth.verifyOTP('123456');
@@ -325,7 +325,7 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
                   child: Center(
                     child: Text(
-                      "متابعة كزائر",
+                      loc.tr('continueAsGuest'),
                       style: AppTheme.getTextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -1137,16 +1137,17 @@ class _LoginScreenState extends State<LoginScreen>
   Future<void> _handleEmailAuth(AuthService auth) async {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
+    final loc = AppLocalizations.of(context);
 
     if (email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('يرجى إدخال البريد الإلكتروني'), backgroundColor: AppTheme.neonRed),
+        SnackBar(content: Text(loc.tr('enterEmail')), backgroundColor: AppTheme.neonRed),
       );
       return;
     }
     if (password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('يرجى إدخال كلمة المرور'), backgroundColor: AppTheme.neonRed),
+        SnackBar(content: Text(loc.tr('enterPassword')), backgroundColor: AppTheme.neonRed),
       );
       return;
     }

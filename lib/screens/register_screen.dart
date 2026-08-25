@@ -50,29 +50,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
+    final loc = AppLocalizations.of(context);
 
     if (!_acceptedPolicies) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('يجب الموافقة على سياسة الخصوصية وشروط الاستخدام'), backgroundColor: AppTheme.neonRed));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(loc.tr('registrationConsentRequired')), backgroundColor: AppTheme.neonRed));
       return;
     }
 
     if (email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('يرجى إدخال البريد الإلكتروني'), backgroundColor: AppTheme.neonRed),
+        SnackBar(content: Text(loc.tr('enterEmail')), backgroundColor: AppTheme.neonRed),
       );
       return;
     }
 
     if (password.isEmpty || password.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('كلمة المرور يجب أن تكون 6 أحرف على الأقل'), backgroundColor: AppTheme.neonRed),
+        SnackBar(content: Text(loc.tr('passwordMinLength')), backgroundColor: AppTheme.neonRed),
       );
       return;
     }
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('كلمتا المرور غير متطابقتين'), backgroundColor: AppTheme.neonRed),
+        SnackBar(content: Text(loc.tr('passwordsMismatch')), backgroundColor: AppTheme.neonRed),
       );
       return;
     }
@@ -178,7 +179,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'إنشاء حساب جديد',
+                              loc.tr('signUp'),
                               style: AppTheme.getTextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w900,
@@ -192,7 +193,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                'الخطوة 1 من 3',
+                                '${loc.tr('step')} 1 ${loc.tr('of')} 3',
                                 style: AppTheme.getTextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w700,
@@ -204,7 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          'أدخل بيانات الدخول الأساسية للبدء في إدارة طاقتك',
+                          loc.tr('signupCredentialsHint'),
                           style: AppTheme.getTextStyle(
                             fontSize: 13,
                             color: isDark ? Colors.white60 : AppTheme.lightTextSecondary,
@@ -214,7 +215,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                         // 1. البريد الإلكتروني
                         _buildInputField(
-                          label: 'البريد الإلكتروني',
+                          label: loc.tr('email'),
                           hint: 'user@example.com',
                           controller: _emailController,
                           focusNode: _emailFocus,
@@ -226,7 +227,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                         // 2. كلمة المرور
                         _buildInputField(
-                          label: 'كلمة المرور',
+                          label: loc.tr('password'),
                           hint: '••••••••',
                           controller: _passwordController,
                           focusNode: _passwordFocus,
@@ -240,7 +241,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                         // 3. تأكيد كلمة المرور
                         _buildInputField(
-                          label: 'تأكيد كلمة المرور',
+                          label: loc.tr('confirmPassword'),
                           hint: '••••••••',
                           controller: _confirmPasswordController,
                           focusNode: _confirmPasswordFocus,
@@ -257,8 +258,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Expanded(child: Padding(
                               padding: const EdgeInsets.only(top: 11),
                               child: Wrap(children: [
-                                const Text('أوافق على '),
-                                GestureDetector(onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen())), child: Text('سياسة الخصوصية وشروط الاستخدام', style: const TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.w800))),
+                                Text('${loc.tr('iAgreeTo')} '),
+                                GestureDetector(onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen())), child: Text(loc.tr('privacyTerms'), style: const TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.w800))),
                               ]),
                             )),
                           ],
@@ -286,7 +287,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'متابعة (الخطوة التالية)',
+                                        loc.tr('nextStep'),
                                         style: AppTheme.getTextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w800,
@@ -309,7 +310,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'لديك حساب بالفعل؟',
+                        loc.tr('alreadyHaveAccount'),
                         style: AppTheme.getTextStyle(
                           fontSize: 13,
                           color: isDark ? Colors.white70 : AppTheme.lightTextSecondary,
@@ -318,7 +319,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       TextButton(
                         onPressed: () => Navigator.pop(context),
                         child: Text(
-                          'تسجيل الدخول',
+                          loc.tr('login'),
                           style: AppTheme.getTextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w800,

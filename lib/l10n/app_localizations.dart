@@ -39,6 +39,10 @@ class AppLocalizations {
     'resendOtp': {'en': 'Resend Code', 'ar': 'إعادة إرسال الرمز'},
     'welcomeLogin': {'en': 'Welcome to SmartEnergy', 'ar': 'مرحباً بك في الطاقة الذكية'},
     'loginSubtitle': {'en': 'Monitor and control your home energy', 'ar': 'راقب وتحكم في طاقة منزلك'},
+    'signUpSubtitle': {'en': 'Create an account to take full control of your energy', 'ar': 'أنشئ حساباً للتحكم الكامل في طاقتك'},
+    'or': {'en': 'OR', 'ar': 'أو'},
+    'guestEnergyProfile': {'en': 'SmartEnergy Guest', 'ar': 'زائر الطاقة الذكية'},
+    'continueAsGuest': {'en': 'Continue as guest', 'ar': 'متابعة كزائر'},
     'invalidPhone': {'en': 'Please enter a valid Libyan phone number', 'ar': 'يرجى إدخال رقم هاتف ليبي صالح'},
     'invalidOtp': {'en': 'Invalid verification code', 'ar': 'رمز التحقق غير صحيح'},
     'profile': {'en': 'Profile', 'ar': 'الملف الشخصي'},
@@ -411,6 +415,94 @@ class AppLocalizations {
     'commercialLabel': {'en': '🏢 Commercial (12 device limit)', 'ar': '🏢 تجاري (حد 12 جهاز)'},
     'residentialLabel': {'en': '🏠 Residential (8 device limit)', 'ar': '🏠 منزلي (حد 8 أجهزة)'},
     'devicesCount': {'en': '{count} device', 'ar': '{count} جهاز'},
+
+    // ── مفاتيح الواجهة العامة والإعدادات ──
+    'arabicLanguage': {'en': 'Arabic', 'ar': 'العربية'},
+    'englishLanguage': {'en': 'English', 'ar': 'الإنجليزية'},
+    'chooseAppLanguage': {'en': 'Choose app language', 'ar': 'اختيار لغة التطبيق'},
+    'arabicLanguageOption': {'en': 'Arabic 🇱🇾', 'ar': 'العربية (Arabic) 🇱🇾'},
+    'englishLanguageOption': {'en': 'English 🇺🇸', 'ar': 'English (الإنجليزية) 🇺🇸'},
+    'appearanceCustomization': {'en': 'Appearance & customization', 'ar': 'المظهر والتخصيص'},
+    'languageNotifications': {'en': 'Language & notifications', 'ar': 'اللغة والتنبيهات'},
+    'securityProtection': {'en': 'Security & protection', 'ar': 'الأمان والحماية'},
+    'reportsTechnicalSupport': {'en': 'Reports & technical support', 'ar': 'التقارير والدعم الفني'},
+    'darkModeEnabled': {'en': 'Dark mode enabled', 'ar': 'الوضع المظلم مفعل'},
+    'lightModeEnabled': {'en': 'Light mode enabled', 'ar': 'الوضع المضيء مفعل'},
+    'loadProtectionAlerts': {'en': 'Load protection alerts', 'ar': 'تنبيهات وحماية الأحمال الكهربائية'},
+    'advancedSecurity2fa': {'en': 'Advanced security & two-factor authentication (2FA)', 'ar': 'الأمان المتقدم والمصادقة الثنائية (2FA)'},
+    'monthlyEnergyReports': {'en': 'Monthly energy consumption reports', 'ar': 'تقارير استهلاك الطاقة الشهرية'},
+    'supportDescription': {'en': 'Our support team is ready to help with devices and monitoring around the clock.', 'ar': 'فريق الدعم الفني جاهز لمساعدتك على مدار الساعة بشأن الأجهزة والمراقبة.'},
+    'supportEmailTitle': {'en': 'Support email', 'ar': 'البريد الإلكتروني للدعم'},
+    'supportPhoneTitle': {'en': 'Direct hotline', 'ar': 'الخط الساخن المباشر'},
+    'openAppFailed': {'en': 'Unable to open the requested app on this device', 'ar': 'تعذر فتح التطبيق المطلوب على هذا الجهاز'},
+    'supportOpenAbout': {'en': 'About SmartEnergy', 'ar': 'عن تطبيق SmartEnergy'},
+    'supportAboutDescription': {'en': 'SmartEnergy is an intelligent solution for monitoring and managing energy consumption and protecting residential and commercial electrical networks in Libya using IoT technology.', 'ar': 'منظومة SmartEnergy هي الحل الذكي الرائد لمراقبة وإدارة استهلاك الطاقة وحماية الشبكات الكهربائية المنزلية والتجارية في ليبيا بتقنيات إنترنت الأشياء (IoT).'},
+    'close': {'en': 'Close', 'ar': 'إغلاق'},
+    'supportAppVersion': {'en': 'v1.0.0', 'ar': 'v1.0.0'},
+
+    // ── مفاتيح المصادقة البيومترية والبدء ──
+    'biometricUnavailable': {'en': 'Biometric authentication is unavailable. Add a fingerprint or Face ID in device settings first.', 'ar': 'المصادقة البيومترية غير متاحة. أضف بصمة أو Face ID من إعدادات الجهاز أولاً.'},
+    'biometricEnableReason': {'en': 'Confirm your fingerprint, Face ID, or device passcode to enable biometric sign-in', 'ar': 'يرجى تأكيد البصمة أو رمز القفل لتفعيل الدخول البيومتري'},
+    'biometricCancelled': {'en': 'Biometric verification was cancelled or not completed', 'ar': 'لم يتم التحقق من البصمة أو تم إلغاء العملية'},
+    'biometricEnabledSuccess': {'en': 'Biometric authentication enabled successfully', 'ar': 'تم تفعيل المصادقة البيومترية بنجاح'},
+    'biometricDisabledSuccess': {'en': 'Biometric authentication disabled', 'ar': 'تم إلغاء تفعيل المصادقة البيومترية'},
+    'biometricError': {'en': 'Biometric authentication failed. Check device settings and try again.', 'ar': 'تعذر تشغيل المصادقة البيومترية. تحقق من إعدادات الجهاز ثم حاول مرة أخرى.'},
+    'startupPreparingExperience': {'en': 'Preparing your SmartEnergy experience', 'ar': 'جارٍ تجهيز تجربة SmartEnergy'},
+    'startupLoadingProfile': {'en': 'Loading your profile', 'ar': 'جارٍ تحميل ملفك الشخصي'},
+    'startupPreparingAccount': {'en': 'Preparing your account', 'ar': 'جارٍ تجهيز حسابك'},
+    'startupErrorTitle': {'en': 'Unable to prepare the app', 'ar': 'تعذر تجهيز التطبيق'},
+    'startupErrorDescription': {'en': 'Check your connection and try again. No data was lost.', 'ar': 'تحقق من الاتصال ثم أعد المحاولة. لم يتم فقدان أي بيانات.'},
+    'retry': {'en': 'Retry', 'ar': 'إعادة المحاولة'},
+    'basicPlan': {'en': 'Basic', 'ar': 'البرونزية'},
+    'professionalPlan': {'en': 'Professional', 'ar': 'الاحترافية'},
+    'goldPlan': {'en': 'Gold', 'ar': 'الذهبية'},
+    'basicDashboard': {'en': 'Basic dashboard', 'ar': 'لوحة تحكم أساسية'},
+    'consumption30Days': {'en': '30-day consumption history', 'ar': 'سجل استهلاك 30 يوم'},
+    'smartAlerts': {'en': 'Smart alerts', 'ar': 'تنبيهات ذكية'},
+    'unlimited': {'en': 'Unlimited', 'ar': 'غير محدودة'},
+    'support247': {'en': '24/7 technical support', 'ar': 'دعم فني 24/7'},
+    'privacyAndTerms': {'en': 'Privacy & terms', 'ar': 'الخصوصية والشروط'},
+    'aboutSmartEnergy': {'en': 'About SmartEnergy', 'ar': 'أهمية SmartEnergy'},
+    'aboutSmartEnergyText': {'en': 'SmartEnergy helps you monitor energy consumption, protect devices from overloads, and make practical decisions to save electricity at home or at your facility.', 'ar': 'يساعدك SmartEnergy على مراقبة استهلاك الطاقة، حماية الأجهزة من الأحمال الزائدة، واتخاذ قرارات عملية لترشيد الكهرباء في المنزل أو المنشأة.'},
+    'privacyPolicy': {'en': 'Privacy policy', 'ar': 'سياسة الخصوصية'},
+    'privacyPolicyText': {'en': 'We use account and energy data to provide monitoring, control, and alerts. Data is used within your account and device operations, and we do not sell your personal data. You can request an update or deletion through support.', 'ar': 'نستخدم بيانات الحساب وبيانات الطاقة لتقديم المراقبة والتحكم والتنبيهات. تُستخدم البيانات ضمن حسابك وعمليات التشغيل المرتبطة بأجهزتك، ولا نبيع بياناتك الشخصية. يمكنك طلب تحديث بياناتك أو حذفها عبر الدعم.'},
+    'termsOfService': {'en': 'Terms of service', 'ar': 'شروط الخدمة'},
+    'termsOfServiceText': {'en': 'The app supports energy management and monitoring, but it is not a replacement for electrical safety systems or a qualified technician. Users are responsible for connecting devices safely and protecting their credentials.', 'ar': 'يُستخدم التطبيق لإدارة الطاقة والمراقبة المساعدة، ولا يُعد بديلاً عن أنظمة السلامة الكهربائية أو فني مؤهل. يتحمل المستخدم مسؤولية ربط الأجهزة وفق الإرشادات والمحافظة على بيانات الدخول.'},
+    'supportAndHelp': {'en': 'Support & help', 'ar': 'الدعم والمساعدة'},
+    'supportAndHelpText': {'en': 'For questions or privacy requests, contact our support team through WhatsApp or the approved phone number.', 'ar': 'للاستفسارات أو طلبات الخصوصية، تواصل مباشرة مع فريق الدعم عبر واتساب أو الاتصال بالرقم المعتمد.'},
+    'contactSupport': {'en': 'Contact support', 'ar': 'تواصل مع الدعم'},
+    'lastUpdatedAugust2026': {'en': 'Last updated: August 2026', 'ar': 'آخر تحديث: أغسطس 2026'},
+    'registrationConsentRequired': {'en': 'You must accept the privacy policy and terms of use', 'ar': 'يجب الموافقة على سياسة الخصوصية وشروط الاستخدام'},
+    'enterEmail': {'en': 'Please enter your email address', 'ar': 'يرجى إدخال البريد الإلكتروني'},
+    'enterPassword': {'en': 'Please enter your password', 'ar': 'يرجى إدخال كلمة المرور'},
+    'passwordMinLength': {'en': 'Password must be at least 6 characters', 'ar': 'كلمة المرور يجب أن تكون 6 أحرف على الأقل'},
+    'passwordsMismatch': {'en': 'Passwords do not match', 'ar': 'كلمتا المرور غير متطابقتين'},
+    'fillAllFields': {'en': 'Please fill in all fields to continue', 'ar': 'يرجى ملء جميع الحقول للمتابعة'},
+    'validAge': {'en': 'Please enter a valid age', 'ar': 'يرجى إدخال عمر صحيح'},
+    'enterSpaceName': {'en': 'Please enter a space name', 'ar': 'يرجى إدخال اسم المساحة'},
+    'spaceAdded': {'en': 'Space "{name}" added successfully', 'ar': 'تمت إضافة مساحة "{name}" بنجاح'},
+    'spaceAddError': {'en': 'Could not add the space. Please try again.', 'ar': 'حدث خطأ أثناء إضافة المساحة. حاول مرة أخرى.'},
+    'deviceSaveError': {'en': 'Could not save the device. Please try again.', 'ar': 'حدث خطأ أثناء حفظ الجهاز. حاول مرة أخرى.'},
+    'deviceAdded': {'en': 'Device "{name}" added successfully', 'ar': 'تمت إضافة جهاز "{name}" بنجاح'},
+    'secretCopied': {'en': 'Secret key copied to clipboard', 'ar': 'تم نسخ المفتاح السري إلى الحافظة'},
+    'twoFactorDisabled': {'en': 'Two-factor authentication disabled', 'ar': 'تم تعطيل المصادقة الثنائية'},
+    'twoFactorEnabled': {'en': 'Two-factor authentication enabled successfully', 'ar': 'تم تفعيل المصادقة الثنائية بنجاح'},
+    'step': {'en': 'Step', 'ar': 'الخطوة'},
+    'of': {'en': 'of', 'ar': 'من'},
+    'signupCredentialsHint': {'en': 'Enter your basic credentials to start managing your energy', 'ar': 'أدخل بيانات الدخول الأساسية للبدء في إدارة طاقتك'},
+    'confirmPassword': {'en': 'Confirm password', 'ar': 'تأكيد كلمة المرور'},
+    'iAgreeTo': {'en': 'I agree to', 'ar': 'أوافق على'},
+    'privacyTerms': {'en': 'Privacy policy and terms of use', 'ar': 'سياسة الخصوصية وشروط الاستخدام'},
+    'nextStep': {'en': 'Continue (next step)', 'ar': 'متابعة (الخطوة التالية)'},
+    'alreadyHaveAccount': {'en': 'Already have an account?', 'ar': 'لديك حساب بالفعل؟'},
+    'aboutApp': {'en': 'About the app', 'ar': 'عن التطبيق'},
+    'authFailed': {'en': 'Authentication failed. Please try again.', 'ar': 'فشلت المصادقة. حاول مرة أخرى.'},
+    'liveStream': {'en': 'Live stream', 'ar': 'البث المباشر'},
+    'logout': {'en': 'Log out', 'ar': 'تسجيل الخروج'},
+    'notifications': {'en': 'Notifications', 'ar': 'الإشعارات'},
+    'offline': {'en': 'Offline', 'ar': 'غير متصل'},
+    'saveChanges': {'en': 'Save changes', 'ar': 'حفظ التغييرات'},
+    'supportCenter': {'en': 'Help & support center', 'ar': 'مركز الدعم والمساعدة'},
   };
 
   /// ترجمة مفتاح نصي — يعيد الترجمة أو المفتاح نفسه
@@ -439,16 +531,28 @@ class LocaleProvider extends ChangeNotifier {
   LocaleProvider() { _loadSavedLocale(); }
 
   Future<void> _loadSavedLocale() async {
-    final prefs = await SharedPreferences.getInstance();
-    _locale = Locale(prefs.getString('app_language') ?? 'ar');
-    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final saved = prefs.getString('app_language');
+      if (saved == 'ar' || saved == 'en') {
+        _locale = Locale(saved!);
+        notifyListeners();
+      }
+    } catch (_) {
+      // اللغة الافتراضية العربية تبقى صالحة عند تعذر قراءة التخزين.
+    }
   }
 
   Future<void> setLocale(Locale locale) async {
-    _locale = locale;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('app_language', locale.languageCode);
+    if (!['ar', 'en'].contains(locale.languageCode)) return;
+    _locale = Locale(locale.languageCode);
     notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('app_language', _locale.languageCode);
+    } catch (_) {
+      // لا نمنع إعادة الرسم الفورية إذا تعذر التخزين المؤقت.
+    }
   }
 
   Future<void> toggleLocale() async {

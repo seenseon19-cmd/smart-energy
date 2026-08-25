@@ -205,7 +205,7 @@ class _AppRouter extends StatelessWidget {
           .then((p) => p.getBool('onboarding_done') ?? false),
       builder: (ctx, snap) {
         if (snap.connectionState == ConnectionState.waiting) {
-          return const _StartupLoadingScreen(label: 'جارٍ تجهيز تجربة SmartEnergy');
+          return _StartupLoadingScreen(label: AppLocalizations.of(ctx).tr('startupPreparingExperience'));
         }
         if (snap.hasError) {
           return _StartupErrorScreen(onRetry: () => (ctx as Element).markNeedsBuild());
@@ -269,13 +269,13 @@ class _PostLoginRouter extends StatelessWidget {
       future: SharedPreferences.getInstance(),
       builder: (ctx, snap) {
         if (snap.connectionState == ConnectionState.waiting) {
-          return const _StartupLoadingScreen(label: 'جارٍ تحميل ملفك الشخصي');
+          return _StartupLoadingScreen(label: AppLocalizations.of(ctx).tr('startupLoadingProfile'));
         }
         if (snap.hasError) {
           return _StartupErrorScreen(onRetry: () => (ctx as Element).markNeedsBuild());
         }
         if (!snap.hasData) {
-          return const _StartupLoadingScreen(label: 'جارٍ تجهيز حسابك');
+          return _StartupLoadingScreen(label: AppLocalizations.of(ctx).tr('startupPreparingAccount'));
         }
         final prefs = snap.data!;
 
@@ -378,14 +378,14 @@ class _StartupErrorScreen extends StatelessWidget {
               children: [
                 const Icon(Icons.cloud_off_rounded, color: AppTheme.neonGreen, size: 64),
                 const SizedBox(height: 20),
-                const Text('تعذر تجهيز التطبيق', style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w800)),
+                Text(AppLocalizations.of(context).tr('startupErrorTitle'), style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w800)),
                 const SizedBox(height: 10),
-                const Text('تحقق من الاتصال ثم أعد المحاولة. لم يتم فقدان أي بيانات.', textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 14, height: 1.5)),
+                Text(AppLocalizations.of(context).tr('startupErrorDescription'), textAlign: TextAlign.center, style: const TextStyle(color: Colors.white70, fontSize: 14, height: 1.5)),
                 const SizedBox(height: 24),
                 FilledButton.icon(
                   onPressed: onRetry,
                   icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('إعادة المحاولة'),
+                  label: Text(AppLocalizations.of(context).tr('retry')),
                   style: FilledButton.styleFrom(backgroundColor: AppTheme.neonGreen, foregroundColor: AppTheme.darkBg, padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14)),
                 ),
               ],
