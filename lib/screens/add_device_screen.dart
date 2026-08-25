@@ -100,18 +100,18 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
   Future<void> _submitDevice(EnergyProvider provider, AppLocalizations loc) async {
     if (_isLoading) return;
     if (_nameController.text.trim().isEmpty) {
-      setState(() => _errorMessage = 'يرجى كتابة اسم الجهاز أو اختيار نموذج جاهز');
+      setState(() => _errorMessage = loc.tr('enterDeviceName'));
       return;
     }
 
     final watt = int.tryParse(_wattController.text.trim()) ?? 0;
     if (watt <= 0) {
-      setState(() => _errorMessage = 'يرجى إدخال استهلاك واط صالح أكبر من 0');
+      setState(() => _errorMessage = loc.tr('invalidWattage'));
       return;
     }
 
     if (provider.isCurrentSpaceFull) {
-      setState(() => _errorMessage = 'تم الوصول للحد الأقصى لأجهزة هذه المساحة');
+      setState(() => _errorMessage = loc.tr('deviceLimitReached'));
       return;
     }
 
@@ -131,7 +131,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
           behavior: SnackBarBehavior.floating,
         ),
       );
-      setState(() => _errorMessage = 'المنفذ المختار مشغول مسبقاً بجهاز "$occupiedBy"');
+      setState(() => _errorMessage = loc.tr('relayAlreadyUsed').replaceAll('{name}', occupiedBy ?? ''));
       return;
     }
 
@@ -158,27 +158,20 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
       setState(() => _isLoading = false);
 
       if (success) {
-        final messenger = ScaffoldMessenger.of(context);
-        if (mounted) Navigator.of(context).pop();
-        messenger.showSnackBar(
-          SnackBar(
-            content: Text('تمت إضافة جهاز "${newDevice.name}" بنجاح ⚡'),
-            backgroundColor: const Color(0xFF10B981),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        // تعاد النتيجة إلى DevicesScreen؛ هناك يتم تحديث القائمة وعرض Snackbar.
+        Navigator.of(context).pop(newDevice.name);
       } else {
-        setState(() => _errorMessage = 'فشلت إضافة الجهاز، تأكد من عدد الأجهزة المسموح');
+        setState(() => _errorMessage = loc.tr('deviceSaveError'));
       }
     } catch (e) {
       if (!mounted) return;
       setState(() {
         _isLoading = false;
-        _errorMessage = 'حدث خطأ أثناء إضافة الجهاز: $e';
+        _errorMessage = loc.tr('deviceSaveError');
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('حدث خطأ أثناء حفظ الجهاز: $e'),
+          content: Text(loc.tr('deviceSaveError')),
           backgroundColor: const Color(0xFFEF4444),
           behavior: SnackBarBehavior.floating,
         ),
@@ -206,7 +199,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
     }
 
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: loc.locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(

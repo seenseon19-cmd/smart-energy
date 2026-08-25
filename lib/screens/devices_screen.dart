@@ -69,11 +69,20 @@ class DevicesScreen extends StatelessWidget {
                         ),
                         // زر إضافة جهاز
                         _InteractiveScale(
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            final addedName = await Navigator.push<String>(
                               context,
                               MaterialPageRoute(builder: (_) => const AddDeviceScreen()),
                             );
+                            if (addedName != null && context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(AppLocalizations.of(context).tr('deviceAdded').replaceAll('{name}', addedName)),
+                                  backgroundColor: const Color(0xFF10B981),
+                                  behavior: SnackBarBehavior.floating,
+                                ),
+                              );
+                            }
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -280,11 +289,20 @@ class DevicesScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              final addedName = await Navigator.push<String>(
                 context,
                 MaterialPageRoute(builder: (_) => const AddDeviceScreen()),
               );
+              if (addedName != null && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context).tr('deviceAdded').replaceAll('{name}', addedName)),
+                    backgroundColor: const Color(0xFF10B981),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              }
             },
             icon: const Icon(Icons.add_rounded, color: Colors.white, size: 20),
             label: Text(

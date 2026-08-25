@@ -564,8 +564,8 @@ class SpacesScreen extends StatelessWidget {
                   final name = nameCtrl.text.trim();
                   if (name.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('يرجى إدخال اسم المساحة'),
+                        SnackBar(
+                        content: Text(loc.tr('enterSpaceName')),
                         backgroundColor: Color(0xFFEF4444),
                         behavior: SnackBarBehavior.floating,
                       ),
@@ -578,7 +578,7 @@ class SpacesScreen extends StatelessWidget {
                   if (exists) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('⚠️ توجد مساحة باسم "$name" مسبقاً! يرجى اختيار اسم مختلف.'),
+                        content: Text(loc.tr('spaceAlreadyExists').replaceAll('{name}', name)),
                         backgroundColor: const Color(0xFFEF4444),
                         behavior: SnackBarBehavior.floating,
                       ),
@@ -587,14 +587,18 @@ class SpacesScreen extends StatelessWidget {
                   }
                   setDlgState(() => isSaving = true);
                   try {
-                    await provider.addSpace(name, selectedType);
+                    final added = await provider.addSpace(name, selectedType);
+                    if (!added) {
+                      if (ctx.mounted) setDlgState(() => isSaving = false);
+                      return;
+                    }
                     if (ctx.mounted) {
                       Navigator.pop(ctx);
                     }
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('تمت إضافة مساحة "$name" بنجاح ✅'),
+                          content: Text(loc.tr('spaceAdded').replaceAll('{name}', name)),
                           backgroundColor: const Color(0xFF10B981),
                           behavior: SnackBarBehavior.floating,
                         ),
@@ -607,7 +611,7 @@ class SpacesScreen extends StatelessWidget {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('حدث خطأ أثناء إضافة المساحة: $e'),
+                          content: Text(loc.tr('spaceAddError')),
                           backgroundColor: const Color(0xFFEF4444),
                           behavior: SnackBarBehavior.floating,
                         ),

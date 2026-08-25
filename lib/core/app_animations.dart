@@ -14,7 +14,7 @@ class AppAnimations {
 
   /// بطاقة خفض الاستهلاك في الرئيسية.
   static const String energySavingPromo =
-      'https://lottie.host/fdd13962-1653-42a5-9904-155488e5c70c/tkMVummJ71.json';
+      'https://lottie.host/dfa6dd8e-b464-4200-b1aa-123b7a6b924a/v0cqW3sbND.json';
 
   /// أزرار فتح وإغلاق الأجهزة.
   static const String powerToggle =

@@ -322,7 +322,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     border: Border.all(color: isGold ? Colors.transparent : accentColor.withOpacity(0.2)),
                   ),
                   child: Text(
-                    isActivePlan ? 'الباقة النشطة ✅' : tier.badge!,
+                    isActivePlan ? loc.tr('currentPlanBadge') : tier.badge!,
                     style: AppTheme.getTextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
@@ -347,7 +347,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 child: Row(
                   children: [
                     Icon(
-                      Icons.check_circle_rounded,
+                      Icons.circle,
                       size: 16,
                       color: isGold ? AppTheme.accentAmber : (isDark ? AppTheme.neonCyan : AppTheme.accentCyan),
                     ),
@@ -378,7 +378,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               }
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('تم تفعيل باقة ${tier.name} بنجاح ✅'),
+                  content: Text(loc.tr('planActivated').replaceAll('{name}', tier.name)),
                   backgroundColor: AppTheme.neonGreen,
                 ),
               );

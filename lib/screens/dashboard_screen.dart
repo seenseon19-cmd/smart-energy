@@ -23,10 +23,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final isDark = Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
-      EnergyAdvisoryDialog.showOnce(context, isDark);
-    });
   }
 
   @override
@@ -244,7 +240,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
               // ══════════════════════════════════════════════════════
               // 🌿 بطاقة ترشيد وخفض الاستهلاك مع أنيميشن Lottie
               // ══════════════════════════════════════════════════════
-              EnergySavingPromoCard(isDark: isDark),
+              EnergySavingPromoCard(
+                isDark: isDark,
+                onAction: () => EnergyAdvisoryDialog.show(context, isDark),
+              ),
 
               const SizedBox(height: 20),
 

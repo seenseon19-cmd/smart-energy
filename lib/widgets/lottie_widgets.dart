@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../core/app_animations.dart';
 import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
@@ -260,8 +259,10 @@ class EnergySavingPromoCard extends StatelessWidget {
     final textPrimary = isDark ? Colors.white : const Color(0xFF0F172A);
     final textSecondary = isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B);
 
-    return Container(
-      width: double.infinity,
+    return GestureDetector(
+      onTap: onAction,
+      child: Container(
+        width: double.infinity,
       decoration: BoxDecoration(
         color: cardBg,
         borderRadius: BorderRadius.circular(20),
@@ -343,6 +344,7 @@ class EnergySavingPromoCard extends StatelessWidget {
           ),
         ],
       ),
+      ),
     );
   }
 }
@@ -355,18 +357,13 @@ class EnergyAdvisoryDialog extends StatelessWidget {
 
   const EnergyAdvisoryDialog({super.key, required this.isDark});
 
-  static Future<void> showOnce(BuildContext context, bool isDark) async {
-    final prefs = await SharedPreferences.getInstance();
-    final alreadyShown = prefs.getBool('energy_advisory_dialog_shown') ?? false;
-    if (!alreadyShown) {
-      await prefs.setBool('energy_advisory_dialog_shown', true);
-      if (!context.mounted) return;
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (ctx) => EnergyAdvisoryDialog(isDark: isDark),
-      );
-    }
+  static Future<void> show(BuildContext context, bool isDark) async {
+    if (!context.mounted) return;
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) => EnergyAdvisoryDialog(isDark: isDark),
+    );
   }
 
   @override
