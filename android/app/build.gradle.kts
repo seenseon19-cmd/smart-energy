@@ -46,6 +46,10 @@ flutter {
     source = "../.."
 }
 
+dependencies {
+    implementation("androidx.biometric:biometric:1.1.0")
+}
+
 configurations.all {
     resolutionStrategy {
         force("androidx.core:core:1.13.1")

@@ -35,7 +35,10 @@ class _SecurityScreenState extends State<SecurityScreen> {
 
   Future<void> _loadSecuritySettings() async {
     final prefs = await SharedPreferences.getInstance();
-    final supportsBio = await BiometricService.isDeviceSupported();
+    final nativeStatus = await BiometricService.canAuthenticate();
+    final supportsBio = nativeStatus == null
+        ? await BiometricService.isDeviceSupported()
+        : nativeStatus == 0;
     final bioEnabled = await BiometricService.isBiometricEnabled();
     final twoFactorEnabled = prefs.getBool(_twoFactorPrefKey) ?? false;
 
@@ -50,6 +53,16 @@ class _SecurityScreenState extends State<SecurityScreen> {
   }
 
   Future<void> _toggleBiometrics(bool value) async {
+    if (value && !_deviceSupportsBiometrics) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('المصادقة البيومترية غير متاحة. أضف بصمة أو Face ID من إعدادات الجهاز أولاً.'),
+          backgroundColor: Color(0xFFEF4444),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
     if (value) {
       try {
         final success = await BiometricService.authenticate(
@@ -82,7 +95,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('حدث خطأ أثناء المصادقة البيومترية: $e'),
+                content: Text('تعذر تشغيل المصادقة البيومترية. تحقق من إعدادات الجهاز ثم حاول مرة أخرى.'),
               backgroundColor: const Color(0xFFEF4444),
               behavior: SnackBarBehavior.floating,
             ),

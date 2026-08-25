@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../theme/app_theme.dart';
 import '../l10n/app_localizations.dart';
@@ -414,6 +415,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  Future<void> _launchSupportUri(BuildContext context, Uri uri) async {
+    final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('تعذر فتح التطبيق المطلوب على هذا الجهاز')),
+      );
+    }
+  }
+
   void _showSupportModal(BuildContext context, bool isDark) {
     showModalBottomSheet(
       context: context,
@@ -441,12 +451,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ListTile(
                 leading: const Icon(Icons.email_outlined, color: AppTheme.primaryBlue),
                 title: const Text('البريد الإلكتروني للدعم'),
-                subtitle: const Text('support@smartenergy.ly'),
+                subtitle: const Text('souhaylsaaid4@gmail.com'),
+                trailing: const Icon(Icons.open_in_new_rounded, size: 18),
+                onTap: () => _launchSupportUri(context, Uri(scheme: 'mailto', path: 'souhaylsaaid4@gmail.com')),
               ),
               ListTile(
                 leading: const Icon(Icons.phone_outlined, color: AppTheme.neonGreen),
                 title: const Text('الخط الساخن المباشر'),
-                subtitle: const Text('+218 21 000 0000'),
+                subtitle: const Text('00218915775774'),
+                trailing: const Icon(Icons.open_in_new_rounded, size: 18),
+                onTap: () => _launchSupportUri(context, Uri(scheme: 'tel', path: '00218915775774')),
               ),
             ],
           ),
