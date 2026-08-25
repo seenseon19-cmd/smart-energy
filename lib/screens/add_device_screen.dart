@@ -98,6 +98,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
   }
 
   Future<void> _submitDevice(EnergyProvider provider, AppLocalizations loc) async {
+    if (_isLoading) return;
     if (_nameController.text.trim().isEmpty) {
       setState(() => _errorMessage = 'يرجى كتابة اسم الجهاز أو اختيار نموذج جاهز');
       return;
@@ -157,16 +158,15 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
       setState(() => _isLoading = false);
 
       if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
+        final messenger = ScaffoldMessenger.of(context);
+        if (mounted) Navigator.of(context).pop();
+        messenger.showSnackBar(
           SnackBar(
             content: Text('تمت إضافة جهاز "${newDevice.name}" بنجاح ⚡'),
             backgroundColor: const Color(0xFF10B981),
             behavior: SnackBarBehavior.floating,
           ),
         );
-        if (mounted) {
-          Navigator.of(context).pop();
-        }
       } else {
         setState(() => _errorMessage = 'فشلت إضافة الجهاز، تأكد من عدد الأجهزة المسموح');
       }

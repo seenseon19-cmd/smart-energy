@@ -390,6 +390,7 @@ class SpacesScreen extends StatelessWidget {
   void _showAddSpaceDialog(BuildContext context, EnergyProvider provider, bool isDark, AppLocalizations loc) {
     final nameCtrl = TextEditingController();
     String selectedType = 'residential';
+    bool isSaving = false;
 
     showDialog(
       context: context,
@@ -559,7 +560,7 @@ class SpacesScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   elevation: 0,
                 ),
-                onPressed: () async {
+                onPressed: isSaving ? null : () async {
                   final name = nameCtrl.text.trim();
                   if (name.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -584,6 +585,7 @@ class SpacesScreen extends StatelessWidget {
                     );
                     return;
                   }
+                  setDlgState(() => isSaving = true);
                   try {
                     await provider.addSpace(name, selectedType);
                     if (ctx.mounted) {
@@ -600,7 +602,7 @@ class SpacesScreen extends StatelessWidget {
                     }
                   } catch (e) {
                     if (ctx.mounted) {
-                      Navigator.pop(ctx);
+                      setDlgState(() => isSaving = false);
                     }
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -613,7 +615,9 @@ class SpacesScreen extends StatelessWidget {
                     }
                   }
                 },
-                child: Text(loc.tr('createSpace'), style: AppTheme.getTextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
+                child: isSaving
+                    ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.2))
+                    : Text(loc.tr('createSpace'), style: AppTheme.getTextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
               ),
             ],
           ),
