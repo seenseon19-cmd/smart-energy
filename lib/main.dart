@@ -69,14 +69,22 @@ Future<void> main() async {
   // التأكد من أن جميع موارد النظام جاهزة قبل بدء الاتصال بالسحابة
   WidgetsFlutterBinding.ensureInitialized();
 
-  // الربط الفعلي بالسحابة — هذا السطر هو الأهم في كل التطبيق!
-  // سيستخدم تلقائياً إعدادات الأندرويد أو الويب بناءً على الجهاز الذي تشغله
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // الربط الفعلي بالسحابة — محفوظ كما هو، مع حارس فشل لعرض Retry بدل الشاشة السوداء.
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    ).timeout(const Duration(seconds: 15));
+  } catch (error) {
+    runApp(_StartupFailureApp(message: error.toString()));
+    return;
+  }
 
-  // تهيئة خدمة الإشعارات (FCM) لاستقبال تنبيهات الأمان والطاقة
-  await NotificationService.initialize();
+  // تهيئة خدمة الإشعارات (FCM) مع مهلة حتى لا يتعطل البدء عند انقطاع الشبكة.
+  try {
+    await NotificationService.initialize().timeout(const Duration(seconds: 12));
+  } catch (error) {
+    debugPrint('Notification initialization skipped: $error');
+  }
 
   // تخصيص مظهر شريط الحالة — شفاف مع أيقونات بيضاء للتوافق مع الثيم الداكن
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -196,7 +204,12 @@ class _AppRouter extends StatelessWidget {
       future: SharedPreferences.getInstance()
           .then((p) => p.getBool('onboarding_done') ?? false),
       builder: (ctx, snap) {
-        if (!snap.hasData) return const SizedBox();
+        if (snap.connectionState == ConnectionState.waiting) {
+          return const _StartupLoadingScreen(label: 'جارٍ تجهيز تجربة SmartEnergy');
+        }
+        if (snap.hasError) {
+          return _StartupErrorScreen(onRetry: () => (ctx as Element).markNeedsBuild());
+        }
 
         // إذا أكمل Onboarding → شاشة تسجيل الدخول
         if (snap.data == true) {
@@ -255,7 +268,15 @@ class _PostLoginRouter extends StatelessWidget {
     return FutureBuilder<SharedPreferences>(
       future: SharedPreferences.getInstance(),
       builder: (ctx, snap) {
-        if (!snap.hasData) return const SizedBox();
+        if (snap.connectionState == ConnectionState.waiting) {
+          return const _StartupLoadingScreen(label: 'جارٍ تحميل ملفك الشخصي');
+        }
+        if (snap.hasError) {
+          return _StartupErrorScreen(onRetry: () => (ctx as Element).markNeedsBuild());
+        }
+        if (!snap.hasData) {
+          return const _StartupLoadingScreen(label: 'جارٍ تجهيز حسابك');
+        }
         final prefs = snap.data!;
 
         // التحقق: هل أكمل المستخدم ملفه الشخصي؟
@@ -290,3 +311,90 @@ class _PostLoginRouter extends StatelessWidget {
   }
 }
 
+
+
+class _StartupFailureApp extends StatelessWidget {
+  final String message;
+  const _StartupFailureApp({required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'SmartEnergy',
+      theme: AppTheme.darkTheme,
+      home: _StartupErrorScreen(onRetry: () => main()),
+    );
+  }
+}
+
+class _StartupLoadingScreen extends StatelessWidget {
+  final String label;
+  const _StartupLoadingScreen({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppTheme.darkBg,
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 76,
+              height: 76,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: const LinearGradient(colors: [Color(0xFF38BDF8), Color(0xFF10B981)]),
+                boxShadow: [BoxShadow(color: AppTheme.neonGreen.withOpacity(0.28), blurRadius: 30)],
+              ),
+              child: const Icon(Icons.bolt_rounded, color: Colors.white, size: 42),
+            ),
+            const SizedBox(height: 24),
+            const CircularProgressIndicator(color: AppTheme.neonGreen, strokeWidth: 2.5),
+            const SizedBox(height: 16),
+            Text(label, style: const TextStyle(color: Colors.white70, fontSize: 14)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _StartupErrorScreen extends StatelessWidget {
+  final VoidCallback onRetry;
+  const _StartupErrorScreen({required this.onRetry});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppTheme.darkBg,
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(28),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.cloud_off_rounded, color: AppTheme.neonGreen, size: 64),
+                const SizedBox(height: 20),
+                const Text('تعذر تجهيز التطبيق', style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w800)),
+                const SizedBox(height: 10),
+                const Text('تحقق من الاتصال ثم أعد المحاولة. لم يتم فقدان أي بيانات.', textAlign: TextAlign.center, style: TextStyle(color: Colors.white70, fontSize: 14, height: 1.5)),
+                const SizedBox(height: 24),
+                FilledButton.icon(
+                  onPressed: onRetry,
+                  icon: const Icon(Icons.refresh_rounded),
+                  label: const Text('إعادة المحاولة'),
+                  style: FilledButton.styleFrom(backgroundColor: AppTheme.neonGreen, foregroundColor: AppTheme.darkBg, padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14)),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// نهاية ملف main.dart
