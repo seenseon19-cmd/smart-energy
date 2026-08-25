@@ -39,6 +39,7 @@ import 'theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
 // 10. استيراد خدمة المصادقة (تسجيل الدخول بالهاتف OTP)
 import 'services/auth_service.dart';
+import 'services/biometric_service.dart';
 // 11. استيراد خدمة الإشعارات (FCM)
 import 'services/notification_service.dart';
 // 12. استيراد مزوّد بيانات الطاقة (يستمع لقراءات ESP32 اللحظية)
@@ -196,6 +197,9 @@ class _AppRouter extends StatelessWidget {
       );
     }
 
+    // الجلسة المحفوظة التي فعّل صاحبها biometric لا تُفتح قبل تحقق نظام الجهاز.
+    if (auth.isBiometricPending) return const _BiometricGateScreen();
+
     // إذا المستخدم مسجّل الدخول → التحقق من إكمال البيانات ونوع الحساب أولاً
     if (auth.isLoggedIn) return const _PostLoginRouter();
 
@@ -260,6 +264,89 @@ class _AppRouter extends StatelessWidget {
 ///   2. نوع الحساب غير محدد → AccountTypeScreen
 ///   3. كل شيء مكتمل → MainShell (الشاشة الرئيسية)
 /// ═══════════════════════════════════════════════════════════════
+class _BiometricGateScreen extends StatefulWidget {
+  const _BiometricGateScreen();
+
+  @override
+  State<_BiometricGateScreen> createState() => _BiometricGateScreenState();
+}
+
+class _BiometricGateScreenState extends State<_BiometricGateScreen> {
+  bool _busy = false;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _attemptUnlock());
+  }
+
+  Future<void> _attemptUnlock() async {
+    if (_busy || !mounted) return;
+    setState(() {
+      _busy = true;
+    });
+    final auth = context.read<AuthService>();
+    final loc = AppLocalizations.of(context);
+    final result = await auth.unlockWithBiometrics(
+      reason: loc.tr('biometricLoginReason'),
+    );
+    if (!mounted) return;
+    setState(() => _busy = false);
+    if (result != BiometricAuthResult.success) {
+      final message = switch (result) {
+        BiometricAuthResult.notEnrolled => loc.tr('biometricNotEnrolled'),
+        BiometricAuthResult.lockedOut => loc.tr('biometricLockedOut'),
+        BiometricAuthResult.permanentlyLockedOut => loc.tr('biometricPermanentLockout'),
+        BiometricAuthResult.canceled => loc.tr('biometricLoginCanceled'),
+        BiometricAuthResult.unavailable => loc.tr('biometricLoginUnavailable'),
+        _ => loc.tr('biometricError'),
+      };
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    }
+  }
+
+  Future<void> _usePassword() async {
+    await context.read<AuthService>().cancelBiometricGate();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+    final locale = context.read<LocaleProvider>().locale;
+    return Directionality(
+      textDirection: locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
+      child: Scaffold(
+        backgroundColor: isDark ? AppTheme.darkBg : AppTheme.lightBg,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(28),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.fingerprint_rounded, size: 76, color: AppTheme.primaryBlue),
+                const SizedBox(height: 20),
+                Text(loc.tr('biometricLogin'), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800)),
+                const SizedBox(height: 10),
+                Text(loc.tr('biometricLoginReason'), textAlign: TextAlign.center),
+                const SizedBox(height: 28),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _busy ? null : _attemptUnlock,
+                    icon: _busy ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Icons.fingerprint_rounded),
+                    label: Text(loc.tr('biometricLogin')),
+                  ),
+                ),
+                TextButton(onPressed: _busy ? null : _usePassword, child: Text(loc.tr('usePassword'))),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _PostLoginRouter extends StatelessWidget {
   const _PostLoginRouter();
 

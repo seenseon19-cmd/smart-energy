@@ -30,7 +30,7 @@ class MainActivity : FlutterActivity() {
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, biometricChannel).setMethodCallHandler { call, result ->
             if (call.method == "canAuthenticate") {
                 val manager = BiometricManager.from(this)
-                result.success(manager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL))
+                result.success(manager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG))
             } else {
                 result.notImplemented()
             }

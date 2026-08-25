@@ -23,6 +23,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'secure_storage_service.dart';
+import 'biometric_service.dart';
 
 /// كلاس خدمة المصادقة — يدير دورة حياة المصادقة بالكامل
 class AuthService extends ChangeNotifier {
@@ -52,6 +53,10 @@ class AuthService extends ChangeNotifier {
   /// هل تم حسم حالة المصادقة (لإخفاء شاشة التحميل الأولية)
   bool _authResolved = false;
 
+  /// يمنع عرض محتوى التطبيق عند وجود جلسة محفوظة قبل نجاح biometric.
+  bool _biometricPending = false;
+  bool _biometricPromptInProgress = false;
+
   // ── حالة التسجيل التجريبي (Fallback) ──
   /// هل المستخدم مسجل بالوضع التجريبي (عند فشل Firebase)
   bool _isSimulatedLogin = false;
@@ -73,7 +78,9 @@ class AuthService extends ChangeNotifier {
   User? get user => _user;
 
   /// هل المستخدم مسجّل الدخول — حقيقي عبر Firebase أو تجريبي
-  bool get isLoggedIn => _user != null || _isSimulatedLogin;
+  bool get isLoggedIn => !_biometricPending && (_user != null || _isSimulatedLogin);
+
+  bool get isBiometricPending => _biometricPending;
 
   /// هل المستخدم زائر — لم يسجل الدخول بأي طريقة
   bool get isGuest => _user == null && !_isSimulatedLogin;
@@ -139,6 +146,8 @@ class AuthService extends ChangeNotifier {
 
     final currentUid = _auth.currentUser?.uid;
     if (currentUid != null && currentUid.isNotEmpty) {
+      _biometricPending = await BiometricService.isEnabledForUser(currentUid) &&
+          !BiometricService.consumeStartupPromptSkip();
       final cleanUid = currentUid.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '').toUpperCase();
       final suffix = cleanUid.length >= 6 ? cleanUid.substring(0, 6) : cleanUid.padRight(6, '0');
       _accountNumber = 'SE-LY-$suffix';
@@ -152,6 +161,11 @@ class AuthService extends ChangeNotifier {
     // ── الاستماع لتغييرات حالة المصادقة في Firebase ──
     _auth.authStateChanges().listen((User? user) async {
       _user = user;
+      if (user == null) {
+        _biometricPending = false;
+      } else if (!_biometricPromptInProgress && !BiometricService.consumeStartupPromptSkip()) {
+        _biometricPending = await BiometricService.isEnabledForUser(user.uid);
+      }
       final p = await SecureStorageService.instance;
       if (user != null && user.uid.isNotEmpty) {
         final cleanUid = user.uid.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '').toUpperCase();
@@ -231,6 +245,7 @@ class AuthService extends ChangeNotifier {
         /// التحقق التلقائي (Android فقط) — يتم عند قراءة SMS تلقائياً
         verificationCompleted: (PhoneAuthCredential credential) async {
           try {
+            BiometricService.skipNextStartupPrompt();
             await _auth.signInWithCredential(credential);
           } catch (e) {
             AppLogger.debug('خطأ في تسجيل الدخول التلقائي: $e');
@@ -310,6 +325,7 @@ class AuthService extends ChangeNotifier {
           verificationId: _verificationId!,
           smsCode: otp,
         );
+        BiometricService.skipNextStartupPrompt();
         await _auth.signInWithCredential(credential);
         _isLoading = false;
         notifyListeners();
@@ -324,6 +340,7 @@ class AuthService extends ChangeNotifier {
 
     // ── الاحتياطي التجريبي: قبول "123456" فقط عند غياب verificationId ──
     if (!kReleaseMode && otp == '123456') {
+      BiometricService.skipNextStartupPrompt();
       _isSimulatedLogin = true;
       final prefs = await SecureStorageService.instance;
       await prefs.setBool('simulated_login', true);
@@ -359,6 +376,7 @@ class AuthService extends ChangeNotifier {
   /// القيمة المرجعة: true إذا نجح تسجيل الدخول
   Future<bool> signInWithEmail(String email, String password) async {
     _setLoading(true);
+    BiometricService.skipNextStartupPrompt();
 
     // ── التحقق من صحة المدخلات ──
     if (!_isValidEmail(email)) { _setError('invalid_email'); return false; }
@@ -382,6 +400,30 @@ class AuthService extends ChangeNotifier {
       _setError('email_auth_failed');
       return false;
     }
+  }
+
+  /// فتح الجلسة الحالية بعد تحقق biometric حقيقي.
+  Future<BiometricAuthResult> unlockWithBiometrics({required String reason}) async {
+    if (_biometricPromptInProgress) return BiometricAuthResult.canceled;
+    final current = _auth.currentUser;
+    if (current == null || !await BiometricService.isEnabledForUser(current.uid)) {
+      return BiometricAuthResult.unavailable;
+    }
+    _biometricPromptInProgress = true;
+    final result = await BiometricService.authenticateWithResult(localizedReason: reason);
+    _biometricPromptInProgress = false;
+    if (result == BiometricAuthResult.success) {
+      _user = current;
+      _biometricPending = false;
+      notifyListeners();
+    }
+    return result;
+  }
+
+  /// يلغي بوابة biometric للجلسة الحالية دون تسجيل الدخول.
+  Future<void> cancelBiometricGate() async {
+    _biometricPending = false;
+    await signOut();
   }
 
   /// إنشاء حساب جديد بالبريد الإلكتروني وكلمة السر
@@ -579,6 +621,7 @@ class AuthService extends ChangeNotifier {
 
     // ── إعادة تعيين جميع المتغيرات المحلية ──
     _user = null;
+    _biometricPending = false;
     _isSimulatedLogin = false;
     _simulatedPhone = '';
     _displayName = '';

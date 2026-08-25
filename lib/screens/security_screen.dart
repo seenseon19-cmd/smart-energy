@@ -34,23 +34,27 @@ class _SecurityScreenState extends State<SecurityScreen> {
   }
 
   Future<void> _loadSecuritySettings() async {
-    final prefs = await SharedPreferences.getInstance();
-    final nativeStatus = await BiometricService.canAuthenticate();
-    final supportsBio = nativeStatus == null
-        ? await BiometricService.isDeviceSupported()
-        : nativeStatus == 0;
-    final bioEnabled = await BiometricService.isBiometricEnabled();
-    final twoFactorEnabled = prefs.getBool(_twoFactorPrefKey) ?? false;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final supportsBio = await BiometricService.isDeviceSupported();
+      final auth = context.read<AuthService>();
+      final bioEnabled = auth.user?.uid != null
+          ? await BiometricService.isEnabledForUser(auth.user!.uid)
+          : false;
+      final twoFactorEnabled = prefs.getBool(_twoFactorPrefKey) ?? false;
 
-    if (mounted) {
+      if (!mounted) return;
       setState(() {
         _deviceSupportsBiometrics = supportsBio;
         _isBiometricsEnabled = bioEnabled;
         _is2faEnabled = twoFactorEnabled;
         _isLoading = false;
       });
+    } catch (_) {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
+
 
   Future<void> _toggleBiometrics(bool value) async {
     if (value && !_deviceSupportsBiometrics) {
@@ -65,11 +69,13 @@ class _SecurityScreenState extends State<SecurityScreen> {
     }
     if (value) {
       try {
-        final success = await BiometricService.authenticate(
+        final result = await BiometricService.authenticateWithResult(
           localizedReason: AppLocalizations.of(context).tr('biometricEnableReason'),
         );
-        if (success) {
-          await BiometricService.setBiometricEnabled(true);
+        if (result == BiometricAuthResult.success) {
+          final uid = context.read<AuthService>().user?.uid;
+          if (uid == null || uid.isEmpty) return;
+          await BiometricService.setBiometricEnabled(true, userUid: uid);
           if (mounted) {
             setState(() => _isBiometricsEnabled = true);
             ScaffoldMessenger.of(context).showSnackBar(
@@ -80,16 +86,23 @@ class _SecurityScreenState extends State<SecurityScreen> {
               ),
             );
           }
-        } else {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(AppLocalizations.of(context).tr('biometricCancelled')),
-                backgroundColor: Color(0xFFEF4444),
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
-          }
+        } else if (mounted) {
+          final loc = AppLocalizations.of(context);
+          final message = switch (result) {
+            BiometricAuthResult.notEnrolled => loc.tr('biometricNotEnrolled'),
+            BiometricAuthResult.lockedOut => loc.tr('biometricLockedOut'),
+            BiometricAuthResult.permanentlyLockedOut => loc.tr('biometricPermanentLockout'),
+            BiometricAuthResult.canceled => loc.tr('biometricCancelled'),
+            BiometricAuthResult.failed => loc.tr('biometricFailed'),
+            _ => loc.tr('biometricError'),
+          };
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(message),
+              backgroundColor: const Color(0xFFEF4444),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
         }
       } catch (e) {
         if (mounted) {
