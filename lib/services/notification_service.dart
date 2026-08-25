@@ -62,15 +62,15 @@ class NotificationService {
         settings.authorizationStatus == AuthorizationStatus.provisional) {
       // الحصول على رمز FCM
       try {
-        final token = await _messaging.getToken();
-        AppLogger.debug('🔔 رمز FCM: $token');
+        await _messaging.getToken();
+        AppLogger.debug('FCM token initialized without logging its value');
       } catch (e) {
         AppLogger.debug('🔔 خطأ في رمز FCM: $e');
       }
 
-      // الاستماع لتحديث الرمز
-      _messaging.onTokenRefresh.listen((newToken) {
-        AppLogger.debug('🔔 تم تحديث رمز FCM: $newToken');
+      // الاستماع لتحديث الرمز دون تسجيل قيمته الحساسة
+      _messaging.onTokenRefresh.listen((_) {
+        AppLogger.debug('FCM token refreshed without logging its value');
       });
 
       // معالج الرسائل الأمامية (التطبيق مفتوح)
